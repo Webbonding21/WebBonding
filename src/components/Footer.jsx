@@ -12,10 +12,10 @@ const Footer = () => {
         </div>
         <div className="footer-links">
           <a href="/">Inicio</a>
-          <a href="/services">Planes</a>
-          <a href="/help">Solicitar asesoría</a>
-          <a href="/clients-services">Servicio técnico</a>
-          <a href="/about">Sobre nosotros</a>
+          <a href="/">Planes</a>
+          <a href="/">Solicitar asesoría</a>
+          <a href="/">Servicio técnico</a>
+          <a href="/">Sobre nosotros</a>
         </div>
         <div className="footer-contact">
           <p>Experiencias Web que Impulsan tu Éxito</p>
