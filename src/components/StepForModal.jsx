@@ -12,7 +12,6 @@ import {
     FaMobile,
     FaMixcloud
 } from "react-icons/fa";
-import emailjs from '@emailjs/browser';
 import "../assets/StepForModal.css";
 
 Modal.setAppElement('#root');
@@ -57,26 +56,38 @@ const StepForModal = () => {
         setStep(step - 1);
     };
 
-    const templateParams = {
-        from_name: name,
-        to_name: 'Web Bonding',
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        emailjs.sendForm('service_nnfgs6n', 'template_1v6bjil', form.current, 'jz5HuOCEuIbud4Ux_', templateParams)
-            .then(() => {
+        const clientData = {
+            name: name,
+            email: correo,
+            message: description,
+            option: option
+        };
+
+        fetch('https://webbondingmailer.onrender.com', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(clientData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                setError(data.error);
+            } else {
                 setSuccess("¡Correo enviado con éxito! Nuestro equipo se pondrá en contacto contigo muy pronto.");
                 closeModal();
                 console.log("Correo enviado");
-            }, (error) => {
-                console.error("Error enviando el correo:", error.text);
-                setError("Hubo un problema enviando el correo. Por favor, inténtalo de nuevo.");
-            });
+            }
+        })
+        .catch((error) => {
+            console.error("Error enviando el correo:", error);
+            setError("Hubo un problema enviando el correo. Por favor, inténtalo de nuevo.");
+        });
     };
-
-    
 
     const optionCards = [
         { value: "Sitio web", label: "Sitio web", icon: <FaGlobe /> },
