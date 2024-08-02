@@ -71,7 +71,7 @@ const StepForModal = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(clientData)
+            body: clientData
         })
         .then(response => response.json())
         .then(data => {
