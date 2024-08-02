@@ -26,6 +26,7 @@ const StepForModal = () => {
     const [option, setOption] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [isSending, setIsSending] = useState(false); // Nuevo estado para el botón de envío
     const form = useRef();
 
     const openModal = () => {
@@ -41,6 +42,7 @@ const StepForModal = () => {
         setOption("");
         setError("");
         setSuccess("");
+        setIsSending(false); // Reinicia el estado de envío
     };
 
     const handleNextStep = () => {
@@ -59,6 +61,7 @@ const StepForModal = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsSending(true); // Establece el estado de envío a verdadero
 
         const clientData = {
             name: name,
@@ -67,7 +70,7 @@ const StepForModal = () => {
             option: option
         };
 
-        axios.post('https://webbondingmailer.onrender.com/api/clients', clientData)
+        axios.post('https://webbondingmailer.onrender.com/api/clients/clients', clientData)
             .then(response => {
                 if (response.data.error) {
                     setError(response.data.error);
@@ -80,6 +83,7 @@ const StepForModal = () => {
             .catch((error) => {
                 console.error("Error enviando el correo:", error);
                 setError("Hubo un problema enviando el correo. Por favor, inténtalo de nuevo.");
+                setIsSending(false); // Reinicia el estado de envío en caso de error
             });
     };
 
@@ -192,8 +196,8 @@ const StepForModal = () => {
                             <button onClick={handlePreviousStep} className="prev-button">
                                 <FaArrowLeft />
                             </button>
-                            <button type="submit" className="next-button">
-                                Enviar
+                            <button type="submit" className="next-button" disabled={isSending}>
+                                {isSending ? "Enviando..." : "Enviar"}
                             </button>
                         </div>
                     )}
