@@ -12,6 +12,7 @@ import {
     FaMobile,
     FaMixcloud
 } from "react-icons/fa";
+import axios from 'axios';
 import "../assets/StepForModal.css";
 
 Modal.setAppElement('#root');
@@ -66,27 +67,20 @@ const StepForModal = () => {
             option: option
         };
 
-        fetch('https://webbondingmailer.onrender.com', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: clientData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setSuccess("¡Correo enviado con éxito! Nuestro equipo se pondrá en contacto contigo muy pronto.");
-                closeModal();
-                console.log("Correo enviado");
-            }
-        })
-        .catch((error) => {
-            console.error("Error enviando el correo:", error);
-            setError("Hubo un problema enviando el correo. Por favor, inténtalo de nuevo.");
-        });
+        axios.post('https://webbondingmailer.onrender.com/api/clients', clientData)
+            .then(response => {
+                if (response.data.error) {
+                    setError(response.data.error);
+                } else {
+                    setSuccess("¡Correo enviado con éxito! Nuestro equipo se pondrá en contacto contigo muy pronto.");
+                    closeModal();
+                    console.log("Correo enviado");
+                }
+            })
+            .catch((error) => {
+                console.error("Error enviando el correo:", error);
+                setError("Hubo un problema enviando el correo. Por favor, inténtalo de nuevo.");
+            });
     };
 
     const optionCards = [
