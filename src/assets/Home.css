@@ -209,7 +209,7 @@ body {
     height: 25vw;
     width: 20vw;
     padding: 10px;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -218,8 +218,8 @@ body {
   
   .caracteristicas .caracteristica:hover  {
     transform: scale(1.1);
-    border-radius: 2rem;
-    background-color: aliceblue;
+    /* border-radius: 2rem; */
+    /* background-color: aliceblue; */
   }
   .caracteristicas .caracteristica:hover h1 {
     transition: 0.1s ease-in-out;
@@ -286,7 +286,7 @@ body {
     justify-content: space-between;
     background-color: #ffffff;
     color: #000000;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     padding: 1.5rem;
     width: 25vw;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
