@@ -57,10 +57,10 @@ function Home() {
   <div className="plans-container">
     <div className="plan-card simple">
       <h2>Plan Emprendedor</h2>
-      <p>Precios desde</p>
-      <p className="price">150$ - 350$</p>
+      {/* <p>Precios desde</p> */}
+      {/* <p className="price">150$ - 350$</p> */}
       <p>Pequeñas empresas y emprendedores individuales</p>
-      <p><strong>Pago único o en cuotas.</strong></p>
+      {/* <p><strong>Pago único o en cuotas.</strong></p> */}
       <ul>
         <li>Landing page personalizada</li>
         <li>Sitios web de hasta 5 páginas</li>
@@ -71,10 +71,10 @@ function Home() {
     </div>
     <div className="plan-card pro">
       <h2>Plan Profesional</h2>
-      <p>Precios desde</p>
-      <p className="price">400$ - 650$</p>
+      {/* <p>Precios desde</p> */}
+      {/* <p className="price">400$ - 650$</p> */}
       <p>Empresas medianas y negocios en crecimiento</p>
-      <p><strong>Pago único o en cuotas.</strong></p>
+      {/* <p><strong>Pago único o en cuotas.</strong></p> */}
       <ul>
         <li>Sitio web de hasta 10 páginas</li>
         <li>Tienda virtual avanzada</li>
@@ -86,10 +86,10 @@ function Home() {
     </div>
     <div className="plan-card master">
       <h2>Plan Master</h2>
-      <p>Precios desde</p>
-      <p className="price">700$ - 1500$</p>
+      {/* <p>Precios desde</p> */}
+      {/* <p className="price">700$ - 1500$</p> */}
       <p>Empresas de alto alcance y organizaciones que requieren de soluciones digitales personalizadas</p>
-      <p><strong>Pago único o en cuotas.</strong></p>
+      {/* <p><strong>Pago único o en cuotas.</strong></p> */}
       <ul>
         <li>Sitio web sin límite de páginas</li>
         <li>Tienda en línea profesional</li>

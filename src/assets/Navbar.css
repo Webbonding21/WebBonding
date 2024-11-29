@@ -65,13 +65,13 @@
   font-size: 90%;
   padding-left: 1vw;
   padding-right: 1vw;
-  padding-top: 0.3vw;
-  padding-bottom: 0.3vw;
+  padding-top: 0.1vw;
+  padding-bottom: 0.1vw;
 }
 
 .navbar-links li a:hover {
   background-color: #4c1b7e;
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
 }
 
 @media (max-width: 768px) {
