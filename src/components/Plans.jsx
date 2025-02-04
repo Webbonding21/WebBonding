@@ -21,7 +21,7 @@ const plans = [
 
 const sendWhatsAppMessage = (planName) => {
   const phoneNumber = "584121510662"; // Reemplaza con tu número de WhatsApp
-  const message = `Hola, estoy interesado en el ${planName}. ¿Podrían darme más información?`;
+  const message = `Hola! 👋😃\n\nEstoy muy interesado en el **${planName}** de Web Bonding 🚀 y me encantaría recibir más información.\n\n📌 **Detalles que me gustaría conocer:**\n- ¿Qué incluye exactamente este plan?\n- ¿Cuáles son los tiempos de desarrollo?\n- ¿Qué opciones de pago tienen?\n\n¡Espero su respuesta! Gracias de antemano. 😊`;
   const encodedMessage = encodeURIComponent(message);
   window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
 };
