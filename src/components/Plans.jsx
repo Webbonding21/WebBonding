@@ -20,7 +20,7 @@ const plans = [
 ];
 
 const sendWhatsAppMessage = (planName) => {
-  const phoneNumber = "1234567890"; // Reemplaza con tu número de WhatsApp
+  const phoneNumber = "584121510662"; // Reemplaza con tu número de WhatsApp
   const message = `Hola, estoy interesado en el ${planName}. ¿Podrían darme más información?`;
   const encodedMessage = encodeURIComponent(message);
   window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
