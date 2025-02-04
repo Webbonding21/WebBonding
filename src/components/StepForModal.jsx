@@ -45,7 +45,7 @@ const StepForModal = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const message = `¡Hola, equipo de Web Bonding! 🚀✨\n\nMi nombre es *${name}* y me encantaría transformar mi negocio con su ayuda. 🌟\n\n📧 *Correo:* ${correo}\n💡 *Servicio de interés:* ${option}\n📝 *Detalles:* ${description}\n\n¡Estoy emocionado por comenzar esta aventura digital con ustedes! 🤩💻 ¡Espero su respuesta pronto!`;
+        const message = `¡Hola, equipo de Web Bonding! 🚀✨\n\nMi nombre es ${name} y me encantaría transformar mi negocio con su ayuda. 🌟\n\n📧 *Correo:* ${correo}\n💡 *Servicio de interés:* ${option}\n📝 *Detalles:* ${description}\n\n¡Estoy emocionado por comenzar esta aventura digital con ustedes! 🤩💻 ¡Espero su respuesta pronto!`;
         const whatsappUrl = `https://wa.me/584121510662?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, "_blank");
         closeModal();
