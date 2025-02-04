@@ -5,7 +5,7 @@ function About() {
   return (
     <section id="about" className="about">
       <div className="about-content">
-        <h2>🚀 Transformamos tu Visión en una Potente Realidad Digital</h2>
+        <h2>🚀🚀🚀 Transformamos tu Visión en una Potente Realidad Digital 🚀🚀🚀</h2>
         <p className="aboutTxt">
           En <strong>Web Bonding</strong>, no solo creamos páginas web, <strong>creamos experiencias digitales</strong> 
           que generan impacto, aumentan conversiones y fortalecen tu marca.
