@@ -546,7 +546,7 @@ body {
     }
   
     .plan-card h2, .plan-card .price, .plan-card ul, .plan-card .obtenerServicio {
-      text-align: center;
+      text-align: left;
       width: 100%;
     }
   }
