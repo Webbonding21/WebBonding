@@ -1,7 +1,6 @@
 /* src/App.css */
 body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #000000;
     color: #ffffff;
   }
@@ -253,8 +252,9 @@ body {
   .PreciosTxt{
     font-size: 3rem;
     background-color: #F5B501;
-    padding: 0 1vw;
+    padding: 2vw 5vw;
     color: #000;
+    margin-bottom: 5vw;
   }
 
   /* src/assets/Plans.css */
@@ -265,6 +265,9 @@ body {
     padding: 1rem 1rem;
     padding-bottom: 8rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .plans-section h1 {

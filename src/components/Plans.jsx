@@ -22,6 +22,7 @@ const plans = [
 function Plans() {
   return (
     <section className="plans-section">
+      <h1 className="PreciosTxt">Conoce nuestros planes</h1>
       <div className="plans-container">
         {plans.map((plan, index) => (
           <div className={`plan-card ${index === 0 ? 'simple' : index === 1 ? 'pro' : 'master'}`} key={index}>

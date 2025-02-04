@@ -20,7 +20,7 @@ function Services() {
           </li>
         ))}
       </ul>
-      <h1 className="PreciosTxt">Conoce nuestros planes</h1>
+      
     </section>
   );
 }
