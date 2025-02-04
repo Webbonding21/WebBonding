@@ -8,7 +8,7 @@ function About() {
         <h2>🚀🚀🚀 Transformamos tu Visión en una Potente Realidad Digital 🚀🚀🚀</h2>
         <p className="aboutTxt">
           En <strong>Web Bonding</strong>, no solo creamos páginas web, <strong>creamos experiencias digitales</strong> 
-          que generan impacto, aumentan conversiones y fortalecen tu marca.
+           que generan impacto, aumentan conversiones y fortalecen tu marca.
         </p>
         <p className="aboutTxt">
           Tu negocio merece más que una web estándar. Diseñamos plataformas <strong>modernas, rápidas y efectivas</strong> 
