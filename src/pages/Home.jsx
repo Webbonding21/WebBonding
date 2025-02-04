@@ -24,7 +24,6 @@ function Home() {
         </div>
         <img src="/logoennegro.png" alt="Web Bonding" className="about-logo" draggable="false"/>
       </section>
-
       <section id="services" className='services'>
         <h1 className='bannerTxt2'>Tu experiencia es nuestra <strong>Prioridad</strong></h1>
         <h3 className='Smalltext2'>Tu <strong> transformacion digital</strong> será</h3>
@@ -54,53 +53,53 @@ function Home() {
         
       </section>
       <section className="plans-section">
-  <div className="plans-container">
-    <div className="plan-card simple">
-      <h2>Plan Emprendedor</h2>
-      {/* <p>Precios desde</p> */}
-      {/* <p className="price">150$ - 350$</p> */}
-      <p>Pequeñas empresas y emprendedores individuales</p>
-      {/* <p><strong>Pago único o en cuotas.</strong></p> */}
-      <ul>
-        <li>Landing page personalizada</li>
-        <li>Sitios web de hasta 5 páginas</li>
-        <li>Blog o sitio de portafolio</li>
-        <li>Pequeña tienda en línea</li>
-      </ul>
-      <button className='obtenerServicio'>Obtener Servicio</button>
-    </div>
-    <div className="plan-card pro">
-      <h2>Plan Profesional</h2>
-      {/* <p>Precios desde</p> */}
-      {/* <p className="price">400$ - 650$</p> */}
-      <p>Empresas medianas y negocios en crecimiento</p>
-      {/* <p><strong>Pago único o en cuotas.</strong></p> */}
-      <ul>
-        <li>Sitio web de hasta 10 páginas</li>
-        <li>Tienda virtual avanzada</li>
-        <li>Portales de membresía/sitios de afiliación</li>
-        <li>Desarrollo de aplicación web básica</li>
-        <li>Sistema administrativo</li>
-      </ul>
-      <button className='obtenerServicio'>Obtener Servicio</button>
-    </div>
-    <div className="plan-card master">
-      <h2>Plan Master</h2>
-      {/* <p>Precios desde</p> */}
-      {/* <p className="price">700$ - 1500$</p> */}
-      <p>Empresas de alto alcance y organizaciones que requieren de soluciones digitales personalizadas</p>
-      {/* <p><strong>Pago único o en cuotas.</strong></p> */}
-      <ul>
-        <li>Sitio web sin límite de páginas</li>
-        <li>Tienda en línea profesional</li>
-        <li>Plataforma de e-learning</li>
-        <li>Desarrollo de aplicación web compleja y personalizada</li>
-        <li>Soluciones de software empresarial</li>
-      </ul>
-      <button className='obtenerServicio'>Obtener Servicio</button>
-    </div>
-  </div>
-</section>
+        <div className="plans-container">
+          <div className="plan-card simple">
+            <h2>Plan Emprendedor</h2>
+            {/* <p>Precios desde</p> */}
+            {/* <p className="price">150$ - 350$</p> */}
+            <p>Pequeñas empresas y emprendedores individuales</p>
+            {/* <p><strong>Pago único o en cuotas.</strong></p> */}
+            <ul>
+              <li>Landing page personalizada</li>
+              <li>Sitios web de hasta 5 páginas</li>
+              <li>Blog o sitio de portafolio</li>
+              <li>Pequeña tienda en línea</li>
+            </ul>
+            <button className='obtenerServicio'>Obtener Servicio</button>
+          </div>
+          <div className="plan-card pro">
+            <h2>Plan Profesional</h2>
+            {/* <p>Precios desde</p> */}
+            {/* <p className="price">400$ - 650$</p> */}
+            <p>Empresas medianas y negocios en crecimiento</p>
+            {/* <p><strong>Pago único o en cuotas.</strong></p> */}
+            <ul>
+              <li>Sitio web de hasta 10 páginas</li>
+              <li>Tienda virtual avanzada</li>
+              <li>Portales de membresía/sitios de afiliación</li>
+              <li>Desarrollo de aplicación web básica</li>
+              <li>Sistema administrativo</li>
+            </ul>
+            <button className='obtenerServicio'>Obtener Servicio</button>
+          </div>
+          <div className="plan-card master">
+            <h2>Plan Master</h2>
+            {/* <p>Precios desde</p> */}
+            {/* <p className="price">700$ - 1500$</p> */}
+            <p>Empresas de alto alcance y organizaciones que requieren de soluciones digitales personalizadas</p>
+            {/* <p><strong>Pago único o en cuotas.</strong></p> */}
+            <ul>
+              <li>Sitio web sin límite de páginas</li>
+              <li>Tienda en línea profesional</li>
+              <li>Plataforma de e-learning</li>
+              <li>Desarrollo de aplicación web compleja y personalizada</li>
+              <li>Soluciones de software empresarial</li>
+            </ul>
+            <button className='obtenerServicio'>Obtener Servicio</button>
+          </div>
+        </div>
+      </section>
 
 <section id="technologies" className="technologies">
   <h2 className='TecnologiasTxt'>Tecnologías que Usamos</h2>
