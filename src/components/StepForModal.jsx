@@ -23,6 +23,7 @@ const StepForModal = () => {
     const [correo, setCorreo] = useState("");
     const [description, setDescription] = useState("");
     const [option, setOption] = useState("");
+    const [errors, setErrors] = useState({ name: "", correo: "" });
     const form = useRef();
 
     const openModal = () => setModalIsOpen(true);
@@ -33,10 +34,31 @@ const StepForModal = () => {
         setCorreo("");
         setDescription("");
         setOption("");
+        setErrors({ name: "", correo: "" });
+    };
+
+    const validateName = (value) => {
+        const nameRegex = /^[a-zA-ZÀ-ÿ\s]{3,40}$/;
+        if (!nameRegex.test(value)) {
+            setErrors((prev) => ({ ...prev, name: "El nombre debe tener entre 3 y 40 caracteres y solo letras." }));
+        } else {
+            setErrors((prev) => ({ ...prev, name: "" }));
+        }
+        setName(value);
+    };
+
+    const validateCorreo = (value) => {
+        const correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!correoRegex.test(value)) {
+            setErrors((prev) => ({ ...prev, correo: "Ingresa un correo válido." }));
+        } else {
+            setErrors((prev) => ({ ...prev, correo: "" }));
+        }
+        setCorreo(value);
     };
 
     const handleNextStep = () => {
-        if (step === 1 && name && correo) setStep(step + 1);
+        if (step === 1 && name && correo && !errors.name && !errors.correo) setStep(step + 1);
         else if (step === 2 && option) setStep(step + 1);
         else if (step === 3 && description) setStep(step + 1);
     };
@@ -73,9 +95,27 @@ const StepForModal = () => {
                     {step === 1 && (
                         <div className="step">
                             <h3>¡Buen día! ☀️ Ingresa tu nombre y correo. 📝😊</h3>
-                            <input type="text" placeholder="Tu nombre" value={name} onChange={(e) => setName(e.target.value)} required />
-                            <input type="email" placeholder="Correo" value={correo} onChange={(e) => setCorreo(e.target.value)} required />
-                            <button onClick={handleNextStep} className="next-button" disabled={!name || !correo}><FaArrowRight /></button>
+                            <input
+                                type="text"
+                                placeholder="Tu nombre"
+                                value={name}
+                                onChange={(e) => validateName(e.target.value)}
+                                required
+                            />
+                            {errors.name && <p style={{ color: "red" }} className="error-message">{errors.name}</p>}
+                            
+                            <input
+                                type="email"
+                                placeholder="Correo"
+                                value={correo}
+                                onChange={(e) => validateCorreo(e.target.value)}
+                                required
+                            />
+                            {errors.correo && <p style={{ color: "red" }} className="error-message">{errors.correo}</p>}
+
+                            <button onClick={handleNextStep} className="next-button" disabled={!name || !correo || errors.name || errors.correo}>
+                                <FaArrowRight />
+                            </button>
                         </div>
                     )}
                     {step === 2 && (
