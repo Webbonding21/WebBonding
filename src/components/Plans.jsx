@@ -19,6 +19,13 @@ const plans = [
   }
 ];
 
+const sendWhatsAppMessage = (planName) => {
+  const phoneNumber = "1234567890"; // Reemplaza con tu número de WhatsApp
+  const message = `Hola, estoy interesado en el ${planName}. ¿Podrían darme más información?`;
+  const encodedMessage = encodeURIComponent(message);
+  window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
+};
+
 function Plans() {
   return (
     <section className="plans-section">
@@ -29,7 +36,9 @@ function Plans() {
             <h2>{plan.name}</h2>
             <p>{plan.description}</p>
             <ul>{plan.features.map((feature, i) => <li key={i}>{feature}</li>)}</ul>
-            <button className='obtenerServicio'>Obtener Servicio</button>
+            <button className='obtenerServicio' onClick={() => sendWhatsAppMessage(plan.name)}>
+              Obtener Servicio
+            </button>
           </div>
         ))}
       </div>
