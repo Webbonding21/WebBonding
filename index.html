@@ -1,44 +1,46 @@
-<!doctype html>
+<!-- public/index.html  (o el que tengas en raíz si Vite lo copia a dist) -->
+<!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Bonding | Transformación Digital</title>
-    
-    <!-- Meta Descripción SEO -->
-    <meta name="description" content="Web Bonding impulsa tu transformación digital con estrategias innovadoras en desarrollo web, SEO y marketing digital.">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Open Graph (Para compartir en redes sociales) -->
-    <meta property="og:title" content="Web Bonding | Transformación Digital">
-    <meta property="og:description" content="Descubre cómo Web Bonding puede llevar tu negocio al siguiente nivel con tecnología y marketing digital.">
-    <meta property="og:image" content="/icon.png">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://webbonding.onrender.com">
+    <!-- ① Título y descripción genéricos (se sobrescriben por página con Helmet) -->
+    <title>Soluciones de Transformación Digital | Web Bonding</title>
+    <meta name="description"
+          content="Agencia de desarrollo y transformación digital. Creamos software, sitios web y estrategias de marketing que impulsan tu negocio." />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Web Bonding | Transformación Digital">
-    <meta name="twitter:description" content="Transforma tu negocio con estrategias digitales avanzadas.">
-    <meta name="twitter:image" content="/icon.png">
+    <!-- ② Canonical -->
+    <link rel="canonical" href="https://webbonding.onrender.com/" />
 
-    <!-- Preload de fuentes para mejor rendimiento -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- ③ Open Graph / Twitter -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="Web Bonding" />
+    <meta property="og:title"       content="Soluciones de Transformación Digital | Web Bonding" />
+    <meta property="og:description" content="Agencia de desarrollo y transformación digital." />
+    <meta property="og:url"         content="https://webbonding.onrender.com/" />
+    <meta property="og:image"       content="/og-cover.jpg" /> <!-- sube la imagen a /public -->
+    <meta name="twitter:card"       content="summary_large_image" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/icon.png">
-    
-    <!-- Google Analytics optimizado -->
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-7XN15N5KK5"></script>
-    <script defer>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-7XN15N5KK5');
+    <!-- ④ Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- ⑤ Schema básico -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "name":"Web Bonding",
+      "url":"https://webbonding.onrender.com",
+      "logo":"https://webbonding.onrender.com/logo.svg",
+      "sameAs":[
+        "https://instagram.com/webbonding"
+      ]
+    }
     </script>
   </head>
   <body>
-    <div id="root" aria-label="Aplicación Web"></div>
+    <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
