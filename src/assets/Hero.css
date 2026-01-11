@@ -1,0 +1,124 @@
+.hero-section {
+  position: relative;
+  min-height: 90vh; /* Un poco menos de altura para que se vea contenido abajo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  /* Gradientes centrados para dar foco al texto */
+  background: radial-gradient(circle at 50% 50%, rgba(139,92,246,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(6,182,212,0.05), transparent 30%);
+}
+
+.hero-container {
+  width: 100%;
+  max-width: 1000px; /* Ancho controlado para lectura */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos hijos (badge, title, p) */
+  justify-content: center;
+  text-align: center; /* Centra el texto */
+  z-index: 2;
+}
+
+.hero-content {
+  /* Aseguramos que el contenido ocupe el ancho disponible pero centrado */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #a78bfa;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1); /* Brillo sutil */
+}
+
+.hero-title {
+  font-size: 4.5rem; /* Un poco más grande para compensar falta de imagen */
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  max-width: 900px; /* Evita que se estire demasiado a los lados */
+}
+
+.hero-title .text-gradient {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-gray);
+  max-width: 700px; /* Lectura cómoda */
+  margin-bottom: 3.5rem;
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center; /* Centra los botones */
+  flex-wrap: wrap; /* En móviles evita que se salgan */
+}
+
+.secondary-btn {
+  padding: 14px 32px;
+  border: 1px solid var(--border-light);
+  border-radius: 50px; /* Más redondeado para estilo moderno */
+  color: var(--text-white);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--text-white);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 60px 20px;
+    min-height: 80vh;
+  }
+
+  .hero-title {
+    font-size: 2.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px; /* Ancho máximo para botones en móvil */
+  }
+  
+  .secondary-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

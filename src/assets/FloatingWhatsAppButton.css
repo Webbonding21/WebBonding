@@ -1,22 +1,116 @@
-/* src/components/FloatingWhatsAppButton.css */
+/* src/assets/FloatingWhatsAppButton.css */
+
+.floating-whatsapp-container {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 9999; /* Siempre por encima de todo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .floating-whatsapp {
-    position: fixed;
-    bottom: 50px;
-    right: 40px;
-    background-color: #25d366;
-    color: white;
-    border-radius: 50%;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out;
+  width: 60px;
+  height: 60px;
+  background-color: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); /* Glow verde inicial */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  animation: floatBtn 3s ease-in-out infinite;
+}
+
+/* Icono dentro del botón */
+.whatsapp-icon {
+  color: white;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+}
+
+/* EFECTO PULSO (Ondas) */
+.floating-whatsapp::before,
+.floating-whatsapp::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  border: 2px solid #25d366;
+  opacity: 0;
+  z-index: -1;
+}
+
+.floating-whatsapp::before {
+  animation: pulse-ring 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.floating-whatsapp::after {
+  animation: pulse-ring 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  animation-delay: 0.5s; /* Retraso para crear doble onda */
+}
+
+/* Tooltip "Escríbenos" (Opcional, aparece al hover) */
+.tooltip-text {
+  position: absolute;
+  right: 75px;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* INTERACCIONES */
+.floating-whatsapp-container:hover .floating-whatsapp {
+  transform: scale(1.1) rotate(10deg);
+  background-color: #22c35e; /* Un verde un poco más oscuro al clickear/hover */
+  box-shadow: 0 0 25px rgba(37, 211, 102, 0.7); /* Glow intenso */
+}
+
+.floating-whatsapp-container:hover .tooltip-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ANIMACIONES KEYFRAMES */
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes floatBtn {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Responsive: Ajustar posición en móviles */
+@media (max-width: 768px) {
+  .floating-whatsapp-container {
+    bottom: 20px;
+    right: 20px;
   }
   
-  .floating-whatsapp:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  .floating-whatsapp {
+    width: 55px;
+    height: 55px;
   }
   
+  /* En móvil a veces es mejor ocultar el tooltip para que no tape contenido */
+  .tooltip-text {
+    display: none;
+  }
+}

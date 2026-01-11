@@ -1,0 +1,120 @@
+.about-section {
+  padding: 100px 20px;
+  background-color: #0f1219; /* Fondo oscuro consistente */
+  position: relative;
+}
+
+.about-container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra todo horizontalmente */
+}
+
+/* --- Título y Subtítulo --- */
+.about-text-wrapper {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.highlight {
+  color: var(--secondary, #06b6d4); /* Fallback color si no carga la variable */
+  position: relative;
+  display: inline-block;
+}
+
+/* Subrayado decorativo */
+.highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: rgba(6, 182, 212, 0.2);
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.about-lead {
+  font-size: 1.15rem;
+  color: #94a3b8;
+  line-height: 1.8;
+  border-left: none; /* Quitamos la línea lateral del diseño anterior */
+  padding: 0;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+/* --- Grid de Tarjetas (Los 3 items) --- */
+.about-grid-text {
+  display: grid;
+  /* Crea columnas automáticas: 3 en desktop, 1 o 2 en tablet/móvil */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.about-item {
+  background: rgba(255, 255, 255, 0.03); /* Fondo sutil glass */
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea contenido de la tarjeta a la izq */
+  text-align: left;
+}
+
+/* Efecto Hover en las tarjetas */
+.about-item:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(139, 92, 246, 0.3); /* Color primario suave */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.about-item h3 {
+  color: #f8fafc;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.about-item p {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2.2rem;
+  }
+  
+  .about-lead {
+    font-size: 1rem;
+  }
+
+  .about-grid-text {
+    grid-template-columns: 1fr; /* Una sola columna en móvil */
+  }
+  
+  .about-item {
+    padding: 2rem 1.5rem;
+  }
+}

@@ -1,189 +1,293 @@
-/* Overlay */
-.overlay {
+/* --- OVERLAY (Fondo oscurecido) --- */
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
-    z-index: 1000;
-}
-
-/* Modal */
-.modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    transform: translate(-50%, -50%);
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 70vw;
-    max-height: 70vh;
-    overflow-y:scroll;
-    width: 90%;
-    z-index: 1001;
-    color: rgb(0, 0, 0);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
- ::-webkit-scrollbar{
-    display: none;
-}
-
-.step {
+    background-color: rgba(15, 23, 42, 0.85); /* Dark slate muy oscuro */
+    backdrop-filter: blur(8px); /* Efecto borroso elegante */
+    z-index: 9999;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
-.step input {
-    width: 96%;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    border-radius: 4px;
-    background-color: #fff;
-    border-style: none;
+.modal-overlay.ReactModal__Overlay--after-open {
+    opacity: 1;
 }
 
-textarea {
-    width: 96%;
-    height: 10vh;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: medium;
-    color: #000;
+.modal-overlay.ReactModal__Overlay--before-close {
+    opacity: 0;
 }
 
-.step button {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    background-color: #000000;
-    color: white;
-    cursor: pointer;
-    margin: 0.5rem 0;
-}
-
-.step button:hover {
-    background-color: #170036;
-}
-
-.open-modal-button {
-    background-color: #f5d903;
-    color: #000;
-    padding: 1rem 2rem;
-    border: none;
+/* --- MODAL CONTENT --- */
+.modal-content {
+    background: #1e293b; /* Slate 800 */
+    border: 1px solid rgba(139, 92, 246, 0.2); /* Borde violeta sutil */
+    padding: 2.5rem;
     border-radius: 20px;
-    font-size: 1.25rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    outline: none;
+    color: #f8fafc;
+    font-family: 'Poppins', sans-serif;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    overflow: hidden; /* Para la barra de progreso */
+}
+
+.ReactModal__Content--after-open {
+    transform: translateY(0);
+}
+
+/* Botón cerrar (X) */
+.close-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.2rem;
     cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.5s ease-in-out;
-    margin: 0;
-    display: block;
-    text-align: center;
+    transition: color 0.3s;
+    z-index: 10;
+}
+
+.close-icon:hover {
+    color: #ef4444; /* Rojo al hover */
+}
+
+/* Barra de Progreso */
+.progress-bar-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #ec4899);
+    transition: width 0.4s ease;
+}
+
+/* --- BOTÓN DE APERTURA --- */
+.open-modal-button {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    letter-spacing: 0.5px;
 }
 
 .open-modal-button:hover {
-    background-color: #e0a501;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
 }
 
-/* Options */
-.options {
-    display: flex;
-    flex-wrap: wrap;
+/* --- FORMULARIO Y PASOS --- */
+.step-container h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+    color: white;
+}
+
+.step-desc {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+/* Inputs */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 14px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+textarea {
+    min-height: 120px;
+    resize: none;
+}
+
+input:focus, textarea:focus {
+    border-color: #8b5cf6;
+    background: rgba(15, 23, 42, 0.8);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.input-error {
+    border-color: #ef4444;
+}
+
+.error-text {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+}
+
+/* --- GRID DE OPCIONES --- */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 1rem;
-    margin: 1rem 0;
-    justify-content: left;
+    margin-bottom: 2rem;
 }
 
 .option-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #ffffff;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    width: 80px;
-    height: 100px;
+    transition: all 0.2s ease;
     text-align: center;
+    color: #cbd5e1;
 }
 
+.option-card .card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: #94a3b8;
+    transition: color 0.2s;
+}
+
+.option-card span {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Hover & Selected Option */
 .option-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: #5e41ff;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .option-card.selected {
-    border: 2px solid #ff0000;
-    background: #2e052a;
-    color: #ffffff;
+    border-color: #8b5cf6;
+    background: rgba(139, 92, 246, 0.15);
+    color: white;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .modal {
-        width: 95%;
-        padding: 1.5rem;
-    }
-
-    .step input {
-        width: 96%;
-    }
-
-    textarea {
-        width: 96%;
-    }
-
-    .open-modal-button {
-        font-size: 1rem;
-        padding: 0.75rem 1.5rem;
-    }
-
-    .step button {
-        padding: 0.5rem 1rem;
-    }
-
-    .options {
-        justify-content: center;
-    }
+.option-card.selected .card-icon {
+    color: #a78bfa;
 }
 
+/* --- BOTONES DE NAVEGACIÓN --- */
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.modal-actions.right {
+    justify-content: flex-end;
+}
+
+.modal-actions.center {
+    justify-content: center;
+    gap: 1rem;
+}
+
+.nav-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.nav-btn.primary {
+    background: #8b5cf6;
+    color: white;
+}
+.nav-btn.primary:hover:not(:disabled) {
+    background: #7c3aed;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.nav-btn.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+}
+.nav-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-btn.success {
+    background: #10b981; /* Verde WhatsApp */
+    color: white;
+    width: 100%;
+    justify-content: center;
+}
+.nav-btn.success:hover {
+    background: #059669;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Animación de entrada */
+.fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Mobile */
 @media (max-width: 480px) {
-    .modal {
-        width: 60%;
-        padding: 1rem;
+    .modal-content {
+        padding: 1.5rem;
+        width: 95%;
     }
-
-    .step input {
-        width: 90%;
+    
+    .options-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-
-    textarea {
-        width: 90%;
-    }
-
-    .open-modal-button {
-        font-size: 0.875rem;
-        padding: 0.5rem 1rem;
-    }
-
-    .step button {
-        padding: 0.5rem;
-    }
-
-    .step input, textarea {
-        font-size: small;
+    
+    .step-container h3 {
+        font-size: 1.5rem;
     }
 }

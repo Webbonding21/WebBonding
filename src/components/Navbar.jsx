@@ -1,47 +1,47 @@
-// src/components/Navbar.jsx
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../assets/Navbar.css'; 
 
 const Navbar = () => {
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    const navbar = document.querySelector('.navbar');
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
+  useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > lastScrollY) {
-        // Scroll hacia abajo
-        navbar.classList.add('hidden');
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scroll abajo (y hemos bajado más de 100px) -> Ocultar
+        setIsVisible(false);
       } else {
-        // Scroll hacia arriba
-        navbar.classList.remove('hidden');
+        // Scroll arriba -> Mostrar
+        setIsVisible(true);
       }
-      lastScrollY = window.scrollY;
+      
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   return (
-    <div className="container">
-      <div className="navbar">
+    <nav className={`navbar ${!isVisible ? 'hidden' : ''}`}>
+      <div className="navbar-content">
         <div className="navbar-brand">
           <a href="/">
-            <img src="/logoenblanco.png" alt="Logo" />
+            <img src="/logoenblanco.png" alt="Web Bonding Logo" />
+            <span className="brand-text">Web Bonding</span>
           </a>
         </div>
+        
         <ul className="navbar-links">
           <li><a href="#home">Inicio</a></li>
           <li><a href="#about">Nosotros</a></li>
-          <li><a href="#services">Planes</a></li>
+          <li><a href="#services">Servicios</a></li>
           <li><a href="#contact">Contacto</a></li>
         </ul>
       </div>
-    </div>
+    </nav>
   );
 };
 

@@ -1,0 +1,130 @@
+/* Technologies.css */
+
+.tech-section {
+  padding: 100px 20px;
+  background-color: #0b0f19;
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.tech-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.tech-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tech-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.tech-title .text-gradient {
+  background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tech-subtitle {
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+/* --- GRID SYSTEM --- */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- CARD DESIGN --- */
+.tech-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: default;
+}
+
+.tech-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  /* Usamos la variable de color que pasamos en React para el borde */
+  border-color: var(--hover-color); 
+  transform: translateY(-5px);
+  /* Sombra sutil con el color de la tecnología */
+  box-shadow: 0 10px 20px -10px var(--hover-color); 
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tech-icon {
+  font-size: 3rem; /* Tamaño del icono */
+  color: #64748b; /* Gris apagado por defecto */
+  transition: all 0.3s ease;
+}
+
+/* AL HACER HOVER: El icono toma su color real */
+.tech-card:hover .tech-icon {
+  color: var(--hover-color); /* Aquí ocurre la magia */
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px var(--hover-color)); /* Brillo neon */
+}
+
+.tech-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.tech-card:hover .tech-name {
+  color: #f8fafc;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .tech-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 1rem;
+  }
+  
+  .tech-title {
+    font-size: 2rem;
+  }
+  
+  .tech-icon {
+    font-size: 2.5rem;
+  }
+}

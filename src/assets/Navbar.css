@@ -1,81 +1,118 @@
-/* src/components/Navbar.css */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+/* Navbar.css */
 
 .navbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1000px; /* Ancho máximo para que no se estire demasiado */
+  height: 50px;
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Estilo Glassmorphism / Píldora */
+  background: rgba(15, 23, 42, 0.7); /* Fondo oscuro semitransparente */
+  backdrop-filter: blur(12px);         /* Efecto borroso detrás */
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Borde sutil */
+  border-radius: 50px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Estado oculto */
+.navbar.hidden {
+  top: -100px;
+  opacity: 0;
+}
+
+.navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background-color: #171717;
-  color: #fff;
-  border-radius: 2rem;
-  min-width: fit-content;
-  width: 70vw;
-  height: 2.5rem;
-  z-index: 100000;
-  position: fixed; /* Hacer que la barra de navegación sea fija */
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  transition: top 0.4s; /* Transición para el movimiento hacia arriba y hacia abajo */
+  height: 100%;
+  padding: 0 2rem;
 }
 
-.navbar.hidden {
-  top: -100px; /* Ocultar la barra de navegación fuera de la vista */
-}
-
+/* --- LOGO --- */
 .navbar-brand a {
-  color: #fff;
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  font-size: 1.5vw;
-  user-select: none; /* CSS estándar */
-  -webkit-user-select: none; /* Chrome, Safari, Opera */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
+  gap: 10px;
 }
 
-.navbar-brand a img {
-  width: 5vh;
-  margin-right: 0.5vw;
-  user-select: none; /* CSS estándar */
-  -webkit-user-select: none; /* Chrome, Safari, Opera */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
+.navbar-brand img {
+  height: 35px; /* Tamaño fijo en px mejor que vh para consistencia */
+  width: auto;
+  transition: transform 0.3s ease;
 }
 
+.brand-text {
+  font-family: 'Poppins', sans-serif; /* Asegurar fuente */
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.navbar-brand a:hover img {
+  transform: rotate(-10deg);
+}
+
+/* --- ENLACES --- */
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: 1vw;
-  user-select: none; /* CSS estándar */
-  -webkit-user-select: none; /* Chrome, Safari, Opera */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-links li a {
-  color: #fff;
   text-decoration: none;
-  font-size: 90%;
-  padding-left: 1vw;
-  padding-right: 1vw;
-  padding-top: 0.1vw;
-  padding-bottom: 0.1vw;
+  color: #cbd5e1; /* Gris claro suave */
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
 }
 
+/* Hover Effect Moderno */
 .navbar-links li a:hover {
-  background-color: #4c1b7e;
-  /* border-radius: 1rem; */
+  color: #fff;
+  background: rgba(139, 92, 246, 0.2); /* Fondo violeta suave */
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); /* Glow sutil */
 }
 
+/* --- RESPONSIVE MOBILE --- */
 @media (max-width: 768px) {
-  .navbar-brand a img {
-    width: 3.5vh;
+  .navbar {
+    width: 95%; /* Más ancho en móvil */
+    top: 15px;
+    height: 60px;
+    padding: 0;
+  }
+
+  .navbar-content {
+    padding: 0 1rem;
+  }
+
+  .brand-text {
+    display: none; /* Ocultamos el texto del logo en móvil si falta espacio */
+  }
+
+  .navbar-links {
+    gap: 0; /* Menos espacio entre items */
+  }
+
+  .navbar-links li a {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .navbar-brand img {
+    height: 30px;
   }
 }

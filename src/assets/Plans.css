@@ -1,0 +1,140 @@
+.plans-section {
+  padding: 100px 20px;
+  background: linear-gradient(180deg, var(--bg-dark) 0%, #0f131a 100%);
+}
+
+.plans-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.plans-title {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.plans-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.plan-card {
+  background: var(--bg-card);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Estilos específicos para la tarjeta destacada (Featured) */
+.plan-card.featured {
+  background: #1e1b2e; /* Un tono violeta muy oscuro */
+  border: 1px solid var(--primary);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+  transform: scale(1.05); /* Ligeramente más grande */
+  z-index: 2;
+}
+
+/* Etiqueta de "Más Popular" */
+.featured-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gradient-text);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+}
+
+.plan-header-content h3 {
+  font-size: 1.8rem;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+}
+
+.plan-tagline {
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  margin-bottom: 2.5rem;
+  font-style: italic;
+}
+
+.plan-features {
+  list-style: none;
+  margin-bottom: 2.5rem;
+  flex-grow: 1; /* Empuja el botón hacia abajo */
+}
+
+.plan-features li {
+  margin-bottom: 1rem;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+/* Icono personalizado para features */
+.plan-features li::before {
+  content: '✓';
+  color: var(--primary);
+  font-weight: bold;
+  margin-right: 12px;
+  background: rgba(139, 92, 246, 0.1);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.7rem;
+}
+
+.plan-btn {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--text-white);
+  border-radius: 12px;
+  font-weight: 600;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: auto;
+}
+
+.plan-card.featured .plan-btn {
+  background: var(--primary);
+  border: none;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+.plan-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(139, 92, 246, 0.3);
+}
+
+/* Ajuste responsive para que la tarjeta destacada no se monte en móvil */
+@media (max-width: 900px) {
+  .plan-card.featured {
+    transform: scale(1);
+    margin: 1rem 0;
+  }
+  .plans-container {
+    padding: 0;
+  }
+}
