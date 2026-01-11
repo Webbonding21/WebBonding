@@ -1,45 +1,139 @@
-<!-- public/index.html  (o el que tengas en raíz si Vite lo copia a dist) -->
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-VE">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#0b0f19" /> <title>Web Bonding | Agencia de Desarrollo de Software, IoT y Apps Móviles</title>
+    <meta name="description" content="Expertos en Transformación Digital: Desarrollo Web, Aplicaciones Móviles, Sistemas IoT, Automatización Industrial y E-commerce. Impulsa tu negocio con tecnología de punta en Venezuela y Latam." />
+    <meta name="keywords" content="desarrollo web, software a medida, IoT, internet de las cosas, app móvil, diseño web, e-commerce, transformación digital, acarigua, araure, venezuela, programadores" />
+    <meta name="author" content="Web Bonding Technologies" />
+    
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://webbonding-sasj.onrender.com/" />
+    <link rel="alternate" hreflang="es" href="https://webbonding-sasj.onrender.com/" />
 
-    <!-- ① Título y descripción genéricos (se sobrescriben por página con Helmet) -->
-    <title>Soluciones de Transformación Digital | Web Bonding</title>
-    <meta name="description"
-          content="Agencia de desarrollo y transformación digital. Creamos software, sitios web y estrategias de marketing que impulsan tu negocio." />
+    <meta name="geo.region" content="VE-P" /> <meta name="geo.placename" content="Acarigua-Araure" />
+    <meta name="geo.position" content="9.5636;-69.2133" /> <meta name="ICBM" content="9.5636, -69.2133" />
 
-    <!-- ② Canonical -->
-    <link rel="canonical" href="https://webbonding.onrender.com/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- ③ Open Graph / Twitter -->
-    <meta property="og:type"        content="website" />
-    <meta property="og:site_name"   content="Web Bonding" />
-    <meta property="og:title"       content="Soluciones de Transformación Digital | Web Bonding" />
-    <meta property="og:description" content="Agencia de desarrollo y transformación digital." />
-    <meta property="og:url"         content="https://webbonding.onrender.com/" />
-    <meta property="og:image"       content="/og-cover.jpg" /> <!-- sube la imagen a /public -->
-    <meta name="twitter:card"       content="summary_large_image" />
+    <meta property="og:type" content="business.business" />
+    <meta property="og:site_name" content="Web Bonding" />
+    <meta property="og:title" content="Web Bonding | Transformación Digital y Sistemas IoT" />
+    <meta property="og:description" content="Desarrollamos el futuro de tu empresa. Apps, Webs y Hardware Inteligente." />
+    <meta property="og:url" content="https://webbonding-sasj.onrender.com/" />
+    <meta property="og:image" content="https://webbonding-sasj.onrender.com/og-image.jpg" /> <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="es_VE" />
 
-    <!-- ④ Favicon -->
-    <link rel="icon" type="image/png" href="/icon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Web Bonding | Agencia de Tecnología" />
+    <meta name="twitter:description" content="Llevamos tu negocio al siguiente nivel con Software y Hardware a medida." />
+    <meta name="twitter:image" content="https://webbonding-sasj.onrender.com/og-image.jpg" />
 
-    <!-- ⑤ Schema básico -->
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
     <script type="application/ld+json">
     {
-      "@context":"https://schema.org",
-      "@type":"Organization",
-      "name":"Web Bonding",
-      "url":"https://webbonding.onrender.com",
-      "logo":"https://webbonding.onrender.com/logo.svg",
-      "sameAs":[
-        "https://instagram.com/webbonding"
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://webbonding-sasj.onrender.com/#organization",
+          "name": "Web Bonding",
+          "url": "https://webbonding-sasj.onrender.com/",
+          "logo": "https://webbonding-sasj.onrender.com/logoenblanco.png",
+          "image": "https://webbonding-sasj.onrender.com/og-image.jpg",
+          "description": "Agencia especializada en desarrollo de software, diseño web, aplicaciones móviles y soluciones IoT industriales.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Acarigua",
+            "addressRegion": "Portuguesa",
+            "addressCountry": "VE"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 9.5636,
+            "longitude": -69.2133
+          },
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "18:00"
+          },
+          "telephone": "+584121510662",
+          "priceRange": "$$",
+          "sameAs": [
+            "https://www.instagram.com/web.bonding",
+            "https://www.facebook.com/profile.php?id=61556815558104"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://webbonding-sasj.onrender.com/#website",
+          "url": "https://webbonding-sasj.onrender.com/",
+          "name": "Web Bonding Soluciones Digitales",
+          "publisher": {
+            "@id": "https://webbonding-sasj.onrender.com/#organization"
+          }
+        },
+        {
+          "@type": "Service",
+          "serviceType": "Desarrollo de Software e IoT",
+          "provider": {
+            "@id": "https://webbonding-sasj.onrender.com/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "Venezuela"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Servicios Tecnológicos",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Desarrollo Web Full Stack"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Automatización Industrial & IoT"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Desarrollo de Apps Móviles"
+                }
+              }
+            ]
+          }
+        }
       ]
     }
     </script>
   </head>
   <body>
+    <noscript>Necesitas habilitar JavaScript para ver la innovación de Web Bonding.</noscript>
+    
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

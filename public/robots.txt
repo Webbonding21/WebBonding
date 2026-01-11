@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://webbonding.onrender.com/sitemap.xml
+# Aquí le decimos a Google dónde está el mapa
+Sitemap: https://webbonding-sasj.onrender.com/sitemap.xml
