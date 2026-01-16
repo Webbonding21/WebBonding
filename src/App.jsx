@@ -1,19 +1,36 @@
 // src/App.jsx
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Componentes fijos
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import './App.css';
-import Home from './pages/Home';
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
+
+// Páginas / Rutas
+import Home from './pages/Home';
+import RegisterStudents from './components/RegisterStudents'; // Asegúrate que la ruta sea correcta
+
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <Home/>
-      <Footer />
-      <FloatingWhatsAppButton />
-    </div>
+    <Router>
+      <div className="App">
+        {/* El Navbar aparece en todas las páginas */}
+        <Navbar />
+        
+        {/* Aquí cambiamos el contenido según la URL */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/registerstudents" element={<RegisterStudents />} />
+        </Routes>
+
+        {/* El Footer y el botón de WhatsApp aparecen en todas las páginas */}
+        <Footer />
+        <FloatingWhatsAppButton />
+      </div>
+    </Router>
   );
 }
 
