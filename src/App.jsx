@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import RegisterStudents from './components/RegisterStudents'; // Asegúrate que la ruta sea correcta
 
 import './App.css';
+import Students from './components/Students';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/registerstudents" element={<RegisterStudents />} />
+          <Route path="/students210506" element={<Students />} />
         </Routes>
 
         {/* El Footer y el botón de WhatsApp aparecen en todas las páginas */}
