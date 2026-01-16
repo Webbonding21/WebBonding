@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { supabase } from '../supabaseClient'; // Importamos la conexión
-import '../assets/RegisterStudents.css'; // Asegúrate de tener los estilos adecuados
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import '../assets/RegisterStudents.css';
 
 const RegisterStudents = () => {
   const [formData, setFormData] = useState({
@@ -8,10 +8,28 @@ const RegisterStudents = () => {
     cedula: '',
     email: '',
     phone: '',
-    course: 'IA de Bolsillo'
+    course: 'IA de Bolsillo',
+    paymentRef: ''
   });
 
+  const [paymentFile, setPaymentFile] = useState(null);
   const [status, setStatus] = useState({ loading: false, type: '', msg: '' });
+  const [bcvRate, setBcvRate] = useState(null);
+
+  useEffect(() => {
+    const fetchBcvRate = async () => {
+      try {
+        const response = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+        const data = await response.json();
+        if (data && data.promedio) {
+          setBcvRate(data.promedio);
+        }
+      } catch (error) {
+        console.error('Error obteniendo tasa BCV:', error);
+      }
+    };
+    fetchBcvRate();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,21 +38,59 @@ const RegisterStudents = () => {
     });
   };
 
-  // Función auxiliar para definir la fecha según el curso
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setPaymentFile(e.target.files[0]);
+    }
+  };
+
   const getCohortDate = (courseName) => {
     if (courseName === 'Excel & AI Masterclass') {
-      return '2026-02-01'; // Fecha para Excel
+      return '2026-02-01'; 
     }
-    return '2026-01-31'; // Fecha por defecto (IA de Bolsillo)
+    return '2026-01-31'; 
   };
+
+  const RESERVATION_AMOUNT = 5;
+  const totalCoursePrice = formData.course === 'Excel & AI Masterclass' ? 25 : 15;
+  const reservationBs = bcvRate ? (RESERVATION_AMOUNT * bcvRate).toFixed(2) : '...';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ loading: true, type: '', msg: '' });
 
+    if (!paymentFile) {
+      setStatus({ 
+        loading: false, 
+        type: 'error', 
+        msg: 'Por favor sube la captura de pantalla del pago.' 
+      });
+      return;
+    }
+
     try {
-      // 1. Enviamos los datos a Supabase
-      const { data, error } = await supabase
+      let imageUrl = null;
+
+      // 1. Subir imagen
+      const fileExt = paymentFile.name.split('.').pop();
+      const fileName = `${Date.now()}_${formData.cedula}.${fileExt}`;
+      const filePath = `Pagos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('WebBonding')
+        .upload(filePath, paymentFile);
+
+      if (uploadError) throw uploadError;
+
+      // 2. Obtener URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('WebBonding')
+        .getPublicUrl(filePath);
+      
+      imageUrl = publicUrl;
+
+      // 3. Guardar datos
+      const { error: insertError } = await supabase
         .from('students')
         .insert([
           {
@@ -43,29 +99,33 @@ const RegisterStudents = () => {
             email: formData.email,
             phone: formData.phone,
             course_name: formData.course,
-            cohort_date: getCohortDate(formData.course), // AQUÍ SE SELECCIONA LA FECHA CORRECTA
-            payment_status: 'reservado'
+            cohort_date: getCohortDate(formData.course),
+            payment_status: 'reservado',
+            payment_ref: formData.paymentRef,
+            pago_link: imageUrl
           }
         ]);
 
-      if (error) throw error;
+      if (insertError) throw insertError;
 
-      // 2. Éxito
       setStatus({ 
         loading: false, 
         type: 'success', 
-        msg: '¡Reserva exitosa! Te hemos enviado los datos de pago.' 
+        msg: '¡Recibido! Hemos guardado tu comprobante y cupo.' 
       });
       
-      // Limpiar formulario (Opcional, puedes dejarlo lleno si prefieres)
-      setFormData({ fullName: '', cedula: '', email: '', phone: '', course: 'IA de Bolsillo' });
+      setFormData({ 
+        fullName: '', cedula: '', email: '', phone: '', 
+        course: 'IA de Bolsillo', paymentRef: '' 
+      });
+      setPaymentFile(null);
 
     } catch (error) {
-      console.error('Error al registrar:', error.message);
+      console.error('Error:', error.message);
       setStatus({ 
         loading: false, 
         type: 'error', 
-        msg: 'Hubo un error al registrarte. Intenta de nuevo.' 
+        msg: 'Error al subir el pago. Intenta de nuevo o contáctanos.' 
       });
     }
   };
@@ -83,15 +143,14 @@ const RegisterStudents = () => {
             Reserva tu <span className="highlight">Futuro</span>
           </h2>
           <p className="about-lead">
-            Asegura tu cupo en nuestras formaciones premium. <br />
-            Cupos limitados por cohorte.
+            Asegura tu cupo hoy con solo <strong>${RESERVATION_AMOUNT}</strong>.
           </p>
         </div>
 
         <div className="form-card">
           <form onSubmit={handleSubmit} className="register-form">
             
-            {/* Fila 1 */}
+            {/* --- DATOS PERSONALES --- */}
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="fullName">Nombre Completo</label>
@@ -122,7 +181,6 @@ const RegisterStudents = () => {
               </div>
             </div>
 
-            {/* Fila 2 */}
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="email">Correo Electrónico</label>
@@ -153,7 +211,6 @@ const RegisterStudents = () => {
               </div>
             </div>
 
-            {/* Fila 3 */}
             <div className="form-group">
               <label htmlFor="course">Formación de Interés</label>
               <div className="select-wrapper">
@@ -164,13 +221,90 @@ const RegisterStudents = () => {
                   onChange={handleChange}
                   className="form-input form-select"
                 >
-                  <option value="IA de Bolsillo">IA de Bolsillo (31 Enero)</option>
-                  <option value="Excel & AI Masterclass">Excel & AI Automation (1 Feb)</option>
+                  <option value="IA de Bolsillo">IA de Bolsillo (31 Enero) - Total ${15}</option>
+                  <option value="Excel & AI Masterclass">Excel & AI Automation (1 Feb) - Total ${25}</option>
                 </select>
               </div>
             </div>
 
-            {/* Mensajes */}
+            {/* --- SECCIÓN DE PAGOS --- */}
+            <div className="payment-section">
+              <h4 className="payment-title">DATOS PARA RESERVA (${RESERVATION_AMOUNT})</h4>
+              
+              <div className="rate-display">
+                 <div className="rate-item">
+                    <span>Tasa BCV</span>
+                    <strong>{bcvRate ? `Bs. ${bcvRate}` : 'Cargando...'}</strong>
+                 </div>
+                 <div className="rate-item highlight-item">
+                    <span>Monto a Transferir</span>
+                    <strong>{bcvRate ? `Bs. ${reservationBs}` : '...'}</strong>
+                 </div>
+              </div>
+
+              {/* Tarjetas Separadas */}
+              <div className="payment-methods-grid">
+                
+                {/* Tarjeta Binance */}
+                <div className="method-card binance-card">
+                    <div className="card-header">
+                        {/* <span className="card-icon">🔶</span> */}
+                        <span>Binance Pay (ID)</span>
+                    </div>
+                    <div className="card-body">
+                        <p className="big-number">383888531</p>
+                    </div>
+                </div>
+
+                {/* Tarjeta Banco Venezuela */}
+                <div className="method-card bank-card">
+                    <div className="card-header">
+                        {/* <span className="card-icon">🏦</span> */}
+                        <span>Banco Venezuela (0102)</span>
+                    </div>
+                    <div className="card-body">
+                        <p><strong>C.I:</strong> 31.491.968</p>
+                        <p><strong>Telf:</strong> 04121510662</p>
+                    </div>
+                </div>
+
+              </div>
+
+              <p className="payment-note">
+                * El restante (${totalCoursePrice - RESERVATION_AMOUNT}) se cancela el día del curso.
+              </p>
+            </div>
+
+            {/* --- REFERENCIA Y SUBIDA DE ARCHIVO --- */}
+            <div className="form-row upload-row">
+                <div className="form-group">
+                   <label htmlFor="paymentRef" className="highlight-label">REFERENCIA / HASH</label>
+                   <input
+                     type="text"
+                     id="paymentRef"
+                     name="paymentRef"
+                     placeholder="Ej: 123456"
+                     value={formData.paymentRef}
+                     onChange={handleChange}
+                     required
+                     className="form-input success-border"
+                   />
+                </div>
+                
+                <div className="form-group">
+                   <label htmlFor="fileUpload" className="highlight-label">SUBIR COMPROBANTE</label>
+                   <input
+                     type="file"
+                     id="fileUpload"
+                     accept="image/*"
+                     onChange={handleFileChange}
+                     required
+                     className="form-input file-input success-border"
+                   />
+                </div>
+            </div>
+
+            {/* Mensajes de Estado */}
             {status.msg && (
               <div className={`status-msg ${status.type}`}>
                 {status.msg}
@@ -178,12 +312,9 @@ const RegisterStudents = () => {
             )}
 
             <button type="submit" className="submit-btn" disabled={status.loading}>
-              {status.loading ? 'Registrando...' : 'Reservar Cupo Ahora'}
+              {status.loading ? 'Subiendo Pago...' : 'Confirmar Inscripción'}
             </button>
             
-            <p className="form-footer">
-              Tus datos están protegidos. Recibirás info de pago al instante.
-            </p>
           </form>
         </div>
       </div>

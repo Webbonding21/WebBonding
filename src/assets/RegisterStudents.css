@@ -3,7 +3,7 @@
   padding: 100px 20px;
   background-color: #0f1219;
   position: relative;
-  overflow: hidden; /* Para contener los brillos de fondo */
+  overflow: hidden;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -22,17 +22,8 @@
   pointer-events: none;
 }
 
-.glow-left {
-  background: #8b5cf6; /* Morado */
-  top: -100px;
-  left: -200px;
-}
-
-.glow-right {
-  background: #06b6d4; /* Cian */
-  bottom: -100px;
-  right: -200px;
-}
+.glow-left { background: #8b5cf6; top: -100px; left: -200px; }
+.glow-right { background: #06b6d4; bottom: -100px; right: -200px; }
 
 .register-container {
   width: 100%;
@@ -45,7 +36,6 @@
   margin-top: 50px;
 }
 
-/* --- Cabecera del Formulario --- */
 .register-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -54,8 +44,8 @@
 /* --- Tarjeta del Formulario (Glassmorphism) --- */
 .form-card {
   width: 100%;
-  background: rgba(255, 255, 255, 0.03); /* Fondo casi transparente */
-  backdrop-filter: blur(16px); /* Efecto vidrio borroso */
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   padding: 3rem;
@@ -68,7 +58,6 @@
   gap: 1.5rem;
 }
 
-/* Filas para escritorio (2 columnas) */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -100,30 +89,20 @@
   font-size: 1rem;
   transition: all 0.3s ease;
   outline: none;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-input:focus {
-  border-color: #8b5cf6; /* Borde morado al escribir */
+  border-color: #8b5cf6;
   background: rgba(15, 18, 25, 0.9);
   box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
 }
 
-.form-input::placeholder {
-  color: #475569;
-}
+.form-input::placeholder { color: #475569; }
 
-/* Estilo especial para el select */
-.select-wrapper {
-  position: relative;
-}
-
-.form-select {
-  width: 100%;
-  appearance: none;
-  cursor: pointer;
-}
-
-/* Flecha custom para el select (opcional) */
+/* Select */
+.select-wrapper { position: relative; }
 .select-wrapper::after {
   content: '▼';
   font-size: 0.8rem;
@@ -134,6 +113,127 @@
   transform: translateY(-50%);
   pointer-events: none;
 }
+.form-select { appearance: none; cursor: pointer; }
+
+/* --- SECCIÓN DE PAGOS (NUEVO DISEÑO) --- */
+.payment-section {
+  background: rgba(6, 182, 212, 0.03);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 1rem;
+}
+
+.payment-title {
+  color: #06b6d4;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.1rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Tasas y Montos */
+.rate-display {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.rate-item {
+  text-align: center;
+}
+
+.rate-item span {
+  display: block;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+}
+
+.rate-item strong {
+  color: #f8fafc;
+  font-size: 1.3rem;
+}
+
+.highlight-item strong {
+  color: #22c55e; /* Verde brillante para el monto final */
+  font-size: 1.6rem;
+}
+
+/* Grid de Tarjetas de Pago */
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.method-card {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease;
+}
+
+.method-card:hover {
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 10px;
+}
+
+.card-icon { font-size: 1.2rem; }
+
+.card-body p {
+  margin: 5px 0;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.big-number {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+/* Estilos Específicos Binance */
+.binance-card {
+  border-color: rgba(252, 211, 77, 0.3); /* Dorado */
+  background: linear-gradient(145deg, rgba(252, 211, 77, 0.05) 0%, rgba(0,0,0,0.3) 100%);
+}
+.binance-card .card-header { color: #fcd34d; }
+
+/* Estilos Específicos Banco */
+.bank-card {
+  border-color: rgba(6, 182, 212, 0.3); /* Azul/Cian */
+  background: linear-gradient(145deg, rgba(6, 182, 212, 0.05) 0%, rgba(0,0,0,0.3) 100%);
+}
+.bank-card .card-header { color: #22d3ee; }
+
+.payment-note {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* --- Inputs de Carga (Referencia y Foto) --- */
+.upload-row { margin-top: 1rem; }
+.highlight-label { color: #22c55e !important; }
+.success-border { border-color: rgba(34, 197, 94, 0.4) !important; }
+.file-input { padding: 10px; font-size: 0.9rem; }
 
 /* --- Botón de Envío --- */
 .submit-btn {
@@ -162,14 +262,6 @@
   transform: none;
 }
 
-/* Footer del form */
-.form-footer {
-  text-align: center;
-  color: #64748b;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-}
-
 /* Mensajes de Feedback */
 .status-msg {
   padding: 12px;
@@ -178,35 +270,20 @@
   text-align: center;
   font-weight: 500;
 }
-
-.status-msg.success {
-  background: rgba(16, 185, 129, 0.1);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-.status-msg.error {
-  background: rgba(239, 68, 68, 0.1);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.2);
-}
+.status-msg.success { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+.status-msg.error { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-  .register-section {
-    padding: 60px 20px;
+  .register-section { padding: 60px 20px; }
+  .form-card { padding: 2rem 1.5rem; }
+  
+  /* En móviles, las filas se vuelven columnas */
+  .form-row, 
+  .payment-methods-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   
-  .form-card {
-    padding: 2rem 1.5rem;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr; /* Apila los inputs en móvil */
-    gap: 1rem;
-  }
-  
-  .section-title {
-    font-size: 2.5rem;
-  }
+  .section-title { font-size: 2.5rem; }
 }
