@@ -116,3 +116,68 @@
     height: 30px;
   }
 }
+
+/* Navbar.css */
+
+/* ... tus estilos existentes ... */
+
+/* Estilo para los enlaces normales */
+.navbar-links a {
+  text-decoration: none;
+  color: #e2e8f0; /* Color gris claro/blanco */
+  font-weight: 500;
+  transition: color 0.3s;
+  font-size: 0.95rem;
+}
+
+.navbar-links a:hover {
+  color: #ffffff;
+}
+
+/* Estilo para el botón destacado (Inscribirse) */
+.nav-cta-btn {
+  background: linear-gradient(90deg, #8b5cf6 0%, #06b6d4 100%);
+  padding: 10px 24px;
+  border-radius: 50px;
+  color: white !important; /* Forzamos blanco */
+  font-weight: 700 !important;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.nav-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+  color: white;
+}
+
+/* Ajuste responsive para móvil (Opcional, si tienes menú hamburguesa) */
+@media (max-width: 768px) {
+  .navbar-links {
+    gap: 15px; /* Menos espacio en pantallas pequeñas */
+  }
+  
+  .nav-cta-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Navbar.css */
+
+/* ... estilos anteriores ... */
+
+.nav-cta-btn {
+  background: linear-gradient(90deg, #8b5cf6 0%, #06b6d4 100%);
+  padding: 10px 24px;
+  border-radius: 50px;
+  color: white !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.nav-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}

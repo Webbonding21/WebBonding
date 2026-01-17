@@ -13,6 +13,9 @@ import RegisterStudents from './components/RegisterStudents'; // Asegúrate que 
 
 import './App.css';
 import Students from './components/Students';
+import AdminCourses from './components/AdminCourses';
+import Courses from './components/Courses';
+import CoursePage from './components/CoursePage';
 
 function App() {
   return (
@@ -25,7 +28,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/registerstudents" element={<RegisterStudents />} />
-          <Route path="/students210506" element={<Students />} />
+          <Route path="/students" element={<Students />} />
+          <Route path="/admincourses" element={<AdminCourses />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/curso/:id" element={<CoursePage />} />
         </Routes>
 
         {/* El Footer y el botón de WhatsApp aparecen en todas las páginas */}

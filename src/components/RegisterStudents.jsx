@@ -3,75 +3,89 @@ import { supabase } from '../supabaseClient';
 import '../assets/RegisterStudents.css';
 
 const RegisterStudents = () => {
+  // Estado del formulario
   const [formData, setFormData] = useState({
     fullName: '',
     cedula: '',
     email: '',
     phone: '',
-    course: 'IA de Bolsillo',
+    courseId: '', // Guardamos el ID para lógica interna
     paymentRef: ''
   });
 
+  // Estados para datos dinámicos
+  const [courses, setCourses] = useState([]); // Lista de cursos desde DB
+  const [selectedCourse, setSelectedCourse] = useState(null); // Curso actual con todos sus datos
   const [paymentFile, setPaymentFile] = useState(null);
+  
   const [status, setStatus] = useState({ loading: false, type: '', msg: '' });
   const [bcvRate, setBcvRate] = useState(null);
 
+  // 1. CARGAR DATOS (TASA BCV Y CURSOS)
   useEffect(() => {
-    const fetchBcvRate = async () => {
+    const fetchData = async () => {
+      // A) Tasa BCV
       try {
-        const response = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
-        const data = await response.json();
-        if (data && data.promedio) {
-          setBcvRate(data.promedio);
+        const rateRes = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+        const rateData = await rateRes.json();
+        if (rateData?.promedio) setBcvRate(rateData.promedio);
+      } catch (e) { console.error('Error tasa:', e); }
+
+      // B) Cursos Activos desde Supabase
+      try {
+        const { data, error } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('active', true)
+          .order('start_date', { ascending: true });
+        
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          setCourses(data);
+          // Seleccionar el primer curso por defecto
+          setFormData(prev => ({ ...prev, courseId: data[0].id }));
+          setSelectedCourse(data[0]);
         }
-      } catch (error) {
-        console.error('Error obteniendo tasa BCV:', error);
-      }
+      } catch (e) { console.error('Error cursos:', e); }
     };
-    fetchBcvRate();
+
+    fetchData();
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  // 2. MANEJAR CAMBIO DE CURSO
+  const handleCourseChange = (e) => {
+    const newId = e.target.value;
+    const course = courses.find(c => c.id === newId);
+    
+    setFormData({ ...formData, courseId: newId });
+    setSelectedCourse(course);
   };
 
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  
   const handleFileChange = (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setPaymentFile(e.target.files[0]);
-    }
+    if (e.target.files?.length > 0) setPaymentFile(e.target.files[0]);
   };
 
-  const getCohortDate = (courseName) => {
-    if (courseName === 'Excel & AI Masterclass') {
-      return '2026-02-01'; 
-    }
-    return '2026-01-31'; 
-  };
+  // 3. CÁLCULOS DINÁMICOS DE PRECIO
+  const reservationPrice = selectedCourse ? selectedCourse.reservation_price : 0;
+  const totalPrice = selectedCourse ? selectedCourse.price : 0;
+  const remainingPrice = totalPrice - reservationPrice;
+  const reservationBs = bcvRate ? (reservationPrice * bcvRate).toFixed(2) : '...';
 
-  const RESERVATION_AMOUNT = 5;
-  const totalCoursePrice = formData.course === 'Excel & AI Masterclass' ? 25 : 15;
-  const reservationBs = bcvRate ? (RESERVATION_AMOUNT * bcvRate).toFixed(2) : '...';
-
+  // 4. ENVÍO DEL FORMULARIO
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ loading: true, type: '', msg: '' });
 
     if (!paymentFile) {
-      setStatus({ 
-        loading: false, 
-        type: 'error', 
-        msg: 'Por favor sube la captura de pantalla del pago.' 
-      });
+      setStatus({ loading: false, type: 'error', msg: 'Por favor sube la captura de pantalla del pago.' });
       return;
     }
 
     try {
-      let imageUrl = null;
-
-      // 1. Subir imagen
+      // A) Subir Imagen
       const fileExt = paymentFile.name.split('.').pop();
       const fileName = `${Date.now()}_${formData.cedula}.${fileExt}`;
       const filePath = `Pagos/${fileName}`;
@@ -82,29 +96,24 @@ const RegisterStudents = () => {
 
       if (uploadError) throw uploadError;
 
-      // 2. Obtener URL
       const { data: { publicUrl } } = supabase.storage
         .from('WebBonding')
         .getPublicUrl(filePath);
-      
-      imageUrl = publicUrl;
 
-      // 3. Guardar datos
+      // B) Insertar Estudiante (Usando datos del selectedCourse)
       const { error: insertError } = await supabase
         .from('students')
-        .insert([
-          {
-            full_name: formData.fullName,
-            cedula: formData.cedula,
-            email: formData.email,
-            phone: formData.phone,
-            course_name: formData.course,
-            cohort_date: getCohortDate(formData.course),
-            payment_status: 'reservado',
-            payment_ref: formData.paymentRef,
-            pago_link: imageUrl
-          }
-        ]);
+        .insert([{
+          full_name: formData.fullName,
+          cedula: formData.cedula,
+          email: formData.email,
+          phone: formData.phone,
+          course_name: selectedCourse.title, // Guardamos el nombre real
+          cohort_date: selectedCourse.start_date, // Fecha real de la DB
+          payment_status: 'reservado',
+          payment_ref: formData.paymentRef,
+          pago_link: publicUrl
+        }]);
 
       if (insertError) throw insertError;
 
@@ -114,19 +123,13 @@ const RegisterStudents = () => {
         msg: '¡Recibido! Hemos guardado tu comprobante y cupo.' 
       });
       
-      setFormData({ 
-        fullName: '', cedula: '', email: '', phone: '', 
-        course: 'IA de Bolsillo', paymentRef: '' 
-      });
+      // Resetear form
+      setFormData({ fullName: '', cedula: '', email: '', phone: '', paymentRef: '', courseId: formData.courseId });
       setPaymentFile(null);
 
     } catch (error) {
       console.error('Error:', error.message);
-      setStatus({ 
-        loading: false, 
-        type: 'error', 
-        msg: 'Error al subir el pago. Intenta de nuevo o contáctanos.' 
-      });
+      setStatus({ loading: false, type: 'error', msg: 'Error al procesar. Intenta de nuevo.' });
     }
   };
 
@@ -143,7 +146,7 @@ const RegisterStudents = () => {
             Reserva tu <span className="highlight">Futuro</span>
           </h2>
           <p className="about-lead">
-            Asegura tu cupo hoy con solo <strong>${RESERVATION_AMOUNT}</strong>.
+            Asegura tu cupo hoy con solo <strong>${reservationPrice}</strong>.
           </p>
         </div>
 
@@ -156,7 +159,6 @@ const RegisterStudents = () => {
                 <label htmlFor="fullName">Nombre Completo</label>
                 <input
                   type="text"
-                  id="fullName"
                   name="fullName"
                   placeholder="Ej: Juan Pérez"
                   value={formData.fullName}
@@ -170,7 +172,6 @@ const RegisterStudents = () => {
                 <label htmlFor="cedula">Cédula (V/E)</label>
                 <input
                   type="text"
-                  id="cedula"
                   name="cedula"
                   placeholder="Ej: V-12345678"
                   value={formData.cedula}
@@ -186,7 +187,6 @@ const RegisterStudents = () => {
                 <label htmlFor="email">Correo Electrónico</label>
                 <input
                   type="email"
-                  id="email"
                   name="email"
                   placeholder="juan@ejemplo.com"
                   value={formData.email}
@@ -200,7 +200,6 @@ const RegisterStudents = () => {
                 <label htmlFor="phone">WhatsApp</label>
                 <input
                   type="tel"
-                  id="phone"
                   name="phone"
                   placeholder="0412-1234567"
                   value={formData.phone}
@@ -211,25 +210,36 @@ const RegisterStudents = () => {
               </div>
             </div>
 
+            {/* --- SELECCIÓN DINÁMICA DE CURSO --- */}
             <div className="form-group">
               <label htmlFor="course">Formación de Interés</label>
               <div className="select-wrapper">
                 <select
-                  id="course"
-                  name="course"
-                  value={formData.course}
-                  onChange={handleChange}
+                  name="courseId"
+                  value={formData.courseId}
+                  onChange={handleCourseChange}
                   className="form-input form-select"
                 >
-                  <option value="IA de Bolsillo">IA de Bolsillo (31 Enero) - Total ${15}</option>
-                  <option value="Excel & AI Masterclass">Excel & AI Automation (1 Feb) - Total ${25}</option>
+                  {courses.map(course => (
+                    <option key={course.id} value={course.id}>
+                      {course.title} ({new Date(course.start_date).toLocaleDateString()}) - Total ${course.price}
+                    </option>
+                  ))}
                 </select>
               </div>
+
+              {/* Info Extra del Curso Seleccionado */}
+              {selectedCourse && (
+                 <div style={{marginTop: '10px', fontSize: '0.85rem', color: '#94a3b8', display: 'flex', gap: '15px'}}>
+                    <span>📅 Inicio: {new Date(selectedCourse.start_date).toLocaleDateString()}</span>
+                    <span>⏱ Duración: {selectedCourse.duration}</span>
+                 </div>
+              )}
             </div>
 
             {/* --- SECCIÓN DE PAGOS --- */}
             <div className="payment-section">
-              <h4 className="payment-title">DATOS PARA RESERVA (${RESERVATION_AMOUNT})</h4>
+              <h4 className="payment-title">DATOS PARA RESERVA (${reservationPrice})</h4>
               
               <div className="rate-display">
                  <div className="rate-item">
@@ -248,7 +258,6 @@ const RegisterStudents = () => {
                 {/* Tarjeta Binance */}
                 <div className="method-card binance-card">
                     <div className="card-header">
-                        {/* <span className="card-icon">🔶</span> */}
                         <span>Binance Pay (ID)</span>
                     </div>
                     <div className="card-body">
@@ -259,7 +268,6 @@ const RegisterStudents = () => {
                 {/* Tarjeta Banco Venezuela */}
                 <div className="method-card bank-card">
                     <div className="card-header">
-                        {/* <span className="card-icon">🏦</span> */}
                         <span>Banco Venezuela (0102)</span>
                     </div>
                     <div className="card-body">
@@ -271,17 +279,16 @@ const RegisterStudents = () => {
               </div>
 
               <p className="payment-note">
-                * El restante (${totalCoursePrice - RESERVATION_AMOUNT}) se cancela el día del curso.
+                * El restante (${remainingPrice}) se cancela el día del curso.
               </p>
             </div>
 
             {/* --- REFERENCIA Y SUBIDA DE ARCHIVO --- */}
             <div className="form-row upload-row">
                 <div className="form-group">
-                   <label htmlFor="paymentRef" className="highlight-label">REFERENCIA / HASH</label>
+                   <label className="highlight-label">REFERENCIA / HASH</label>
                    <input
                      type="text"
-                     id="paymentRef"
                      name="paymentRef"
                      placeholder="Ej: 123456"
                      value={formData.paymentRef}
@@ -292,10 +299,9 @@ const RegisterStudents = () => {
                 </div>
                 
                 <div className="form-group">
-                   <label htmlFor="fileUpload" className="highlight-label">SUBIR COMPROBANTE</label>
+                   <label className="highlight-label">SUBIR COMPROBANTE</label>
                    <input
                      type="file"
-                     id="fileUpload"
                      accept="image/*"
                      onChange={handleFileChange}
                      required

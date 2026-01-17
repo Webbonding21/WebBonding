@@ -1,0 +1,380 @@
+/* --- CONTENEDOR RAIZ --- */
+.course-detail-container {
+  background-color: #0f1219;
+  min-height: 100vh;
+  color: #f8fafc;
+  padding-bottom: 80px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+}
+
+/* --- NAVEGACIÓN (BOTÓN VOLVER) --- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  position: absolute;
+  z-index: 100;
+  top: 100px; /* Ajustado debajo del Navbar */
+  left: 5%;
+  backdrop-filter: blur(5px);
+}
+
+.back-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-5px);
+}
+
+/* --- HERO SECTION --- */
+.course-hero {
+  position: relative;
+  height: 65vh;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding-top: 60px;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px) brightness(0.3);
+  transform: scale(1.1);
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to bottom, transparent, #0f1219 95%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 40px;
+}
+
+.course-badge-detail {
+  background: rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  letter-spacing: 1px;
+}
+
+.detail-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  margin: 25px 0;
+  line-height: 1;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.detail-subtitle {
+  font-size: 1.25rem;
+  color: #cbd5e1;
+  margin-bottom: 40px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.hero-meta span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 12px 24px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- GRID LAYOUT --- */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr; /* Proporción áurea aproximada */
+  gap: 50px;
+  padding: 0 40px;
+  position: relative;
+  z-index: 10;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* --- COLUMNA IZQUIERDA: TEMARIO --- */
+.detail-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-heading {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.syllabus-box {
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 24px;
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.syllabus-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.syllabus-list li {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #e2e8f0;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.syllabus-list li:last-child { border-bottom: none; }
+
+.check-icon-detail {
+  color: #22c55e;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+/* --- COLUMNA DERECHA: TARJETA DE ACCIÓN --- */
+.detail-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.enroll-card-sticky {
+  background: #1e293b;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 24px;
+  padding: 40px;
+  position: relative; /* Cambiado de sticky a relativo según tu petición */
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+.price-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.price-header .label { 
+  font-size: 0.85rem; 
+  color: #94a3b8; 
+  text-transform: uppercase; 
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.price-header .price-number { 
+  font-size: 3.5rem; 
+  font-weight: 900; 
+  color: #fff; 
+  line-height: 1;
+}
+
+.price-number .symbol { 
+  font-size: 1.8rem; 
+  color: #22c55e; 
+  margin-right: 4px;
+  vertical-align: top;
+}
+
+.reservation-badge {
+  background: rgba(6, 182, 212, 0.1);
+  color: #06b6d4;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+  border: 1px dashed rgba(6, 182, 212, 0.3);
+  font-weight: 600;
+}
+
+.btn-enroll-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  color: white;
+  text-decoration: none;
+  font-weight: 800;
+  border-radius: 14px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.btn-enroll-detail:hover { 
+  transform: translateY(-3px); 
+  box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4); 
+}
+
+.btn-whatsapp-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px;
+  background: rgba(34, 197, 94, 0.05);
+  border: 2px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.btn-whatsapp-detail:hover { 
+  background: rgba(34, 197, 94, 0.15); 
+  border-color: #4ade80;
+}
+
+.guarantee-text {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 20px;
+  line-height: 1.4;
+}
+
+/* --- SHARE SECTION --- */
+.share-section {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.share-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.share-btn:hover { color: #8b5cf6; }
+
+/* --- ANIMACIONES Y ESTADOS --- */
+.course-loading {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f1219;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(255,255,255,0.1);
+  border-top-color: #06b6d4;
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- RESPONSIVE DESIGN --- */
+
+/* Tablets y Laptops pequeñas */
+@media (max-width: 1024px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+  }
+  
+  .detail-right {
+    order: -1; /* La tarjeta de pago sube en tablets */
+    margin-bottom: 50px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 768px) {
+  .course-hero {
+    height: auto;
+    padding: 140px 20px 80px;
+  }
+
+  .detail-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-meta {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero-meta span {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .detail-grid {
+    margin-top: 20px;
+    padding: 0 20px;
+  }
+
+  .syllabus-box {
+    padding: 25px;
+  }
+
+  .enroll-card-sticky {
+    padding: 30px 20px;
+  }
+  
+  .back-link {
+    top: 85px;
+    left: 20px;
+  }
+}
