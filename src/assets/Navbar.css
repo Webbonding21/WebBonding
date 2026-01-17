@@ -1,183 +1,167 @@
-/* Navbar.css */
-
+/* --- ESTILO BASE (PÍLDORA) --- */
 .navbar {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
-  max-width: 1000px; /* Ancho máximo para que no se estire demasiado */
+  max-width: 1100px;
   height: 50px;
   z-index: 1000;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Estilo Glassmorphism / Píldora */
-  background: rgba(15, 23, 42, 0.7); /* Fondo oscuro semitransparente */
-  backdrop-filter: blur(12px);         /* Efecto borroso detrás */
-  -webkit-backdrop-filter: blur(12px); /* Safari support */
-  border: 1px solid rgba(255, 255, 255, 0.08); /* Borde sutil */
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
-/* Estado oculto */
-.navbar.hidden {
-  top: -100px;
-  opacity: 0;
-}
+.navbar.hidden { top: -100px; opacity: 0; }
 
 .navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
 }
 
 /* --- LOGO --- */
-.navbar-brand a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  gap: 10px;
+.navbar-brand a { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+.navbar-brand img { height: 35px; width: auto; transition: transform 0.3s; }
+.brand-text { font-weight: 700; font-size: 1.1rem; color: #fff; }
+
+/* --- BOTÓN TOGGLE (Oculto por defecto) --- */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1001;
 }
 
-.navbar-brand img {
-  height: 35px; /* Tamaño fijo en px mejor que vh para consistencia */
-  width: auto;
-  transition: transform 0.3s ease;
-}
-
-.brand-text {
-  font-family: 'Poppins', sans-serif; /* Asegurar fuente */
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #fff;
-  letter-spacing: 0.5px;
-}
-
-.navbar-brand a:hover img {
-  transform: rotate(-10deg);
-}
-
-/* --- ENLACES --- */
+/* --- LINKS (Desktop) --- */
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 10px;
   margin: 0;
   padding: 0;
 }
 
 .navbar-links li a {
   text-decoration: none;
-  color: #cbd5e1; /* Gris claro suave */
-  font-size: 0.95rem;
+  color: #cbd5e1;
+  font-size: 0.9rem;
   font-weight: 500;
-  padding: 8px 20px;
+  padding: 8px 15px;
   border-radius: 30px;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 
-/* Hover Effect Moderno */
-.navbar-links li a:hover {
+.navbar-links li a:not(.nav-cta-btn):hover {
   color: #fff;
-  background: rgba(139, 92, 246, 0.2); /* Fondo violeta suave */
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); /* Glow sutil */
+  background: rgba(255, 255, 255, 0.05);
 }
 
+.nav-cta-btn {
+  background: linear-gradient(90deg, #8b5cf6 0%, #06b6d4 100%);
+  color: white !important;
+  font-weight: 700 !important;
+  padding: 10px 20px !important;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
 /* --- RESPONSIVE MOBILE --- */
-@media (max-width: 768px) {
-  .navbar {
-    width: 95%; /* Más ancho en móvil */
-    top: 15px;
-    height: 60px;
-    padding: 0;
+@media (max-width: 850px) {
+  .menu-toggle { 
+    display: block; 
+    padding: 10px; /* Área de toque más cómoda */
+  }
+
+  /* Reducimos un poco el tamaño para asegurar que quepa el nombre */
+  .brand-text { 
+    font-size: 0.95rem; 
+    white-space: nowrap; /* Evita que el nombre salte de línea */
+  }
+
+  .navbar-brand img {
+    height: 28px; /* Logo un poco más pequeño en móvil */
   }
 
   .navbar-content {
-    padding: 0 1rem;
+    padding: 0 1.2rem;
   }
 
-  .brand-text {
-    display: none; /* Ocultamos el texto del logo en móvil si falta espacio */
-  }
-
+  /* Menú desplegable */
   .navbar-links {
-    gap: 0; /* Menos espacio entre items */
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    flex-direction: column;
+    padding: 25px 20px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
   }
 
+  .navbar-links.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .navbar-links li { width: 100%; }
   .navbar-links li a {
-    padding: 6px 12px;
-    font-size: 0.85rem;
+    display: block;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
   
-  .navbar-brand img {
-    height: 30px;
-  }
-}
+  /* Quitamos el borde al último link antes del botón */
+  .navbar-links li:nth-last-child(2) a { border-bottom: none; }
 
-/* Navbar.css */
-
-/* ... tus estilos existentes ... */
-
-/* Estilo para los enlaces normales */
-.navbar-links a {
-  text-decoration: none;
-  color: #e2e8f0; /* Color gris claro/blanco */
-  font-weight: 500;
-  transition: color 0.3s;
-  font-size: 0.95rem;
-}
-
-.navbar-links a:hover {
-  color: #ffffff;
-}
-
-/* Estilo para el botón destacado (Inscribirse) */
-.nav-cta-btn {
-  background: linear-gradient(90deg, #8b5cf6 0%, #06b6d4 100%);
-  padding: 10px 24px;
-  border-radius: 50px;
-  color: white !important; /* Forzamos blanco */
-  font-weight: 700 !important;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-.nav-cta-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
-  color: white;
-}
-
-/* Ajuste responsive para móvil (Opcional, si tienes menú hamburguesa) */
-@media (max-width: 768px) {
-  .navbar-links {
-    gap: 15px; /* Menos espacio en pantallas pequeñas */
+  .cta-li { 
+    width: 100%; 
+    margin-top: 15px; 
+    padding: 0; 
   }
   
   .nav-cta-btn {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px !important;
+    font-size: 1rem !important;
   }
 }
 
-/* Navbar.css */
+/* --- AJUSTE PARA MÓVILES MUY PEQUEÑOS (iPhone SE, etc) --- */
+@media (max-width: 380px) {
+  .navbar {
+    width: 95%;
+    top: 10px;
+  }
+  
+  .brand-text {
+    font-size: 0.85rem; /* Ajuste mínimo para que siempre se vea el nombre */
+  }
 
-/* ... estilos anteriores ... */
-
-.nav-cta-btn {
-  background: linear-gradient(90deg, #8b5cf6 0%, #06b6d4 100%);
-  padding: 10px 24px;
-  border-radius: 50px;
-  color: white !important;
-  font-weight: 700 !important;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-.nav-cta-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+  .navbar-brand {
+    gap: 6px;
+  }
 }
