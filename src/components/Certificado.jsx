@@ -79,7 +79,7 @@ const downloadPDF = () => {
 
   // URL de validación (Puedes cambiar esto por tu URL real de verificación en el futuro)
   // Usamos el ID del estudiante como dato clave.
-  const validationUrl = `https://webbonding-sasj.onrender.com//verify/${studentData.id}`;
+  const validationUrl = `https://webbonding-sasj.onrender.com/verify/${studentData.id}`;
 
   return (
     <div className="cert-container">
