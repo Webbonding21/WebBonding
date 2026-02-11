@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap');
+
+.cert-container {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ... (Estilos de la barra superior y botones iguales que antes) ... */
+.cert-top-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%; max-width: 297mm; margin-bottom: 20px; color: #64748b; font-weight: 500;
+}
+.cert-btn-main {
+  background: #0f172a; color: white; border: none; padding: 12px 24px;
+  border-radius: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 0.2s;
+}
+.cert-btn-main:hover { background: #334155; }
+.cert-canvas-wrapper { background: white; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+
+/* --- DISEÑO DEL CANVAS --- */
+.cert-modern-design {
+  width: 297mm; height: 210mm; background: #ffffff; position: relative;
+  overflow: hidden; display: flex; flex-direction: column; box-sizing: border-box;
+}
+
+.geo-accent-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 10px;
+  background: linear-gradient(90deg, #0f172a 0%, #334155 100%);
+}
+
+.cert-layout {
+  padding: 80px; height: 100%; display: flex; flex-direction: column;
+}
+
+/* --- HEADER --- */
+.cert-header-minimal {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;
+}
+.brand-info { display: flex; align-items: center; gap: 15px; }
+.brand-info h2 { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; margin: 0; color: #0f172a; }
+.cert-logo-minimal { height: 45px; }
+.cert-type-badge {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; padding: 8px 16px;
+  border: 1px solid #e2e8f0; border-radius: 4px; color: #94a3b8;
+}
+
+/* --- NUEVO BODY CON FLEXBOX --- */
+.cert-body-minimal.flex-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Alinea arriba */
+  flex-grow: 1; /* Ocupa el espacio disponible */
+}
+
+/* Columna Izquierda (Texto) */
+.cert-details-left {
+  flex: 1; /* Toma el espacio restante */
+  padding-right: 40px;
+}
+
+/* Columna Derecha (QR) */
+.cert-qr-right {
+  flex-basis: 180px; /* Ancho fijo para la zona del QR */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Alinea el QR a la derecha */
+  padding-top: 20px; /* Un poco de aire arriba para alinearlo visualmente con el título */
+}
+
+.qr-box {
+  padding: 15px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.qr-label {
+  margin-top: 10px;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: right;
+}
+
+/* --- ESTILOS DE TEXTO (Iguales que antes) --- */
+.title-section { margin-bottom: 40px; }
+.title-section h1 { font-size: 3.5rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -1px; }
+.title-underline { width: 100px; height: 6px; background: #0f172a; margin-top: 10px; }
+.intro-text { font-size: 1.1rem; color: #64748b; margin-bottom: 10px; }
+.student-name-main { font-size: 3.8rem; font-weight: 800; color: #0f172a; margin: 0; }
+.student-id-sub { font-size: 1.2rem; color: #94a3b8; margin-top: 5px; }
+.course-info-minimal { margin-top: 50px; }
+.course-info-minimal p { font-size: 1.1rem; color: #64748b; }
+.course-name-title { font-size: 1.8rem; font-weight: 700; color: #334155; margin: 10px 0; }
+.completion-status { display: flex; align-items: center; gap: 15px; margin-top: 20px; color: #64748b; font-weight: 500; font-size: 0.95rem; }
+.status-dot { font-size: 0.4rem; color: #cbd5e1; }
+
+/* --- FOOTER (Igual que antes) --- */
+.cert-footer-minimal { margin-top: auto; padding-top: 40px; }
+.directors-grid { display: flex; justify-content: space-between; margin-bottom: 40px; }
+.director-info { text-align: left; }
+.d-name { font-weight: 700; font-size: 0.9rem; color: #0f172a; margin: 0; }
+.d-role { font-size: 0.8rem; color: #64748b; margin: 4px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+.d-id { font-size: 0.75rem; color: #94a3b8; margin: 0; }
+.legal-bottom { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #f1f5f9; padding-top: 20px; }
+.validation-id { font-family: 'Monaco', 'Courier New', monospace; font-size: 0.8rem; color: #cbd5e1; letter-spacing: 2px; }
+.location-stamp { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+
+/* ... Todo tu CSS anterior ... */
+
+/* --- RESPONSIVE / MÓVIL --- */
+@media (max-width: 768px) {
+  /* 1. Ajustar el contenedor principal para centrar el botón */
+  .cert-container {
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    background-color: #f8fafc; /* O el color que prefieras de fondo */
+  }
+
+  /* 2. Modificar la barra superior */
+  .cert-top-bar {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* 3. Ocultar el texto "Certificación Académica Exitosa" */
+  .cert-top-bar p {
+    display: none;
+  }
+
+  /* 4. Estilizar el botón para que sea grande y llamativo en móvil */
+  .cert-btn-main {
+    width: 100%;
+    max-width: 300px;
+    height: 60px;
+    justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2);
+  }
+
+  /* 5. EL TRUCO: Ocultar el certificado visualmente, pero mantenerlo renderizado */
+  /* Lo sacamos de la pantalla hacia la izquierda */
+  .cert-canvas-wrapper {
+    position: fixed; /* Lo fijamos para que no afecte el scroll */
+    left: -5000px;   /* Lo mandamos muy lejos */
+    top: 0;
+    opacity: 0;      /* Lo hacemos invisible por si acaso */
+    /* Importante: Forzar que el wrapper tenga el tamaño del contenido */
+    width: 297mm;    
+    height: 210mm;
+    overflow: hidden;
+  }
+}

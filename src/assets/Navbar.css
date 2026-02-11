@@ -1,4 +1,4 @@
-/* --- ESTILO BASE (PÍLDORA) --- */
+/* --- ESTILO BASE (PÍLDORA FLOTANTE) --- */
 .navbar {
   position: fixed;
   top: 20px;
@@ -6,41 +6,75 @@
   transform: translateX(-50%);
   width: 90%;
   max-width: 1100px;
-  height: 50px;
+  height: 60px; /* Un poco más alto para comodidad */
   z-index: 1000;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  background: rgba(15, 23, 42, 0.85); /* Un poco más opaco para legibilidad */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.navbar.hidden { top: -100px; opacity: 0; }
+.navbar.hidden {
+  top: -100px;
+  opacity: 0;
+  pointer-events: none;
+}
 
 .navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 100%;
+  width: 100%;
   padding: 0 1.5rem;
+  height: 100%;
 }
 
 /* --- LOGO --- */
-.navbar-brand a { display: flex; align-items: center; text-decoration: none; gap: 10px; }
-.navbar-brand img { height: 35px; width: auto; transition: transform 0.3s; }
-.brand-text { font-weight: 700; font-size: 1.1rem; color: #fff; }
+.navbar-brand a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 12px;
+}
 
-/* --- BOTÓN TOGGLE (Oculto por defecto) --- */
+.navbar-brand img {
+  height: 32px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+.brand-text {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+/* --- BOTÓN TOGGLE (Móvil) --- */
 .menu-toggle {
   display: none;
   background: none;
   border: none;
-  color: white;
+  color: #e2e8f0;
   font-size: 1.5rem;
   cursor: pointer;
+  padding: 5px;
+  transition: color 0.3s;
   z-index: 1001;
+}
+
+.menu-toggle:hover {
+  color: #fff;
 }
 
 /* --- LINKS (Desktop) --- */
@@ -48,120 +82,169 @@
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
   padding: 0;
 }
 
+/* Estilo general de links */
 .navbar-links li a {
   text-decoration: none;
   color: #cbd5e1;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  padding: 8px 15px;
+  padding: 8px 16px;
   border-radius: 30px;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .navbar-links li a:not(.nav-cta-btn):hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
 }
 
+/* Botón CTA (Ingresar / Inscribirse) */
 .nav-cta-btn {
-  background: linear-gradient(90deg, #8b5cf6 0%, #06b6d4 100%);
+  background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
   color: white !important;
   font-weight: 700 !important;
-  padding: 10px 20px !important;
+  padding: 10px 24px !important;
   border-radius: 50px;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
+
+.nav-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
+}
+
+/* Botón Logout (Estilo Específico) */
+.logout-btn {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+  color: #fca5a5 !important;
+  box-shadow: none !important;
+  padding: 8px 20px !important;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.3) !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
 /* --- RESPONSIVE MOBILE --- */
-@media (max-width: 850px) {
-  .menu-toggle { 
-    display: block; 
-    padding: 10px; /* Área de toque más cómoda */
+@media (max-width: 900px) {
+  .navbar {
+    width: 92%;
+    top: 15px;
+    height: 55px;
+    padding: 0;
   }
 
-  /* Reducimos un poco el tamaño para asegurar que quepa el nombre */
-  .brand-text { 
-    font-size: 0.95rem; 
-    white-space: nowrap; /* Evita que el nombre salte de línea */
+  .menu-toggle {
+    display: block;
   }
 
+  /* Ajustes del Logo en Móvil */
+  .brand-text {
+    font-size: 1rem;
+  }
+  
   .navbar-brand img {
-    height: 28px; /* Logo un poco más pequeño en móvil */
+    height: 28px;
   }
 
-  .navbar-content {
-    padding: 0 1.2rem;
-  }
-
-  /* Menú desplegable */
+  /* Menú Desplegable */
   .navbar-links {
     position: absolute;
-    top: 70px;
+    top: 65px; /* Justo debajo de la barra */
     left: 0;
     width: 100%;
-    background: rgba(15, 23, 42, 0.98);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    background: rgba(15, 23, 42, 0.98); /* Fondo casi sólido */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
-    padding: 25px 20px;
-    border-radius: 25px;
+    align-items: flex-start;
+    padding: 20px;
+    border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    gap: 10px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    
+    /* Animación de entrada */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-15px);
+    transform: translateY(-20px) scale(0.95);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    pointer-events: none;
   }
 
   .navbar-links.active {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    pointer-events: all;
   }
 
-  .navbar-links li { width: 100%; }
+  .navbar-links li {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
   .navbar-links li a {
     display: block;
     width: 100%;
-    font-size: 1.1rem;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 12px 15px;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #e2e8f0;
   }
-  
-  /* Quitamos el borde al último link antes del botón */
-  .navbar-links li:nth-last-child(2) a { border-bottom: none; }
 
-  .cta-li { 
-    width: 100%; 
-    margin-top: 15px; 
-    padding: 0; 
+  .navbar-links li a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    padding-left: 20px; /* Efecto de desplazamiento */
   }
-  
-  .nav-cta-btn {
+
+  /* Contenedor del botón de acción */
+  .cta-li {
     width: 100%;
-    box-sizing: border-box;
-    padding: 15px !important;
-    font-size: 1rem !important;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-cta-btn, .logout-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px !important;
+    font-size: 1.1rem !important;
   }
 }
 
-/* --- AJUSTE PARA MÓVILES MUY PEQUEÑOS (iPhone SE, etc) --- */
+/* --- MÓVILES MUY PEQUEÑOS (iPhone SE, etc) --- */
 @media (max-width: 380px) {
   .navbar {
     width: 95%;
-    top: 10px;
-  }
-  
-  .brand-text {
-    font-size: 0.85rem; /* Ajuste mínimo para que siempre se vea el nombre */
+    padding: 0 10px;
   }
 
-  .navbar-brand {
-    gap: 6px;
+  .brand-text {
+    font-size: 0.9rem;
+  }
+
+  .navbar-brand img {
+    height: 24px;
+  }
+  
+  .navbar-content {
+    padding: 0 0.8rem;
   }
 }
