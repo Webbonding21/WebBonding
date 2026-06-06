@@ -1,54 +1,158 @@
-/* IMPORTANTE: Importar Poppins de Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+/* =============================================================
+   WEB BONDING — Sistema de diseño
+   Estética: editorial / ingenieril (anti-plantilla)
+   Tipografía: Bricolage Grotesque (display) · Inter (texto) · Space Mono (etiquetas)
+   ============================================================= */
 
 :root {
-  /* Paleta de Colores Cyber-Tech */
-  --bg-dark: #0b0f19;       /* Fondo principal casi negro */
-  --bg-card: #151a25;       /* Fondo de tarjetas */
-  --primary: #8b5cf6;       /* Violeta eléctrico */
-  --primary-glow: rgba(139, 92, 246, 0.4);
-  --secondary: #06b6d4;     /* Cyan futurista */
-  --text-white: #f8fafc;
-  --text-gray: #94a3b8;
-  
-  /* Gradientes */
-  --gradient-text: linear-gradient(135deg, #a78bfa 0%, #22d3ee 100%);
-  --gradient-bg: linear-gradient(135deg, rgba(139,92,246,0.1) 0%, rgba(6,182,212,0.1) 100%);
-  
-  /* Tipografía */
-  --font-main: 'Poppins', sans-serif;
-  
-  /* Efectos */
-  --glass: rgba(255, 255, 255, 0.03);
-  --border-light: rgba(255, 255, 255, 0.08);
-  --shadow-lg: 0 10px 40px -10px rgba(0,0,0,0.5);
+  /* —— Paleta principal —— */
+  --ink:        #0E0E11;   /* tinta casi negra */
+  --ink-2:      #16161C;
+  --ink-3:      #20212B;
+  --paper:      #F3EFE6;   /* papel cálido */
+  --paper-2:    #E9E3D4;
+  --paper-3:    #DCD4C0;
+  --electric:   #2E37FF;   /* cobalto eléctrico (primario) */
+  --electric-2: #5A63FF;
+  --accent:       #7B2FBE;   /* fucsia-púrpura (acento marca) */
+  --accent-2:     #9B55E0;   /* púrpura claro (hover/glow) */
+  --coral:      #FF5A3C;   /* coral (acento cálido) */
+
+  --line-dark:  rgba(243,239,230,.14);
+  --line-light: rgba(14,14,17,.16);
+  --paper-60:   rgba(243,239,230,.64);
+  --ink-60:     rgba(14,14,17,.62);
+
+  /* —— Compatibilidad (plataforma de cursos) —— */
+  --bg-dark: var(--ink);
+  --bg-card: var(--ink-2);
+  --primary: var(--electric);
+  --primary-glow: rgba(46,55,255,.35);
+  --secondary: #22d3ee;
+  --text-white: var(--paper);
+  --text-gray: #9b9ba6;
+  --gradient-text: linear-gradient(100deg, #ffffff 0%, #b9bdff 55%, var(--electric) 105%);
+  --gradient-bg: linear-gradient(135deg, rgba(46,55,255,.12), rgba(123,47,190,.08));
+  --glass: rgba(255,255,255,.03);
+  --border-light: rgba(255,255,255,.08);
+  --shadow-lg: 0 26px 60px -28px rgba(0,0,0,.62);
+
+  /* —— Tipografía —— */
+  --font-display: 'Bricolage Grotesque', 'Inter', sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'Space Mono', ui-monospace, monospace;
+  --font-main:    var(--font-body);
+
+  /* —— Layout —— */
+  --maxw: 1280px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --radius: 4px;
+  --radius-lg: 14px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-white);
-  font-family: var(--font-main);
-  overflow-x: hidden; /* Evita scroll horizontal */
-  line-height: 1.6;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
-/* Scrollbar personalizado */
-::-webkit-scrollbar {
-  width: 10px;
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--accent); color: #fff; }
+
+::-webkit-scrollbar { width: 11px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: #2c2c34; }
+::-webkit-scrollbar-thumb:hover { background: var(--electric); }
+
+/* ===================== Layout reutilizable ===================== */
+.wb-container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+.wb-section { position: relative; padding-block: clamp(76px, 10vw, 150px); overflow: hidden; }
+.wb-section--paper { background: var(--paper); color: var(--ink); }
+.wb-section--ink   { background: var(--ink);   color: var(--paper); }
+
+/* Etiqueta mono (eyebrow) */
+.wb-eyebrow {
+  font-family: var(--font-mono);
+  font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: .7em; opacity: .72;
 }
-::-webkit-scrollbar-track {
-  background: var(--bg-dark);
+.wb-eyebrow::before { content: ""; width: 28px; height: 2px; background: currentColor; }
+.wb-eyebrow--accent { color: var(--electric); opacity: 1; }
+
+/* Títulos display */
+.wb-display { font-family: var(--font-display); font-weight: 800; line-height: .96; letter-spacing: -.022em; }
+.wb-h2 { font-family: var(--font-display); font-weight: 800; line-height: .98; letter-spacing: -.02em; font-size: clamp(2.1rem, 5.2vw, 4.1rem); }
+.wb-ital { font-style: italic; font-weight: 600; }
+
+/* Marca destacada inline */
+.wb-mark { background: var(--accent); color: #fff; padding: 0 .12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.wb-underline { box-shadow: inset 0 -.14em 0 var(--electric); }
+
+/* Etiqueta/pill mono */
+.wb-tag {
+  font-family: var(--font-mono); font-size: .66rem; letter-spacing: .06em; text-transform: uppercase;
+  padding: .4em .75em; border: 1px solid currentColor; border-radius: 100px; display: inline-block; opacity: .85;
 }
-::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 5px;
+
+/* ===================== Botones ===================== */
+.wb-btn {
+  --bg: var(--ink); --fg: var(--paper);
+  font-family: var(--font-mono); font-size: .82rem; letter-spacing: .03em; font-weight: 700; text-transform: uppercase;
+  display: inline-flex; align-items: center; justify-content: center; gap: .65em;
+  padding: 1.05em 1.7em; border: 2px solid var(--bg); border-radius: 100px;
+  background: var(--bg); color: var(--fg); cursor: pointer;
+  transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s, background .2s, color .2s;
+  white-space: nowrap;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+.wb-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 0 -6px rgba(0,0,0,.25); }
+.wb-btn:active { transform: translateY(-1px); }
+.wb-btn--accent     { --bg: var(--accent);     --fg: #fff; }
+.wb-btn--electric { --bg: var(--electric); --fg: #fff; }
+.wb-btn--paper    { --bg: var(--paper);    --fg: var(--ink); }
+.wb-btn--ghost    { background: transparent; color: currentColor; border-color: currentColor; }
+.wb-btn--ghost:hover { background: currentColor; }
+.wb-btn--ghost.on-ink:hover  { color: var(--ink); }
+.wb-btn--ghost.on-paper:hover { color: var(--paper); }
+.wb-btn__arrow { transition: transform .25s; }
+.wb-btn:hover .wb-btn__arrow { transform: translateX(4px); }
+
+/* ===================== Reveal on scroll ===================== */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .75s cubic-bezier(.2,.7,.2,1), transform .75s cubic-bezier(.2,.7,.2,1); will-change: opacity, transform; }
+.reveal.in { opacity: 1; transform: none; }
+.reveal.from-left  { transform: translateX(-40px); } .reveal.from-left.in  { transform: none; }
+.reveal.from-right { transform: translateX(40px); }  .reveal.from-right.in { transform: none; }
+.reveal.zoom { transform: scale(.94); } .reveal.zoom.in { transform: none; }
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}.d5{transition-delay:.35s}.d6{transition-delay:.42s}
+@media (prefers-reduced-motion: reduce){ .reveal{opacity:1!important;transform:none!important;transition:none} }
+
+/* ===================== Marquee ===================== */
+@keyframes wb-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes wb-marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.wb-marquee { overflow: hidden; width: 100%; }
+.wb-marquee__track { display: inline-flex; align-items: center; white-space: nowrap; animation: wb-marquee 34s linear infinite; }
+.wb-marquee__track.rev { animation-name: wb-marquee-rev; }
+.wb-marquee:hover .wb-marquee__track { animation-play-state: paused; }
+
+/* ===================== Texturas / utilidades ===================== */
+.text-gradient { background: var(--gradient-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.wb-grain::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: .055; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+/* línea/hairline divisoria */
+.wb-rule { height: 1px; width: 100%; background: var(--line-dark); border: 0; }
+.wb-section--paper .wb-rule { background: var(--line-light); }
+
+/* foco accesible */
+:where(a, button, input, textarea):focus-visible { outline: 2px solid var(--electric); outline-offset: 3px; }

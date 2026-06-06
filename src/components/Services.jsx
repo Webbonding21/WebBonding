@@ -1,54 +1,73 @@
+import React from 'react';
+import Reveal from './Reveal';
 import '../assets/Services.css';
 
-// Datos estructurados para fácil mantenimiento
-const serviceCategories = [
+const SERVICES = [
   {
-    icon: "💻", 
-    title: "Desarrollo Web & Apps",
-    desc: "Plataformas modernas, rápidas y escalables.",
-    features: ["Landing Pages & Corporativas", "E-commerce & Tiendas Virtuales", "Web Apps (PWA) & Dashboards", "Apps Móviles (iOS/Android)"]
+    n: '01',
+    icon: '💻',
+    img: '/img/service-web.jpg',
+    title: 'Desarrollo Web & Apps',
+    desc: 'Plataformas modernas, rápidas y escalables que tus clientes disfrutan usar.',
+    features: ['Landing & corporativas', 'E-commerce & tiendas', 'Web Apps (PWA) & dashboards', 'Apps móviles iOS / Android'],
+    mod: 'a',
   },
   {
-    icon: "⚙️",
-    title: "Backend & Sistemas",
-    desc: "El motor inteligente de tu negocio.",
-    features: ["Sistemas ERP/CRM a Medida", "APIs REST & GraphQL", "Bases de Datos Robustas", "Integración con Pasarelas de Pago"]
+    n: '02',
+    icon: '⚙️',
+    img: '/img/service-data.jpg',
+    title: 'Backend & Sistemas',
+    desc: 'El motor inteligente que automatiza y ordena tu negocio.',
+    features: ['Sistemas ERP / CRM a medida', 'APIs REST & GraphQL', 'Bases de datos robustas', 'Pasarelas de pago'],
+    mod: 'b',
   },
   {
-    icon: "📡",
-    title: "IoT & Hardware",
-    desc: "Conectamos el mundo físico con el digital.",
-    features: ["Sensores & Monitoreo Remoto", "Automatización Industrial", "Control vía Web/App", "Telemetría en Tiempo Real"]
+    n: '03',
+    icon: '📡',
+    img: '/img/service-iot.jpg',
+    title: 'IoT & Hardware',
+    desc: 'Conectamos el mundo físico con el digital. Software que toca la realidad.',
+    features: ['Sensores & monitoreo remoto', 'Automatización industrial', 'Control vía web / app', 'Telemetría en tiempo real'],
+    mod: 'c',
   },
-  // {
-  //   icon: "☁️",
-  //   title: "Infraestructura & DevOps",
-  //   desc: "Tu tecnología siempre activa y segura.",
-  //   features: ["Despliegue en la Nube (AWS/Google)", "Seguridad & Encriptación", "Mantenimiento & Soporte", "Consultoría Tecnológica"]
-  // }
 ];
 
 function Services() {
   return (
-    <section id="services" className='services-section'>
-      <div className="services-header">
-        <h2 className='services-title'>Nuestro Ecosistema de <span className="text-gradient">Servicios</span></h2>
-        <p className='services-subtitle'>Cubrimos todo el ciclo de vida del software: desde el diseño visual hasta el sensor físico.</p>
-      </div>
+    <section id="services" className="services wb-section wb-section--ink wb-grain">
+      <div className="wb-container">
+        <div className="services__header">
+          <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent" style={{ color: 'var(--accent)' }}>
+            // Qué hacemos
+          </Reveal>
+          <Reveal as="h2" className="wb-h2 services__title" delay="d1">
+            Un estudio,<br />todo el <em>stack</em>.
+          </Reveal>
+          <Reveal as="p" className="services__sub" delay="d2">
+            Cubrimos el ciclo completo del producto: del diseño visual al sensor físico.
+            Tres frentes, un mismo equipo.
+          </Reveal>
+        </div>
 
-      <div className='services-grid'>
-        {serviceCategories.map((cat, index) => (
-          <div className='service-card' key={index}>
-            <div className="card-icon">{cat.icon}</div>
-            <h3>{cat.title}</h3>
-            <p className="card-desc">{cat.desc}</p>
-            <ul className="service-list">
-              {cat.features.map((item, i) => (
-                <li key={i}>✓ {item}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div className="services__grid">
+          {SERVICES.map((s, i) => (
+            <Reveal as="article" className={`svc-card svc-card--${s.mod}`} key={s.n} delay={`d${i + 1}`}>
+              <div className="svc-card__media">
+                <img src={s.img} alt={s.title} loading="lazy" />
+                <span className="svc-card__num">{s.n}</span>
+              </div>
+              <div className="svc-card__body">
+                <h3><span className="svc-card__emoji">{s.icon}</span> {s.title}</h3>
+                <p className="svc-card__desc">{s.desc}</p>
+                <ul className="svc-card__list">
+                  {s.features.map((f) => (
+                    <li key={f}>{f}</li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

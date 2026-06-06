@@ -1,0 +1,19 @@
+Fotografías de Unsplash (https://unsplash.com) — Licencia Unsplash, uso libre.
+Optimizadas vía la CDN de Unsplash (auto=format, compress).
+
+hero-apps.jpg        unsplash.com/photo-1556742049-0cfed4f6a45d
+hero-code.jpg        unsplash.com/photo-1555066931-4365d14bab8c
+hero-circuit.jpg     unsplash.com/photo-1518770660439-4636190af475
+team.jpg             unsplash.com/photo-1522071820081-009f0129c71c
+team2.jpg            unsplash.com/photo-1551434678-e076c223a692
+planning.jpg         unsplash.com/photo-1531403009284-440f080d1e12
+service-web.jpg      unsplash.com/photo-1498050108023-c5249f4df085
+service-data.jpg     unsplash.com/photo-1518186285589-2f7649de83e0
+service-iot.jpg      unsplash.com/photo-1581092918056-0c4c3acd3789
+work-delivery.jpg    unsplash.com/photo-1504674900247-0877df9cc836
+work-transport.jpg   unsplash.com/photo-1449965408869-eaa3f722e40d
+work-pharma.jpg      unsplash.com/photo-1587854692152-cbe660dbde88
+work-industrial.jpg  unsplash.com/photo-1581092160562-40aa08e78837
+work-retail.jpg      unsplash.com/photo-1542838132-92c53300491e
+work-dashboard.jpg   unsplash.com/photo-1460925895917-afdab827c52f
+contact-team.jpg     unsplash.com/photo-1600880292203-757bb62b4baf
