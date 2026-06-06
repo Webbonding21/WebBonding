@@ -27,4 +27,4 @@ Allow: /
 Disallow: /cotizador
 
 # Sitemap
-Sitemap: https://webbonding-sasj.onrender.com/sitemap.xml
+Sitemap: https://webbonding.net/sitemap.xml

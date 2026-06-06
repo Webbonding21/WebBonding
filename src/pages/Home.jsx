@@ -27,7 +27,7 @@ function Home() {
           name="keywords"
           content="desarrollo web Acarigua, agencia digital Araure, programadores Portuguesa, software a medida Venezuela, apps móviles Acarigua, ecommerce Araure, diseño web Portuguesa, automatización industrial Venezuela, IoT Acarigua, transformación digital Portuguesa, agencia de software Venezuela"
         />
-        <link rel="canonical" href="https://webbonding-sasj.onrender.com/" />
+        <link rel="canonical" href="https://webbonding.net/" />
 
         {/* Open Graph */}
         <meta
@@ -38,7 +38,7 @@ function Home() {
           property="og:description"
           content="Agencia venezolana de desarrollo de software, aplicaciones móviles, e-commerce y automatización IoT. Diseño e ingeniería bajo un mismo techo, desde Acarigua–Araure para toda Latinoamérica."
         />
-        <meta property="og:url" content="https://webbonding-sasj.onrender.com/" />
+        <meta property="og:url" content="https://webbonding.net/" />
         <meta property="og:type" content="business.business" />
 
         {/* Twitter */}

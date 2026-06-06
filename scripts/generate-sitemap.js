@@ -6,7 +6,7 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
 
-const hostname = 'https://webbonding-sasj.onrender.com';
+const hostname = 'https://webbonding.net';
 const today = new Date().toISOString().split('T')[0];
 
 const routes = [
