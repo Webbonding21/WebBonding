@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import StepForModal from './StepForModal';
 import Reveal from './Reveal';
 import CountUp from './CountUp';
@@ -43,9 +42,9 @@ function Hero() {
           </Reveal>
 
           <Reveal className="hero__actions" delay="d3">
-            <Link to="/cotizador" className="hero__cta-primary">
-              Cotizar mi proyecto <span className="wb-btn__arrow">→</span>
-            </Link>
+            <div className="hero__primary">
+              <StepForModal />
+            </div>
             <a href="#work" className="wb-btn wb-btn--ghost on-ink hero__ghost">
               Ver proyectos <span className="wb-btn__arrow">→</span>
             </a>

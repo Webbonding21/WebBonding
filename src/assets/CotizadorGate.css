@@ -1,0 +1,114 @@
+/* ===================== COTIZADOR GATE ===================== */
+.cot-gate {
+  position: relative;
+  background: var(--ink);
+  color: var(--paper);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 120px 24px 60px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cot-gate__glow {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(46,55,255,.35), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(123,47,190,.35), transparent 50%);
+  filter: blur(30px);
+}
+
+.cot-gate__inner {
+  width: 100%; max-width: 460px; text-align: center;
+  background: var(--ink-2); border: 1px solid var(--line-dark);
+  border-radius: var(--radius-lg);
+  padding: clamp(28px, 4vw, 44px);
+  box-shadow: 0 40px 70px -30px rgba(0,0,0,.65);
+  position: relative;
+}
+
+.cot-gate__back {
+  position: absolute; top: 16px; left: 16px;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--paper-60); transition: color .2s, gap .2s;
+}
+.cot-gate__back:hover { color: var(--accent); gap: 10px; }
+
+.cot-gate__icon {
+  width: 64px; height: 64px; margin: 8px auto 18px;
+  display: grid; place-items: center;
+  background: rgba(123,47,190,.15); border: 1px solid var(--accent);
+  border-radius: 50%; color: var(--accent); font-size: 1.6rem;
+}
+.cot-gate__eyebrow { color: var(--accent); opacity: 1; justify-content: center; }
+.cot-gate__title {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(1.9rem, 4vw, 2.5rem); line-height: 1; letter-spacing: -.02em;
+  color: var(--paper); margin: 18px 0 12px;
+}
+.cot-gate__title em { font-style: italic; color: var(--accent); }
+.cot-gate__sub {
+  color: var(--paper-60); font-size: .96rem; line-height: 1.5; margin-bottom: 26px;
+}
+
+.cot-gate__form { display: flex; flex-direction: column; gap: 14px; }
+.cot-gate__field { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.cot-gate__field span {
+  font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--paper-60);
+}
+.cot-gate__field input {
+  background: var(--ink); border: 1px solid var(--line-dark); border-radius: 10px;
+  padding: 16px 18px; color: var(--paper); font-family: var(--font-mono); font-size: 1rem; letter-spacing: .15em;
+  outline: none; transition: border-color .2s, background .2s, box-shadow .2s;
+  text-align: center;
+}
+.cot-gate__field input:focus {
+  border-color: var(--accent); background: rgba(123,47,190,.05);
+  box-shadow: 0 0 0 3px rgba(123,47,190,.16);
+}
+.cot-gate__field input[aria-invalid="true"] { border-color: var(--coral); }
+
+.cot-gate__err {
+  font-family: var(--font-mono); font-size: .78rem; color: var(--coral);
+  background: rgba(255,90,60,.08); border: 1px solid rgba(255,90,60,.3);
+  padding: 10px 14px; border-radius: 8px;
+}
+
+.cot-gate__submit {
+  margin-top: 4px;
+  font-family: var(--font-mono); font-weight: 700; font-size: .82rem; letter-spacing: .04em; text-transform: uppercase;
+  background: var(--accent); color: #fff;
+  padding: 16px 22px; border: 0; border-radius: 100px; cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.cot-gate__submit:hover:not(:disabled) {
+  transform: translateY(-2px); box-shadow: 0 14px 30px -12px var(--accent);
+}
+.cot-gate__submit:disabled { opacity: .45; cursor: not-allowed; }
+
+.cot-gate__note {
+  margin-top: 24px; font-family: var(--font-mono);
+  font-size: .76rem; color: var(--paper-60); line-height: 1.5;
+}
+.cot-gate__note a { color: var(--accent); font-weight: 700; }
+.cot-gate__note a:hover { text-decoration: underline; }
+
+/* ===================== BOTÓN SALIR (cuando ya autenticado) ===================== */
+.cot-gate__logout {
+  position: fixed; top: 76px; right: 18px; z-index: 850;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-weight: 700; font-size: .66rem; letter-spacing: .04em; text-transform: uppercase;
+  background: var(--ink-2); color: var(--paper-60);
+  border: 1px solid var(--line-dark); border-radius: 100px;
+  padding: 8px 12px; cursor: pointer;
+  transition: all .2s;
+  opacity: .55;
+}
+.cot-gate__logout:hover { opacity: 1; color: var(--coral); border-color: var(--coral); }
+.cot-gate__logout svg { font-size: .85rem; }
+
+@media (max-width: 480px) {
+  .cot-gate__logout { top: auto; bottom: 88px; right: 14px; }
+}
