@@ -8,6 +8,7 @@ const NAV = [
   { label: 'Estudio', href: '/#about' },
   { label: 'Servicios', href: '/#services' },
   { label: 'Proyectos', href: '/#work' },
+  { label: 'Cotizador', to: '/cotizador' },
   { label: 'Planes', href: '/#plans' },
   { label: 'Contacto', href: '/#contact' },
 ];
@@ -56,17 +57,21 @@ const Navbar = () => {
         {/* Enlaces */}
         <ul className="wb-nav__links">
           {NAV.map((n) => (
-            <li key={n.href}>
-              <a href={n.href} onClick={closeMenu}>{n.label}</a>
+            <li key={n.href || n.to}>
+              {n.to ? (
+                <Link to={n.to} onClick={closeMenu} className="wb-nav__link--accent">{n.label}</Link>
+              ) : (
+                <a href={n.href} onClick={closeMenu}>{n.label}</a>
+              )}
             </li>
           ))}
         </ul>
 
         {/* Acciones */}
         <div className="wb-nav__actions">
-          <a href="/#contact" className="wb-nav__cta" onClick={closeMenu}>
-            Iniciar proyecto <FaArrowRight />
-          </a>
+          <Link to="/cotizador" className="wb-nav__cta" onClick={closeMenu}>
+            Cotizar proyecto <FaArrowRight />
+          </Link>
           <button
             className="wb-nav__toggle"
             onClick={() => setIsOpen(!isOpen)}

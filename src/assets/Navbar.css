@@ -53,6 +53,8 @@
 }
 .wb-nav__links a:hover::after { width: 100%; }
 .wb-nav__courses { color: var(--accent) !important; font-weight: 700; }
+.wb-nav__link--accent { color: var(--accent) !important; font-weight: 700; }
+.wb-nav__link--accent:hover { color: var(--accent-2) !important; }
 
 /* Acciones */
 .wb-nav__actions { display: flex; align-items: center; gap: 14px; }

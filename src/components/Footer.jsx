@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { SiWhatsapp, SiInstagram, SiFacebook } from 'react-icons/si';
 import { HiOutlineMail, HiOutlineLocationMarker, HiOutlinePhone } from 'react-icons/hi';
 import { FaArrowUp } from 'react-icons/fa';
@@ -31,6 +32,7 @@ const Footer = () => {
               <a href="/#about">Nosotros</a>
               <a href="/#services">Servicios</a>
               <a href="/#work">Proyectos</a>
+              <Link to="/cotizador">Cotizador</Link>
               <a href="/#plans">Planes</a>
             </div>
 
