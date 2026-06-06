@@ -1,5 +1,30 @@
+# ============================================================
+# robots.txt — Web Bonding (Acarigua–Araure, Portuguesa, VE)
+# Última actualización: 2026-06-06
+# ============================================================
+
+# Reglas generales
 User-agent: *
 Allow: /
+Disallow: /cotizador
+Disallow: /cotizador/
 
-# Aquí le decimos a Google dónde está el mapa
+# Bots de IA — permitidos (indexación de contenido y citación)
+User-agent: GPTBot
+Allow: /
+Disallow: /cotizador
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /cotizador
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /cotizador
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /cotizador
+
+# Sitemap
 Sitemap: https://webbonding-sasj.onrender.com/sitemap.xml

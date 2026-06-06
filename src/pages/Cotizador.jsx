@@ -153,10 +153,12 @@ function Cotizador() {
   return (
     <>
       <Helmet>
-        <title>Cotizador · Web Bonding</title>
+        <title>Cotizador privado · Web Bonding</title>
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+        <meta name="googlebot" content="noindex, nofollow" />
         <meta
           name="description"
-          content="Arma tu propio proyecto digital: catálogo de servicios, calculadora en vivo y solicitudes a medida."
+          content="Cotizador privado de Web Bonding — acceso solo con invitación."
         />
       </Helmet>
 

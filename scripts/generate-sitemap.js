@@ -1,34 +1,48 @@
-/* scripts/generate-sitemap.js */
+/* scripts/generate-sitemap.js
+ * Sitemap dinámico de Web Bonding — solo páginas públicas.
+ * /cotizador es privado (gate de password) → NO se incluye.
+ */
 import { SitemapStream, streamToPromise } from 'sitemap';
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
 
-const hostname = 'https://webbonding.onrender.com';
-const routes   = ['/', '/servicios', '/blog', '/contacto']; // añade las que vayas creando
+const hostname = 'https://webbonding-sasj.onrender.com';
+const today = new Date().toISOString().split('T')[0];
+
+const routes = [
+  { url: '/',          changefreq: 'weekly',  priority: 1.0, lastmod: today },
+  { url: '/#about',    changefreq: 'monthly', priority: 0.8, lastmod: today },
+  { url: '/#services', changefreq: 'monthly', priority: 0.9, lastmod: today },
+  { url: '/#work',     changefreq: 'monthly', priority: 0.9, lastmod: today },
+  { url: '/#process',  changefreq: 'monthly', priority: 0.6, lastmod: today },
+  { url: '/#plans',    changefreq: 'monthly', priority: 0.8, lastmod: today },
+  { url: '/#contact',  changefreq: 'monthly', priority: 0.9, lastmod: today },
+];
 
 (async () => {
   try {
-    // 1) Crea el stream legible que construye el XML
-    const sitemapStream = new SitemapStream({ hostname });
+    const sitemapStream = new SitemapStream({ hostname, xmlns: { news: false, xhtml: true, image: false, video: false } });
 
-    // 2) Añade cada URL
-    routes.forEach((url) =>
+    routes.forEach((route) => {
       sitemapStream.write({
-        url,
-        changefreq: 'monthly',
-        priority: url === '/' ? 1 : 0.7,
-      })
-    );
-    sitemapStream.end();
+        url: route.url,
+        changefreq: route.changefreq,
+        priority: route.priority,
+        lastmod: route.lastmod,
+        links: [
+          { lang: 'es-VE', url: `${hostname}${route.url}` },
+          { lang: 'x-default', url: `${hostname}${route.url}` },
+        ],
+      });
+    });
 
-    // 3) Convierte a string usando el stream legible (¡no el de escritura!)
+    sitemapStream.end();
     const xmlBuffer = await streamToPromise(sitemapStream);
 
-    // 4) Escribe el resultado en dist/sitemap.xml
     await fs.writeFile(resolve('dist', 'sitemap.xml'), xmlBuffer.toString());
-    console.log('✅  Sitemap generado correctamente');
+    console.log('✅ Sitemap generado correctamente');
   } catch (err) {
-    console.error('❌  Error generando sitemap:', err);
+    console.error('❌ Error generando sitemap:', err);
     process.exit(1);
   }
 })();

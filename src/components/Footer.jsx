@@ -32,6 +32,7 @@ const Footer = () => {
               <a href="/#services">Servicios</a>
               <a href="/#work">Proyectos</a>
               <a href="/#plans">Planes</a>
+              <a href="/#faq">Preguntas frecuentes</a>
             </div>
 
             <div className="wb-foot__col">
