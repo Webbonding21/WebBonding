@@ -8,23 +8,29 @@ User-agent: *
 Allow: /
 Disallow: /cotizador
 Disallow: /cotizador/
+Disallow: /r4apertura
+Disallow: /r4apertura/
 
 # Bots de IA — permitidos (indexación de contenido y citación)
 User-agent: GPTBot
 Allow: /
 Disallow: /cotizador
+Disallow: /r4apertura
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /cotizador
+Disallow: /r4apertura
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /cotizador
+Disallow: /r4apertura
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /cotizador
+Disallow: /r4apertura
 
 # Sitemap
 Sitemap: https://webbonding.net/sitemap.xml
