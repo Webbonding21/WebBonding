@@ -6,7 +6,9 @@
    ============================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-.r4 {
+/* Los modales van montados en el body (fuera de .r4), asi que la capa .r4-fondo
+   repite estas bases; si no, heredan el texto claro del sitio y no se leen. */
+.r4, .r4-fondo {
   --r4-naranja: #ff5000;
   --r4-naranja-suave: #fff0e8;
   --r4-grafito: #3b3b3d;
@@ -15,21 +17,35 @@
   --r4-linea: #e6e6e8;
   --r4-fondo: #f7f8f9;
 
+  font-family: 'Poppins', system-ui, sans-serif;
+  color: var(--r4-tinta);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.r4 {
   position: fixed;
   inset: 0;
   overflow-y: auto;
   background: var(--r4-fondo);
-  color: var(--r4-tinta);
-  font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
   z-index: 1;
 }
 
-.r4 *, .r4 *::before, .r4 *::after { box-sizing: border-box; }
+.r4 *, .r4 *::before, .r4 *::after,
+.r4-fondo *, .r4-fondo *::before, .r4-fondo *::after { box-sizing: border-box; }
 /* Los controles no heredan color por si solos y el sitio pinta texto claro
    sobre fondo oscuro. Va con :where() para que cualquier clase de aquí gane. */
-:where(.r4 button, .r4 input, .r4 select, .r4 textarea) { font-family: inherit; color: inherit; }
+:where(.r4 button, .r4 input, .r4 select, .r4 textarea,
+       .r4-fondo button, .r4-fondo input, .r4-fondo select, .r4-fondo textarea) {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* El sitio pinta la barra de scroll casi negra; aquí el fondo es claro. */
+.r4 ::-webkit-scrollbar, .r4-fondo ::-webkit-scrollbar { width: 10px; height: 10px; }
+.r4 ::-webkit-scrollbar-track, .r4-fondo ::-webkit-scrollbar-track { background: transparent; }
+.r4 ::-webkit-scrollbar-thumb, .r4-fondo ::-webkit-scrollbar-thumb { background: #d6d6da; border-radius: 999px; }
+.r4 ::-webkit-scrollbar-thumb:hover, .r4-fondo ::-webkit-scrollbar-thumb:hover { background: #bdbdc4; }
 
 /* —— piezas base —— */
 .r4-tarjeta {
@@ -130,6 +146,7 @@ textarea.r4-campo { height: 96px; padding: 10px 12px; resize: vertical; }
 .r4-marca-texto strong { display: block; font-size: 14px; font-weight: 600; }
 .r4-marca-texto span { display: block; font-size: 11px; color: var(--r4-apagado); }
 
+.r4-cabecera-acciones { display: flex; align-items: center; gap: 8px; }
 .r4-contenido { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
 .r4-pie {
   max-width: 1100px;
@@ -143,27 +160,6 @@ textarea.r4-campo { height: 96px; padding: 10px 12px; resize: vertical; }
   color: var(--r4-apagado);
 }
 .r4-pie img { height: 16px; width: auto; opacity: .7; }
-
-/* —— acceso —— */
-.r4-acceso { min-height: 100%; display: grid; place-items: center; padding: 24px 16px; }
-.r4-acceso form { width: 100%; max-width: 380px; padding: 28px; }
-.r4-acceso-logos { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
-.r4-acceso-logos img { height: 34px; width: auto; }
-.r4-acceso h1 { margin: 0; font-size: 18px; font-weight: 600; }
-.r4-acceso p { margin: 0 0 24px; font-size: 14px; color: var(--r4-apagado); }
-.r4-acceso .r4-btn { width: 100%; }
-.r4-acceso-credito {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--r4-linea);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 11px;
-  color: var(--r4-apagado);
-}
-.r4-acceso-credito img { height: 16px; width: auto; opacity: .7; }
 
 /* —— barra de herramientas —— */
 .r4-herramientas { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
@@ -289,6 +285,7 @@ textarea.r4-campo { height: 96px; padding: 10px 12px; resize: vertical; }
   flex-direction: column;
   overflow: hidden;
 }
+.r4-modal-angosto { height: auto; }
 .r4-modal-cabecera,
 .r4-modal-pie {
   flex-shrink: 0;
@@ -331,7 +328,9 @@ textarea.r4-campo { height: 96px; padding: 10px 12px; resize: vertical; }
   .r4-resumen { grid-template-columns: repeat(4, 1fr); }
   .r4-datos { grid-template-columns: 1fr 1fr; }
   .r4-modal-cuerpo { grid-template-columns: 1fr 1fr; }
+  .r4-modal-angosto .r4-modal-cuerpo { grid-template-columns: 1fr; }
   .r4-fondo { align-items: center; padding: 16px; }
+  .r4-modal-angosto { max-width: 420px; }
   .r4-modal {
     max-width: 680px;
     height: auto;
