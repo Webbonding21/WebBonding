@@ -13,7 +13,7 @@ import {
 } from '../data/catalog';
 import '../assets/Cotizador.css';
 
-const PHONE = '584121510662';
+const PHONE = '584220579731';
 const STORAGE_KEY = 'wb_cart_v1';
 
 function buildWhatsAppMessage(cart, customRequest, contact) {

@@ -26,7 +26,7 @@ const PLANS = [
 ];
 
 const sendWhatsAppMessage = (planName) => {
-  const phone = '584121510662';
+  const phone = '584220579731';
   const message = `Hola Web Bonding! 👋\nMe interesa llevar mi negocio al siguiente nivel con el plan *${planName}*.\n\nQuisiera agendar una asesoría para discutir mi proyecto. 🚀`;
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 };

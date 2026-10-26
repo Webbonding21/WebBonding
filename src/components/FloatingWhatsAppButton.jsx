@@ -5,7 +5,7 @@ import '../assets/FloatingWhatsAppButton.css';
 
 const FloatingWhatsAppButton = () => {
   const handleClick = () => {
-    const phoneNumber = '584121510662';
+    const phoneNumber = '584220579731';
     // Mensaje un poco más directo y profesional
     const message = 'Hola Web Bonding! 👋 Estoy interesado en potenciar mi negocio con sus soluciones digitales. ¿Podrían asesorarme?';
     const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;

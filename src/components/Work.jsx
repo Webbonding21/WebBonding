@@ -4,7 +4,7 @@ import StepForModal from './StepForModal';
 import '../assets/Work.css';
 
 const wa = (name) =>
-  `https://wa.me/584121510662?text=${encodeURIComponent(
+  `https://wa.me/584220579731?text=${encodeURIComponent(
     `Hola Web Bonding! 👋 Vi el proyecto *${name}* y quiero construir algo así para mi negocio.`
   )}`;
 

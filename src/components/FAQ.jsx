@@ -17,7 +17,7 @@ const FAQS = [
   },
   {
     q: '¿Cuánto cuesta hacer una página web o una app en Venezuela?',
-    a: 'Una landing page profesional inicia desde aproximadamente 300 USD; un e-commerce desde 1.200 USD; y una aplicación móvil multiplataforma desde 2.700 USD. Todos los proyectos se cotizan a medida según funcionalidades. Solicita una cotización por WhatsApp al +58 412 151 0662.',
+    a: 'Una landing page profesional inicia desde aproximadamente 300 USD; un e-commerce desde 1.200 USD; y una aplicación móvil multiplataforma desde 2.700 USD. Todos los proyectos se cotizan a medida según funcionalidades. Solicita una cotización por WhatsApp al +58 422 057 9731.',
   },
   {
     q: '¿Trabajan con empresas fuera de Acarigua y Araure?',
@@ -48,8 +48,8 @@ function FAQ() {
           </div>
           <Reveal as="p" className="faq__sub" delay="d2">
             Si tienes alguna duda que no esté aquí, escríbenos por WhatsApp al{' '}
-            <a href="https://wa.me/584121510662" target="_blank" rel="noopener noreferrer">
-              +58 412 151 0662
+            <a href="https://wa.me/584220579731" target="_blank" rel="noopener noreferrer">
+              +58 422 057 9731
             </a>{' '}
             y te respondemos hoy.
           </Reveal>

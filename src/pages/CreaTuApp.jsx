@@ -11,7 +11,7 @@ import Reveal from '../components/Reveal';
 import APPS from '../data/apps';
 import '../assets/CreaTuApp.css';
 
-const WA = '584121510662';
+const WA = '584220579731';
 
 const QUE_HACEMOS = [
   { t: 'Apps para tus clientes', d: 'Pedidos, delivery, reservas y pagos desde el teléfono.' },
@@ -166,7 +166,7 @@ function CreaTuApp() {
               <Reveal as="h2" className="lp-h2">Da el <em>siguiente paso</em>.</Reveal>
               <Reveal as="p" className="lp-contacto__p" delay="d1">Déjanos tus datos y te escribimos para conversar sobre tu proyecto, sin compromiso.</Reveal>
               <Reveal className="lp-contacto__datos" delay="d2">
-                <a href={`https://wa.me/${WA}`} target="_blank" rel="noopener noreferrer"><SiWhatsapp /> +58 412 151 0662</a>
+                <a href={`https://wa.me/${WA}`} target="_blank" rel="noopener noreferrer"><SiWhatsapp /> +58 422 057 9731</a>
                 <a href="https://www.instagram.com/web.bonding/" target="_blank" rel="noopener noreferrer"><SiInstagram /> @web.bonding</a>
                 <a href="mailto:webbonding21@gmail.com"><HiOutlineMail /> webbonding21@gmail.com</a>
                 <span><HiOutlineLocationMarker /> Acarigua–Araure, Portuguesa</span>

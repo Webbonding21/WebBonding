@@ -72,7 +72,7 @@ const StepForModal = ({ label = "Iniciar proyecto", className = "" }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const message = `🚀 *Nueva Solicitud Web Bonding* 🚀\n\n👤 *Nombre:* ${name}\n📧 *Correo:* ${correo}\n💡 *Servicio:* ${option}\n📝 *Detalles:* ${description}\n\n¡Estoy listo para comenzar!`;
-        const whatsappUrl = `https://wa.me/584121510662?text=${encodeURIComponent(message)}`;
+        const whatsappUrl = `https://wa.me/584220579731?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, "_blank");
         closeModal();
     };

@@ -5,7 +5,7 @@ import { SiWhatsapp } from 'react-icons/si';
 import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import '../assets/CTA.css';
 
-const waLink = `https://wa.me/584121510662?text=${encodeURIComponent(
+const waLink = `https://wa.me/584220579731?text=${encodeURIComponent(
   'Hola Web Bonding! 👋 Quiero hablar sobre un proyecto.'
 )}`;
 

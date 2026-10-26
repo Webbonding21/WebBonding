@@ -49,15 +49,15 @@ const Footer = () => {
               <a href="mailto:webbonding21@gmail.com" className="wb-foot__contact">
                 <HiOutlineMail /> webbonding21@gmail.com
               </a>
-              <a href="https://wa.me/584121510662" target="_blank" rel="noopener noreferrer" className="wb-foot__contact">
-                <HiOutlinePhone /> +58 412 151 0662
+              <a href="https://wa.me/584220579731" target="_blank" rel="noopener noreferrer" className="wb-foot__contact">
+                <HiOutlinePhone /> +58 422 057 9731
               </a>
               <span className="wb-foot__contact">
                 <HiOutlineLocationMarker /> Acarigua–Araure, Portuguesa, VE
               </span>
 
               <div className="wb-foot__social">
-                <a href="https://wa.me/584121510662" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><SiWhatsapp /></a>
+                <a href="https://wa.me/584220579731" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><SiWhatsapp /></a>
                 <a href="https://www.instagram.com/web.bonding" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><SiInstagram /></a>
                 <a href="https://www.facebook.com/profile.php?id=61556815558104" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><SiFacebook /></a>
               </div>

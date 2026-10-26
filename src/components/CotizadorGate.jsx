@@ -119,7 +119,7 @@ export default function CotizadorGate({ children }) {
         <p className="cot-gate__note">
           ¿No tienes la clave?{' '}
           <a
-            href="https://wa.me/584121510662?text=Hola%20Web%20Bonding%2C%20necesito%20acceso%20al%20cotizador%20privado."
+            href="https://wa.me/584220579731?text=Hola%20Web%20Bonding%2C%20necesito%20acceso%20al%20cotizador%20privado."
             target="_blank"
             rel="noopener noreferrer"
           >
