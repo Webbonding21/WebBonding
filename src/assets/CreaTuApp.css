@@ -80,10 +80,13 @@
 .lp-contacto__datos svg { color: var(--accent); font-size: 1.15rem; }
 
 .lp-form { background: #fff; border: 1px solid var(--line-light); border-radius: var(--radius-lg); padding: clamp(1.4rem, 3vw, 2rem); display: grid; gap: 1rem; }
-.lp-campo { display: grid; gap: .35rem; font-weight: 600; font-size: .92rem; }
+.lp-campo { display: grid; gap: .3rem; font-weight: 600; font-size: .92rem; line-height: 1.2; }
 .lp-campo i { font-weight: 400; color: var(--ink-60); font-style: normal; }
-.lp-campo input, .lp-campo textarea { font: inherit; font-weight: 400; padding: .85em 1em; border-radius: 10px; border: 1.5px solid var(--line-light); background: var(--paper); color: var(--ink); resize: vertical; }
-.lp-campo input:focus, .lp-campo textarea:focus { outline: none; border-color: var(--accent); }
+/* los campos se distinguen de la tarjeta: un tono más oscuro y borde visible; el ejemplo va tenue */
+.lp-campo input, .lp-campo textarea { font: inherit; font-weight: 400; line-height: 1.4; padding: .85em 1em; border-radius: 10px;
+  border: 1.5px solid rgba(14, 14, 17, .26); background: #ECE7DC; color: var(--ink); resize: vertical; transition: border-color .2s, box-shadow .2s, background .2s; }
+.lp-campo input::placeholder, .lp-campo textarea::placeholder { color: rgba(14, 14, 17, .36); }
+.lp-campo input:focus, .lp-campo textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(123, 47, 190, .14); }
 .lp-campo .lp-error { border-color: var(--coral); }
 .lp-campo small { color: var(--coral); font-weight: 500; }
 .lp-btn--envio { justify-content: center; width: 100%; margin-top: .4rem; }

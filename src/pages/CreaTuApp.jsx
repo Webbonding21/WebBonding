@@ -50,21 +50,23 @@ function Formulario() {
   return (
     <form className="lp-form" onSubmit={enviar} noValidate>
       {[
-        ['nombre', 'Nombre', 'text', 'name'],
-        ['telefono', 'Teléfono', 'tel', 'tel'],
-        ['correo', 'Correo', 'email', 'email'],
-      ].map(([k, label, type, auto]) => (
+        ['nombre', 'Nombre', 'text', 'name', 'text', 'Ej: María González'],
+        ['telefono', 'Teléfono', 'tel', 'tel', 'tel', 'Ej: 0412 123 4567'],
+        ['correo', 'Correo', 'email', 'email', 'email', 'Ej: maria@gmail.com'],
+      ].map(([k, label, type, auto, modo, ejemplo]) => (
         <label className="lp-campo" key={k}>
           <span>{label}</span>
-          <input type={type} autoComplete={auto} value={d[k]} onChange={cambia(k)} className={tocado && err[k] ? 'lp-error' : ''} />
+          <input type={type} autoComplete={auto} inputMode={modo} placeholder={ejemplo} value={d[k]} onChange={cambia(k)}
+            className={tocado && err[k] ? 'lp-error' : ''} />
           {tocado && err[k] && <small>{err[k]}</small>}
         </label>
       ))}
       <label className="lp-campo">
         <span>Adicional <i>(opcional)</i></span>
-        <textarea rows="3" value={d.adicional} onChange={cambia('adicional')} placeholder="Cuéntanos qué te gustaría hacer" />
+        <textarea rows="3" value={d.adicional} onChange={cambia('adicional')} autoComplete="off"
+          placeholder="Ej: Quiero una app para que mis clientes pidan y paguen desde el teléfono" />
       </label>
-      <button type="submit" className="lp-btn lp-btn--envio">Enviar mis datos <FiArrowRight aria-hidden="true" /></button>
+      <button type="submit" className="lp-btn lp-btn--envio">Comenzar mi proyecto <FiArrowRight aria-hidden="true" /></button>
       <p className="lp-form__nota">Te escribimos en menos de 24 horas.</p>
     </form>
   );
