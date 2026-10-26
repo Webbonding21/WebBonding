@@ -1,12 +1,14 @@
 import React from 'react';
 import Reveal from './Reveal';
+import StepForModal from './StepForModal';
+import { FiDownload } from 'react-icons/fi';
 import '../assets/Process.css';
 
 const STEPS = [
-  { n: '01', title: 'Descubrimiento', desc: 'Entendemos tu negocio, objetivos y usuarios. Definimos alcance, presupuesto y métricas de éxito.' },
-  { n: '02', title: 'Diseño & Prototipo', desc: 'Arquitectura, UX/UI y un prototipo navegable. Validamos antes de escribir la primera línea.' },
-  { n: '03', title: 'Desarrollo & QA', desc: 'Construimos por sprints con entregas visibles. Código limpio, pruebas y revisiones continuas.' },
-  { n: '04', title: 'Lanzamiento & Soporte', desc: 'Desplegamos, medimos y acompañamos. Iteramos con datos reales y soporte prioritario.' },
+  { n: '01', title: 'Te escuchamos', desc: 'Conocemos tu negocio y lo que necesitas. Definimos juntos qué vamos a construir, cuánto cuesta y cuándo estará listo.' },
+  { n: '02', title: 'Diseño', desc: 'Te mostramos cómo se verá tu app, pantalla por pantalla, y la apruebas antes de programarla.' },
+  { n: '03', title: 'Construcción y pruebas', desc: 'La construimos por etapas y cada semana ves el avance. La probamos a fondo antes de entregarla.' },
+  { n: '04', title: 'En tu teléfono', desc: 'La publicamos en las tiendas o en la web y te acompañamos después con ajustes, mejoras y soporte.' },
 ];
 
 function Process() {
@@ -17,12 +19,13 @@ function Process() {
           <div>
             <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">// Cómo trabajamos</Reveal>
             <Reveal as="h2" className="wb-h2 process__title" delay="d1">
-              De la idea<br />al <em>deploy</em>.
+              De la idea<br />al <em>teléfono</em>.{' '}
+              <FiDownload className="process__descarga" aria-hidden="true" />
             </Reveal>
           </div>
           <Reveal as="p" className="process__sub" delay="d2">
-            Un método claro y sin sorpresas. Tú ves avances reales cada semana;
-            nosotros nos encargamos de la complejidad.
+            Un camino claro y sin sorpresas: cada semana ves cómo avanza tu app, y
+            nosotros nos encargamos de la parte técnica.
           </Reveal>
         </div>
 
@@ -37,6 +40,7 @@ function Process() {
             </Reveal>
           ))}
         </div>
+        <Reveal className="wb-comenzar"><StepForModal label="Comenzar ahora" /></Reveal>
       </div>
     </section>
   );

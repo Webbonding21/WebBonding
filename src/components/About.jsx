@@ -1,22 +1,23 @@
 import React from 'react';
 import Reveal from './Reveal';
+import StepForModal from './StepForModal';
 import '../assets/About.css';
 
 const PILLARS = [
   {
     n: '01',
     title: 'Enfoque en resultados',
-    desc: 'No entregamos «código»: entregamos eficiencia, automatización y escalabilidad que se nota en tu operación.',
+    desc: 'No entregamos «código»: entregamos orden, tiempo ahorrado y un negocio listo para crecer.',
   },
   {
     n: '02',
-    title: 'Velocidad & seguridad',
-    desc: 'Infraestructura optimizada, encriptada y rápida. Del primer pixel del frontend hasta el último query del servidor.',
+    title: 'Rápido y seguro',
+    desc: 'Apps que cargan rápido y datos protegidos, desde lo que ve tu cliente hasta el servidor donde se guarda todo.',
   },
   {
     n: '03',
-    title: 'Del pixel al sensor',
-    desc: 'Vamos más allá de la pantalla: integramos software con hardware (IoT) para controlar tu entorno físico en tiempo real.',
+    title: 'Más allá de la pantalla',
+    desc: 'Conectamos tu app con equipos físicos (sensores, máquinas, cámaras) para que los veas y controles desde el teléfono.',
   },
 ];
 
@@ -44,12 +45,12 @@ function About() {
           <Reveal as="h2" className="wb-h2 about__title" delay="d1">
             No vendemos código.
             <br />
-            Construimos <em>ventaja competitiva</em>.
+            Construimos lo que hace <em>crecer</em> tu negocio.
           </Reveal>
           <Reveal as="p" className="about__lead" delay="d2">
-            Somos un estudio venezolano de producto digital. Unimos estrategia,
-            diseño e ingeniería para construir ecosistemas robustos: del software a
-            medida al hardware conectado.
+            Somos un equipo venezolano que diseña y programa apps, páginas web y
+            sistemas a la medida, y los conecta con equipos físicos cuando tu
+            negocio lo necesita.
           </Reveal>
 
           <div className="about__list">
@@ -63,6 +64,7 @@ function About() {
               </Reveal>
             ))}
           </div>
+          <Reveal className="wb-comenzar wb-comenzar--izq"><StepForModal label="Comenzar ahora" /></Reveal>
         </div>
       </div>
     </section>

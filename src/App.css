@@ -156,3 +156,8 @@ a { color: inherit; text-decoration: none; }
 
 /* foco accesible */
 :where(a, button, input, textarea):focus-visible { outline: 2px solid var(--electric); outline-offset: 3px; }
+
+/* «Comenzar ahora» al final de cada sección: abre el mismo formulario que «Iniciar proyecto» */
+.wb-comenzar { margin-top: clamp(2.2rem, 4vw, 3.2rem); display: flex; justify-content: center; }
+.wb-comenzar--izq { justify-content: flex-start; margin-top: 2rem; }
+.process__descarga { display: inline-block; vertical-align: -0.05em; margin-left: .1em; font-size: .62em; color: var(--accent); }

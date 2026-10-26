@@ -12,8 +12,8 @@ const STATS = [
 ];
 
 const KEYWORDS = [
-  'Apps móviles', 'E-commerce', 'IoT industrial', 'Sistemas ERP/CRM',
-  'Delivery', 'Pasarelas de pago', 'Dashboards', 'Automatización', 'PWA', 'APIs',
+  'Apps móviles', 'Tiendas en línea', 'Sistemas administrativos', 'Equipos conectados',
+  'Delivery', 'Pagos en línea', 'Paneles de control', 'Automatización', 'Apps web', 'Chatbots de WhatsApp',
 ];
 
 function Hero() {
@@ -26,7 +26,7 @@ function Hero() {
         {/* Texto */}
         <div className="hero__head">
           <Reveal as="span" className="wb-eyebrow hero__eyebrow">
-            Software · IoT · E-commerce — Acarigua, VE
+            Apps · Páginas web · Sistemas · Acarigua, VE
           </Reveal>
 
           <Reveal as="h1" className="hero__title" delay="d1">
@@ -36,9 +36,9 @@ function Hero() {
           </Reveal>
 
           <Reveal as="p" className="hero__sub" delay="d2">
-            Apps móviles, plataformas web, e-commerce y automatización IoT.
-            Estrategia, diseño e ingeniería bajo un mismo techo — desde Venezuela
-            para toda Latinoamérica.
+            Creamos la app de tu negocio, tu página web, tu tienda en línea y el
+            sistema para controlar ventas, inventario y cobranzas. Un solo equipo,
+            desde Venezuela para toda Latinoamérica.
           </Reveal>
 
           <Reveal className="hero__actions" delay="d3">

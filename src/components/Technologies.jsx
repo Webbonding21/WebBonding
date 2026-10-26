@@ -1,5 +1,6 @@
 import React from 'react';
 import Reveal from './Reveal';
+import StepForModal from './StepForModal';
 import '../assets/Technologies.css';
 
 import {
@@ -36,9 +37,9 @@ function Technologies() {
     <section id="technologies" className="tech wb-section wb-section--ink">
       <div className="wb-container">
         <div className="tech__header">
-          <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">// Stack tecnológico</Reveal>
+          <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">// Herramientas</Reveal>
           <Reveal as="h2" className="wb-h2 tech__title" delay="d1">
-            Nuestro arsenal <em>técnico</em>.
+            Con esto <em>construimos</em>.
           </Reveal>
           <Reveal as="p" className="tech__sub" delay="d2">
             Elegimos la herramienta correcta para cada problema. Estas son algunas
@@ -56,6 +57,7 @@ function Technologies() {
             </div>
           ))}
         </Reveal>
+        <Reveal className="wb-comenzar"><StepForModal label="Comenzar ahora" /></Reveal>
       </div>
     </section>
   );

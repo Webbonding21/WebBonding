@@ -10,7 +10,7 @@ import "../assets/StepForModal.css";
 // Asegura que el modal se ate al root de tu app
 Modal.setAppElement('#root');
 
-const StepForModal = () => {
+const StepForModal = ({ label = "Iniciar proyecto", className = "" }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [step, setStep] = useState(1);
     
@@ -81,18 +81,18 @@ const StepForModal = () => {
         { value: "Sitio Web", label: "Web", icon: <FaGlobe /> },
         { value: "E-commerce", label: "Tienda", icon: <FaShoppingCart /> },
         { value: "App Móvil", label: "App Móvil", icon: <FaMobileAlt /> },
-        { value: "Software", label: "Software", icon: <FaLaptopCode /> },
-        { value: "App Escritorio", label: "Desktop", icon: <FaDesktop /> },
-        { value: "API/Backend", label: "API/Back", icon: <FaServer /> },
-        { value: "Consultoría", label: "Consultoría", icon: <FaLightbulb /> },
+        { value: "Sistema administrativo", label: "Sistema", icon: <FaLaptopCode /> },
+        { value: "App de escritorio", label: "Escritorio", icon: <FaDesktop /> },
+        { value: "Conectar sistemas (API)", label: "Integraciones", icon: <FaServer /> },
+        { value: "Asesoría", label: "Asesoría", icon: <FaLightbulb /> },
         { value: "Otro", label: "Otro", icon: <FaShapes /> }
     ];
 
     return (
         <div>
             {/* Botón Principal (Trigger) */}
-            <button onClick={openModal} className="open-modal-button">
-                Iniciar Proyecto
+            <button onClick={openModal} className={`open-modal-button ${className}`.trim()}>
+                {label}
             </button>
 
             <Modal 

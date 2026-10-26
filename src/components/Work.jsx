@@ -1,5 +1,6 @@
 import React from 'react';
 import Reveal from './Reveal';
+import StepForModal from './StepForModal';
 import '../assets/Work.css';
 
 const wa = (name) =>
@@ -20,10 +21,10 @@ const PROJECTS = [
   },
   {
     name: 'Llegate',
-    cat: 'Movilidad · Ride-hailing',
+    cat: 'Movilidad · Transporte',
     year: '2025',
     desc: 'Transporte urbano para Venezuela. Apps de pasajero y conductor con geolocalización y despacho en tiempo real.',
-    tags: ['iOS/Android', 'GPS en vivo', 'Sockets'],
+    tags: ['iPhone y Android', 'GPS en vivo', 'Despacho en tiempo real'],
     accent: '#2E37FF',
     span: 'span-5',
   },
@@ -69,7 +70,7 @@ function Work() {
           </div>
           <Reveal as="p" className="work__sub" delay="d2">
             Una muestra de lo que hemos construido para clientes en Venezuela y
-            Latinoamérica — de apps con miles de pedidos a plantas industriales conectadas.
+            Latinoamérica: de apps con miles de pedidos a plantas industriales conectadas.
           </Reveal>
         </div>
 
@@ -106,6 +107,7 @@ function Work() {
             </Reveal>
           ))}
         </div>
+        <Reveal className="wb-comenzar"><StepForModal label="Comenzar ahora" /></Reveal>
       </div>
     </section>
   );

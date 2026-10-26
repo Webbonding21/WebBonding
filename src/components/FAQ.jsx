@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import Reveal from './Reveal';
+import StepForModal from './StepForModal';
 import '../assets/FAQ.css';
 
 /** Las mismas preguntas que están en el JSON-LD FAQPage del index.html.
@@ -28,7 +29,7 @@ const FAQS = [
   },
   {
     q: '¿En cuánto tiempo entregan un proyecto?',
-    a: 'Una landing page se entrega en 1 a 2 semanas, un e-commerce en 4 a 6 semanas y una app móvil completa entre 8 y 12 semanas. Trabajamos por sprints con entregas visibles cada semana.',
+    a: 'Una landing page se entrega en 1 a 2 semanas, un e-commerce en 4 a 6 semanas y una app móvil completa entre 8 y 12 semanas. Trabajamos por etapas y cada semana ves el avance.',
   },
 ];
 
@@ -90,6 +91,7 @@ function FAQ() {
             );
           })}
         </ul>
+        <Reveal className="wb-comenzar"><StepForModal label="Comenzar ahora" /></Reveal>
       </div>
     </section>
   );

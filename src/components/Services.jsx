@@ -1,5 +1,6 @@
 import React from 'react';
 import Reveal from './Reveal';
+import StepForModal from './StepForModal';
 import '../assets/Services.css';
 
 const SERVICES = [
@@ -7,27 +8,27 @@ const SERVICES = [
     n: '01',
     icon: '💻',
     img: '/img/service-web.jpg',
-    title: 'Desarrollo Web & Apps',
-    desc: 'Plataformas modernas, rápidas y escalables que tus clientes disfrutan usar.',
-    features: ['Landing & corporativas', 'E-commerce & tiendas', 'Web Apps (PWA) & dashboards', 'Apps móviles iOS / Android'],
+    title: 'Páginas web y apps',
+    desc: 'Páginas y apps rápidas, fáciles de usar y listas para crecer contigo.',
+    features: ['Páginas de presentación y corporativas', 'Tiendas en línea', 'Apps web y paneles de control', 'Apps para iPhone y Android'],
     mod: 'a',
   },
   {
     n: '02',
     icon: '⚙️',
     img: '/img/service-data.jpg',
-    title: 'Backend & Sistemas',
-    desc: 'El motor inteligente que automatiza y ordena tu negocio.',
-    features: ['Sistemas ERP / CRM a medida', 'APIs REST & GraphQL', 'Bases de datos robustas', 'Pasarelas de pago'],
+    title: 'Sistemas para tu negocio',
+    desc: 'El sistema que ordena tu negocio y saca las cuentas por ti.',
+    features: ['Sistemas administrativos (ERP / CRM)', 'Conexión con bancos, pagos y WhatsApp', 'Tus datos seguros y ordenados', 'Cobros en línea'],
     mod: 'b',
   },
   {
     n: '03',
     icon: '📡',
     img: '/img/service-iot.jpg',
-    title: 'IoT & Hardware',
-    desc: 'Conectamos el mundo físico con el digital. Software que toca la realidad.',
-    features: ['Sensores & monitoreo remoto', 'Automatización industrial', 'Control vía web / app', 'Telemetría en tiempo real'],
+    title: 'Equipos conectados (IoT)',
+    desc: 'Conectamos tus máquinas y sensores a una app para verlos y controlarlos a distancia.',
+    features: ['Sensores y monitoreo a distancia', 'Automatización industrial', 'Control desde la web o el teléfono', 'Datos de tus equipos en tiempo real'],
     mod: 'c',
   },
 ];
@@ -41,11 +42,11 @@ function Services() {
             // Qué hacemos
           </Reveal>
           <Reveal as="h2" className="wb-h2 services__title" delay="d1">
-            Un estudio,<br />todo el <em>stack</em>.
+            Un solo equipo para tu web,<br />tu app y tu <em>sistema</em>.
           </Reveal>
           <Reveal as="p" className="services__sub" delay="d2">
-            Cubrimos el ciclo completo del producto: del diseño visual al sensor físico.
-            Tres frentes, un mismo equipo.
+            Diseñamos, programamos y te acompañamos después de entregar. Hablas con
+            el mismo equipo de principio a fin.
           </Reveal>
         </div>
 
@@ -68,6 +69,7 @@ function Services() {
             </Reveal>
           ))}
         </div>
+        <Reveal className="wb-comenzar"><StepForModal label="Comenzar ahora" /></Reveal>
       </div>
     </section>
   );

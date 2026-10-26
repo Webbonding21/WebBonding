@@ -1,26 +1,27 @@
 import React from 'react';
 import Reveal from './Reveal';
+import StepForModal from './StepForModal';
 import '../assets/Plans.css';
 
 const PLANS = [
   {
-    name: 'StartUp',
+    name: 'Presencia en línea',
     tagline: 'Para validar y tener presencia',
     price: 'Consultar',
-    features: ['Landing page moderna', 'Diseño 100% responsivo', 'Botón directo a WhatsApp', 'Hosting incluido (1 año)', 'SEO básico'],
+    features: ['Página de presentación moderna', 'Se ve bien en teléfono y computadora', 'Botón directo a WhatsApp', 'Hosting incluido (1 año)', 'Lista para aparecer en Google'],
   },
   {
-    name: 'Business Growth',
+    name: 'Negocio en línea',
     tagline: 'Para negocios en expansión',
     price: 'Consultar',
     featured: true,
-    features: ['Sitio corporativo (hasta 10 págs)', 'Catálogo o e-commerce', 'Panel administrativo', 'Blog / Noticias', 'Integración de pagos'],
+    features: ['Sitio corporativo (hasta 10 páginas)', 'Catálogo o tienda en línea', 'Panel administrativo', 'Blog / Noticias', 'Cobros en línea'],
   },
   {
-    name: 'Enterprise & IoT',
+    name: 'Software a la medida',
     tagline: 'Automatización y software a medida',
     price: 'A medida',
-    features: ['Software full-stack a medida', 'Integración hardware / IoT', 'Apps móviles nativas', 'ERP / CRM personalizado', 'Soporte prioritario 24/7'],
+    features: ['App o sistema completo a la medida', 'Conexión con equipos y sensores (IoT)', 'Apps para iPhone y Android', 'Sistema administrativo (ERP / CRM)', 'Soporte prioritario 24/7'],
   },
 ];
 
@@ -78,6 +79,7 @@ function Plans() {
         <Reveal as="p" className="plans__note" delay="d2">
           ¿No encaja ninguno? <a href="#contact">Armamos un plan a tu medida →</a>
         </Reveal>
+        <Reveal className="wb-comenzar"><StepForModal label="Comenzar ahora" /></Reveal>
       </div>
     </section>
   );
