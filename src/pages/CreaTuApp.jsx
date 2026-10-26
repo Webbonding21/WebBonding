@@ -1,10 +1,13 @@
 // src/pages/CreaTuApp.jsx
 // Landing para Google Ads (idea de Roikel): sencilla y al punto, cuatro partes y un CTA distinto en cada una.
-// Todos los botones bajan al formulario; el formulario manda los datos al WhatsApp de Web Bonding, igual que
-// «Iniciar proyecto» del sitio. La página completa (/) sigue siendo la informativa.
-import React, { useState } from 'react';
+// Todos los botones bajan al formulario; el formulario va paso a paso y manda los datos al WhatsApp de
+// Web Bonding, igual que «Iniciar proyecto» del sitio. La página completa (/) sigue siendo la informativa.
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal, flushSync } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
-import { FiDownload, FiArrowRight } from 'react-icons/fi';
+import {
+  FiDownload, FiArrowRight, FiArrowLeft, FiCheck, FiSmartphone, FiGrid, FiMonitor, FiHelpCircle, FiExternalLink, FiX,
+} from 'react-icons/fi';
 import { SiWhatsapp, SiInstagram } from 'react-icons/si';
 import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import Reveal from '../components/Reveal';
@@ -27,53 +30,277 @@ function Boton({ children, claro = false }) {
   );
 }
 
-function Formulario() {
-  const [d, setD] = useState({ nombre: '', telefono: '', correo: '', adicional: '' });
-  const [tocado, setTocado] = useState(false);
-  const err = {
-    nombre: d.nombre.trim().length < 3 ? 'Escribe tu nombre.' : '',
-    telefono: d.telefono.replace(/\D/g, '').length < 7 ? 'Escribe un teléfono válido.' : '',
-    correo: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo.trim()) ? '' : 'Escribe un correo válido.',
-  };
-  const valido = !err.nombre && !err.telefono && !err.correo;
-  const cambia = (k) => (e) => setD({ ...d, [k]: e.target.value });
+// «Nuestras apps» como vitrina: se elige la app en las etiquetas (o con las flechas) y se ven sus pantallas
+// reales; cada captura se amplía al tocarla.
+function Vitrina() {
+  const [i, setI] = useState(0);
+  const [atras, setAtras] = useState(false);
+  const [zoom, setZoom] = useState(-1); // captura ampliada; -1 = ninguna
+  const fila = useRef(null);
+  const a = APPS[i];
+  const n = a.capturas.length;
 
-  const enviar = (e) => {
-    e.preventDefault();
-    setTocado(true);
-    if (!valido) return;
-    const msg = `Hola Web Bonding! 👋 Quiero comenzar mi proyecto.\n\n👤 *Nombre:* ${d.nombre.trim()}\n📱 *Teléfono:* ${d.telefono.trim()}\n📧 *Correo:* ${d.correo.trim()}` +
-      (d.adicional.trim() ? `\n📝 *Adicional:* ${d.adicional.trim()}` : '');
-    window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
+  const ver = (k) => {
+    const m = (k + APPS.length) % APPS.length;
+    setAtras(k < i);
+    setZoom(-1);
+    setI(m);
+    // la etiqueta elegida queda a la vista dentro de su fila, sin mover la página
+    const chip = fila.current?.children[m];
+    if (chip) fila.current.scrollTo({ left: chip.offsetLeft - (fila.current.clientWidth - chip.offsetWidth) / 2, behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    if (zoom < 0) return undefined;
+    const tecla = (e) => {
+      if (e.key === 'Escape') setZoom(-1);
+      if (e.key === 'ArrowRight') setZoom((z) => (z + 1) % n);
+      if (e.key === 'ArrowLeft') setZoom((z) => (z - 1 + n) % n);
+    };
+    document.addEventListener('keydown', tecla);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', tecla);
+      document.body.style.overflow = '';
+    };
+  }, [zoom, n]);
+
+  const z = a.capturas[zoom];
   return (
-    <form className="lp-form" onSubmit={enviar} noValidate>
-      {[
-        ['nombre', 'Nombre', 'text', 'name', 'text', 'Ej: María González'],
-        ['telefono', 'Teléfono', 'tel', 'tel', 'tel', 'Ej: 0412 123 4567'],
-        ['correo', 'Correo', 'email', 'email', 'email', 'Ej: maria@gmail.com'],
-      ].map(([k, label, type, auto, modo, ejemplo]) => (
-        <label className="lp-campo" key={k}>
-          <span>{label}</span>
-          <input type={type} autoComplete={auto} inputMode={modo} placeholder={ejemplo} value={d[k]} onChange={cambia(k)}
-            className={tocado && err[k] ? 'lp-error' : ''} />
-          {tocado && err[k] && <small>{err[k]}</small>}
-        </label>
-      ))}
-      <label className="lp-campo">
-        <span>Adicional <i>(opcional)</i></span>
-        <textarea rows="3" value={d.adicional} onChange={cambia('adicional')} autoComplete="off"
-          placeholder="Ej: Quiero una app para que mis clientes pidan y paguen desde el teléfono" />
-      </label>
-      <button type="submit" className="lp-btn lp-btn--envio">Comenzar mi proyecto <FiArrowRight aria-hidden="true" /></button>
-      <p className="lp-form__nota">Te escribimos en menos de 24 horas.</p>
+    <div className="lp-vitrina">
+      <div className="lp-vitrina__chips" ref={fila} role="group" aria-label="Elige una app">
+        {APPS.map((x, k) => (
+          <button type="button" key={x.slug} className={`lp-vitrina__chip ${k === i ? 'is-on' : ''}`} aria-pressed={k === i} onClick={() => ver(k)}>
+            {x.chip || x.nombre}
+          </button>
+        ))}
+      </div>
+
+      <article key={a.slug} className={`lp-app ${atras ? 'lp-app--atras' : ''}`}>
+        <div className="lp-app__info">
+          <span className="lp-app__tipo">{a.tipo}</span>
+          <h3>{a.nombre}</h3>
+          <p>{a.descripcion}</p>
+          {a.enlaces && (
+            <div className="lp-app__enlaces">
+              {a.enlaces.map((e) => (
+                <a key={e.url} className={`lp-app__enlace lp-app__enlace--${e.tipo}`} href={e.url} target="_blank" rel="noopener noreferrer">
+                  {e.tipo === 'descarga' ? <FiDownload aria-hidden="true" /> : <FiExternalLink aria-hidden="true" />} {e.texto}
+                </a>
+              ))}
+            </div>
+          )}
+          <div className="lp-app__pasar">
+            <button type="button" onClick={() => ver(i - 1)} aria-label="App anterior"><FiArrowLeft aria-hidden="true" /></button>
+            <span>{String(i + 1).padStart(2, '0')} / {String(APPS.length).padStart(2, '0')}</span>
+            <button type="button" onClick={() => ver(i + 1)} aria-label="App siguiente"><FiArrowRight aria-hidden="true" /></button>
+          </div>
+        </div>
+        <div className="lp-app__capturas">
+          {a.capturas.map((c, k) => (
+            <figure className="lp-shot" key={c.src}>
+              <button type="button" className="lp-shot__ampliar" onClick={() => setZoom(k)} aria-label={`Ampliar: ${c.t}`}>
+                <img className={`lp-cap lp-cap--${c.formato}`} src={c.src} alt={`${a.nombre}: ${c.t}`} loading="lazy" />
+              </button>
+              <figcaption>{c.t}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </article>
+
+      {/* en <body>: dentro de Reveal (que anima con transform) el position: fixed quedaría encerrado en su caja */}
+      {z && createPortal(
+        <div className="lp-zoom" role="dialog" aria-modal="true" aria-label={`${a.nombre}: ${z.t}`} onClick={() => setZoom(-1)}>
+          <figure className="lp-zoom__fig" onClick={(e) => e.stopPropagation()}>
+            <img key={z.src} className={`lp-zoom__img lp-zoom__img--${z.formato}`} src={z.src} alt={`${a.nombre}: ${z.t}`} />
+            <figcaption>{a.nombre} · {z.t} <span>{zoom + 1} / {n}</span></figcaption>
+          </figure>
+          <button type="button" className="lp-zoom__cerrar" onClick={() => setZoom(-1)} aria-label="Cerrar" autoFocus><FiX aria-hidden="true" /></button>
+          {n > 1 && (
+            <>
+              <button type="button" className="lp-zoom__paso lp-zoom__paso--ant" aria-label="Anterior"
+                onClick={(e) => { e.stopPropagation(); setZoom((zoom - 1 + n) % n); }}><FiArrowLeft aria-hidden="true" /></button>
+              <button type="button" className="lp-zoom__paso lp-zoom__paso--sig" aria-label="Siguiente"
+                onClick={(e) => { e.stopPropagation(); setZoom((zoom + 1) % n); }}><FiArrowRight aria-hidden="true" /></button>
+            </>
+          )}
+        </div>,
+        document.body,
+      )}
+    </div>
+  );
+}
+
+// Formulario paso a paso: una pregunta por pantalla. Pide lo que dibujó Roikel (nombre, teléfono, correo y
+// adicional opcional) y abre con lo que quiere construir, que se responde con un toque y pasa solo.
+const OPCIONES = [
+  { v: 'Una app para mis clientes', t: 'Una app', d: 'Para que tus clientes pidan, paguen o reserven.', Icono: FiSmartphone },
+  { v: 'Un sistema para mi negocio', t: 'Un sistema', d: 'Ventas, inventario y cobranzas en un solo lugar.', Icono: FiGrid },
+  { v: 'Una página web o tienda', t: 'Una página web', d: 'Tu negocio en Google, con catálogo.', Icono: FiMonitor },
+  { v: 'Todavía no sé qué necesito', t: 'No estoy seguro', d: 'Te ayudamos a elegir.', Icono: FiHelpCircle },
+];
+
+const PASOS = ['tipo', 'nombre', 'telefono', 'correo', 'adicional'];
+
+const PREGUNTAS = {
+  nombre: { t: () => '¿Cómo te llamas?', p: 'Así sabemos con quién hablamos.', type: 'text', auto: 'name', ej: 'Ej: María González' },
+  telefono: { t: (n) => `Mucho gusto, ${n}. ¿A qué número te escribimos?`, p: 'Te escribimos por WhatsApp en menos de 24 horas.', type: 'tel', auto: 'tel', ej: 'Ej: 0412 123 4567' },
+  correo: { t: () => '¿Y tu correo?', p: 'Ahí te mandamos la propuesta.', type: 'email', auto: 'email', ej: 'Ej: maria@gmail.com' },
+  adicional: { t: () => '¿Algo más que debamos saber?', p: 'Cuéntanos de tu negocio o de tu idea. Es opcional.', ej: 'Ej: Quiero una app para que mis clientes pidan y paguen desde el teléfono' },
+};
+
+const FALTA = {
+  tipo: (d) => (d.tipo ? '' : 'Elige una opción.'),
+  nombre: (d) => (d.nombre.trim().length < 3 ? 'Escribe tu nombre.' : ''),
+  telefono: (d) => (d.telefono.replace(/\D/g, '').length < 10 ? 'Escribe el número completo, con el código. Ej: 0412 123 4567' : ''),
+  correo: (d) => (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo.trim()) ? '' : 'Escribe un correo válido.'),
+  adicional: () => '',
+};
+
+const VACIO = { tipo: '', nombre: '', telefono: '', correo: '', adicional: '' };
+
+function Formulario() {
+  const [d, setD] = useState(VACIO);
+  const [paso, setPaso] = useState(0);
+  const [atras, setAtras] = useState(false);
+  const [aviso, setAviso] = useState('');
+  const [intento, setIntento] = useState(0); // cambia en cada intento fallido para que el aviso vuelva a temblar
+  const [enviado, setEnviado] = useState(''); // el enlace de WhatsApp, una vez enviado
+  const campo = useRef(null);
+
+  const k = PASOS[paso];
+  const primero = d.nombre.trim().split(/\s+/)[0] || '';
+  const nombre = primero.charAt(0).toUpperCase() + primero.slice(1);
+
+  // flushSync: la pregunta nueva se pinta dentro del mismo toque, así en el teléfono el teclado se abre al enfocarla
+  const ir = (n) => {
+    flushSync(() => { setAtras(n < paso); setAviso(''); setPaso(n); });
+    campo.current?.focus();
+  };
+
+  const elegir = (v) => {
+    setD({ ...d, tipo: v });
+    ir(1);
+  };
+
+  const cambia = (e) => {
+    setD({ ...d, [k]: e.target.value });
+    if (aviso) setAviso('');
+  };
+
+  const enviar = () => {
+    const msg = `Hola Web Bonding! 👋 Quiero comenzar mi proyecto.\n\n💡 *Quiero:* ${d.tipo}\n👤 *Nombre:* ${d.nombre.trim()}\n📱 *Teléfono:* ${d.telefono.trim()}\n📧 *Correo:* ${d.correo.trim()}` +
+      (d.adicional.trim() ? `\n📝 *Adicional:* ${d.adicional.trim()}` : '');
+    const url = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+    setEnviado(url);
+  };
+
+  const siguiente = (e) => {
+    e.preventDefault();
+    const falta = FALTA[k](d);
+    if (falta) {
+      setAviso(falta);
+      setIntento((i) => i + 1);
+      campo.current?.focus();
+      return;
+    }
+    if (paso < PASOS.length - 1) ir(paso + 1);
+    else enviar();
+  };
+
+  if (enviado) {
+    return (
+      <div className="lp-pasos">
+        <div className="lp-pasos__barra"><span style={{ width: '100%' }} /></div>
+        <div className="lp-paso lp-listo" role="status">
+          <span className="lp-listo__check"><FiCheck aria-hidden="true" /></span>
+          <h3 className="lp-paso__t">¡Listo, {nombre}!</h3>
+          <p className="lp-paso__p">Te abrimos WhatsApp con tu mensaje: solo falta enviarlo. Te respondemos en menos de 24 horas.</p>
+          <a className="lp-btn" href={enviado} target="_blank" rel="noopener noreferrer"><SiWhatsapp aria-hidden="true" /> Abrir WhatsApp</a>
+          <button type="button" className="lp-listo__otra" onClick={() => { setD(VACIO); setEnviado(''); setAtras(false); setPaso(0); }}>
+            Empezar de nuevo
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const q = PREGUNTAS[k];
+  return (
+    <form className="lp-pasos" onSubmit={siguiente} noValidate>
+      <div className="lp-pasos__barra" role="progressbar" aria-label="Avance" aria-valuemin={1} aria-valuemax={PASOS.length} aria-valuenow={paso + 1}>
+        <span style={{ width: `${((paso + 1) / PASOS.length) * 100}%` }} />
+      </div>
+      <div className="lp-pasos__top">
+        <span>Paso {paso + 1} de {PASOS.length}</span>
+        {paso > 0 && (
+          <button type="button" className="lp-pasos__atras" onClick={() => ir(paso - 1)}>
+            <FiArrowLeft aria-hidden="true" /> Atrás
+          </button>
+        )}
+      </div>
+
+      {/* lo que ya respondió, como etiquetas: tocar una vuelve a esa pregunta */}
+      {paso > 0 && (
+        <div className="lp-pasos__resumen">
+          {PASOS.slice(0, paso).map((p, i) => {
+            const valor = p === 'tipo' ? OPCIONES.find((o) => o.v === d.tipo)?.t : d[p].trim();
+            return (
+              <button type="button" key={p} className="lp-pasos__chip" onClick={() => ir(i)} aria-label={`Cambiar: ${valor}`}>
+                {valor}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      <div key={paso} className={`lp-paso ${atras ? 'lp-paso--atras' : ''}`}>
+        {k === 'tipo' ? (
+          <>
+            <p className="lp-paso__t" id="lp-tipo">¿Qué quieres construir?</p>
+            <p className="lp-paso__p">Toca una opción.</p>
+            <div className="lp-opciones" role="group" aria-labelledby="lp-tipo">
+              {OPCIONES.map(({ v, t, d: desc, Icono }) => (
+                <button type="button" aria-pressed={d.tipo === v} key={v}
+                  className={`lp-opcion ${d.tipo === v ? 'is-on' : ''}`} onClick={() => elegir(v)}
+                  ref={d.tipo === v || (!d.tipo && v === OPCIONES[0].v) ? campo : undefined}>
+                  <span className="lp-opcion__i"><Icono aria-hidden="true" /></span>
+                  <b>{t}</b>
+                  <small>{desc}</small>
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <label className="lp-paso__t" htmlFor={`lp-${k}`}>{q.t(nombre)}</label>
+            <p className="lp-paso__p">{q.p}</p>
+            {k === 'adicional' ? (
+              <textarea id="lp-adicional" ref={campo} className="lp-paso__input" rows="4" autoComplete="off"
+                placeholder={q.ej} value={d.adicional} onChange={cambia} />
+            ) : (
+              <input id={`lp-${k}`} ref={campo} className={`lp-paso__input ${aviso ? 'lp-error' : ''}`} type={q.type}
+                inputMode={q.type} autoComplete={q.auto} enterKeyHint="next" placeholder={q.ej} value={d[k]} onChange={cambia}
+                aria-invalid={aviso ? true : undefined} aria-describedby={aviso ? 'lp-aviso' : undefined} />
+            )}
+            {aviso && <small id="lp-aviso" key={intento} className="lp-paso__aviso" role="alert">{aviso}</small>}
+            <div className="lp-paso__acciones">
+              <button type="submit" className="lp-btn">
+                {k === 'adicional' ? 'Comenzar mi proyecto' : 'Siguiente'} <FiArrowRight aria-hidden="true" />
+              </button>
+              {k !== 'adicional' && <span className="lp-paso__tecla">o presiona <kbd>Enter ↵</kbd></span>}
+            </div>
+          </>
+        )}
+      </div>
     </form>
   );
 }
 
 function CreaTuApp() {
-  const vitrina = APPS.filter((a) => a.capturas.length).slice(0, 3);
+  // portada: la primera pantalla de teléfono de las tres primeras apps del catálogo
+  const portada = APPS.slice(0, 3).map((a) => ({ a, c: a.capturas.find((x) => x.formato === 'movil') || a.capturas[0] }));
   return (
     <>
       <Helmet>
@@ -102,13 +329,11 @@ function CreaTuApp() {
               <Reveal delay="d3"><Boton>Comenzar ahora</Boton></Reveal>
               <Reveal as="p" className="lp-hero__aval" delay="d4">+30 proyectos entregados · Hicimos Riko</Reveal>
             </div>
-            {vitrina.length > 0 && (
-              <Reveal className="lp-hero__vitrina" variant="zoom" delay="d2">
-                {vitrina.map((a, i) => (
-                  <img key={a.slug} className={`lp-cap lp-cap--${a.formato} lp-hero__cap${i}`} src={a.capturas[0].src} alt={`${a.nombre}: ${a.capturas[0].alt}`} />
-                ))}
-              </Reveal>
-            )}
+            <Reveal className="lp-hero__vitrina" variant="zoom" delay="d2">
+              {portada.map(({ a, c }, i) => (
+                <img key={a.slug} className={`lp-cap lp-cap--${c.formato} lp-hero__cap${i}`} src={c.src} alt={`${a.nombre}: ${c.t}`} />
+              ))}
+            </Reveal>
           </div>
         </section>
 
@@ -132,47 +357,27 @@ function CreaTuApp() {
           <div className="wb-container">
             <Reveal as="span" className="wb-eyebrow lp-eyebrow">Nuestras apps</Reveal>
             <Reveal as="h2" className="lp-h2 lp-h2--claro" delay="d1">Apps reales, <em>funcionando hoy</em>.</Reveal>
-            <div className="lp-apps__lista">
-              {APPS.map((a) => (
-                <Reveal as="article" className="lp-app" key={a.slug}>
-                  <div className="lp-app__info">
-                    <span className="lp-app__tipo">{a.tipo}</span>
-                    <h3>{a.nombre}</h3>
-                    <p>{a.descripcion}</p>
-                    {a.descarga && (
-                      <a className="lp-app__bajar" href={a.descarga} target="_blank" rel="noopener noreferrer">
-                        <FiDownload aria-hidden="true" /> Descargar la app
-                      </a>
-                    )}
-                  </div>
-                  {a.capturas.length > 0 && (
-                    <div className="lp-app__capturas">
-                      {a.capturas.map((c) => (
-                        <img key={c.src} className={`lp-cap lp-cap--${a.formato}`} src={c.src} alt={`${a.nombre}: ${c.alt}`} loading="lazy" />
-                      ))}
-                    </div>
-                  )}
-                </Reveal>
-              ))}
-            </div>
+            <Reveal as="p" className="lp-apps__p" delay="d2">Elige una y mira cómo se ve por dentro: son pantallas reales, sin adornos.</Reveal>
+            <Reveal delay="d2"><Vitrina /></Reveal>
             <Reveal className="lp-centro"><Boton claro>Creemos tu aplicación</Boton></Reveal>
           </div>
         </section>
 
         {/* 4 · Contáctanos */}
         <section className="lp-contacto wb-section--paper" id="contacto">
+          {/* en el teléfono el formulario va justo después del título; los datos de contacto, al final */}
           <div className="wb-container lp-contacto__in">
-            <div>
+            <div className="lp-contacto__intro">
               <Reveal as="h2" className="lp-h2">Da el <em>siguiente paso</em>.</Reveal>
-              <Reveal as="p" className="lp-contacto__p" delay="d1">Déjanos tus datos y te escribimos para conversar sobre tu proyecto, sin compromiso.</Reveal>
-              <Reveal className="lp-contacto__datos" delay="d2">
-                <a href={`https://wa.me/${WA}`} target="_blank" rel="noopener noreferrer"><SiWhatsapp /> +58 422 057 9731</a>
-                <a href="https://www.instagram.com/web.bonding/" target="_blank" rel="noopener noreferrer"><SiInstagram /> @web.bonding</a>
-                <a href="mailto:webbonding21@gmail.com"><HiOutlineMail /> webbonding21@gmail.com</a>
-                <span><HiOutlineLocationMarker /> Acarigua–Araure, Portuguesa</span>
-              </Reveal>
+              <Reveal as="p" className="lp-contacto__p" delay="d1">Responde 5 preguntas rápidas y te escribimos para conversar sobre tu proyecto, sin compromiso.</Reveal>
             </div>
-            <Reveal delay="d1"><Formulario /></Reveal>
+            <Reveal className="lp-contacto__form" delay="d1"><Formulario /></Reveal>
+            <Reveal className="lp-contacto__datos" delay="d2">
+              <a href={`https://wa.me/${WA}`} target="_blank" rel="noopener noreferrer"><SiWhatsapp /> +58 422 057 9731</a>
+              <a href="https://www.instagram.com/web.bonding/" target="_blank" rel="noopener noreferrer"><SiInstagram /> @web.bonding</a>
+              <a href="mailto:webbonding21@gmail.com"><HiOutlineMail /> webbonding21@gmail.com</a>
+              <span><HiOutlineLocationMarker /> Acarigua–Araure, Portuguesa</span>
+            </Reveal>
           </div>
         </section>
 
