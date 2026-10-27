@@ -52,12 +52,19 @@ const EJEMPLOS = [
 
 export default function Leads() {
   const [sesion, setSesion] = useState(DEMO ? { user: { email: 'demo@ejemplo.com' } } : undefined); // undefined: aún no se sabe
+  const [sinConexion, setSinConexion] = useState(false);
 
   useEffect(() => {
     if (DEMO) return undefined;
-    supabaseR4.auth.getSession().then(({ data }) => setSesion(data.session));
-    const { data: sub } = supabaseR4.auth.onAuthStateChange((_e, s) => setSesion(s));
-    return () => sub.subscription.unsubscribe();
+    let supo = false;
+    const saber = (s) => { supo = true; setSesion(s); };
+    // una sesión vieja que no se puede renovar deja getSession() esperando: a los 6 s se muestra el acceso igual
+    const espera = setTimeout(() => { if (!supo) { setSinConexion(true); setSesion(null); } }, 6000);
+    supabaseR4.auth.getSession()
+      .then(({ data }) => saber(data.session))
+      .catch(() => { setSinConexion(true); saber(null); });
+    const { data: sub } = supabaseR4.auth.onAuthStateChange((_e, s) => saber(s));
+    return () => { clearTimeout(espera); sub.subscription.unsubscribe(); };
   }, []);
 
   return (
@@ -66,23 +73,46 @@ export default function Leads() {
         <title>Leads · Web Bonding</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      {sesion === undefined ? null : sesion ? <Panel sesion={sesion} /> : <Entrar />}
+      {sesion === undefined
+        ? <p className="ld-cargando">Cargando…</p>
+        : sesion ? <Panel sesion={sesion} /> : <Entrar sinConexion={sinConexion} />}
     </div>
   );
 }
 
-function Entrar() {
+// los mensajes de Supabase, en palabras del equipo
+const traducir = (err) => ({
+  'Invalid login credentials': 'Correo o contraseña incorrectos.',
+  'Signups not allowed for otp': 'Ese correo no tiene acceso al panel.',
+  'Email not confirmed': 'Ese correo todavía no está confirmado.',
+}[err.message] ?? (/rate limit/i.test(err.message) ? 'Ya se enviaron varios enlaces. Espera unos minutos y vuelve a intentar.'
+  : /fetch|network/i.test(err.message) ? 'No hay conexión con la base de datos.' : err.message));
+
+function Entrar({ sinConexion }) {
   const [correo, setCorreo] = useState('');
   const [clave, setClave] = useState('');
+  const [conEnlace, setConEnlace] = useState(false); // entrar con un enlace al correo, sin contraseña
+  const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
   const [cargando, setCargando] = useState(false);
 
   async function entrar(e) {
     e.preventDefault();
     setCargando(true); setError('');
+    if (conEnlace) {
+      // shouldCreateUser: false → solo entran los usuarios que ya existen; no se abren cuentas nuevas desde aquí
+      const { error: err } = await supabaseR4.auth.signInWithOtp({
+        email: correo, options: { emailRedirectTo: `${window.location.origin}/leads`, shouldCreateUser: false },
+      });
+      setCargando(false);
+      if (err) setError(traducir(err)); else setEnviado(true);
+      return;
+    }
     const { error: err } = await supabaseR4.auth.signInWithPassword({ email: correo, password: clave });
-    if (err) { setError(err.message === 'Invalid login credentials' ? 'Correo o contraseña incorrectos.' : err.message); setCargando(false); }
+    if (err) { setError(traducir(err)); setCargando(false); }
   }
+
+  const cambiarModo = () => { setConEnlace(!conEnlace); setEnviado(false); setError(''); };
 
   return (
     <main className="ld-entrar">
@@ -90,14 +120,34 @@ function Entrar() {
         <img src="/logoennegro.png" alt="Web Bonding" className="ld-entrar__logo" />
         <h1>Leads</h1>
         <p>Entra con tu usuario del panel de R4. Solo los administradores ven los datos.</p>
-        <label className="ld-etiqueta" htmlFor="ld-correo">Correo</label>
-        <input id="ld-correo" className="ld-campo" type="email" autoComplete="username" autoFocus required
-          value={correo} onChange={(e) => setCorreo(e.target.value)} />
-        <label className="ld-etiqueta" htmlFor="ld-clave">Contraseña</label>
-        <input id="ld-clave" className="ld-campo" type="password" autoComplete="current-password" required
-          value={clave} onChange={(e) => setClave(e.target.value)} />
-        {error && <p className="ld-error" role="alert"><FiAlertTriangle aria-hidden="true" /> {error}</p>}
-        <button className="ld-btn ld-btn--primario" disabled={cargando}><FiLogIn aria-hidden="true" /> Entrar</button>
+        {sinConexion && (
+          <p className="ld-error" role="alert"><FiAlertTriangle aria-hidden="true" />
+            No se pudo conectar con la base de datos de leads. Si sigue así, la web todavía apunta al proyecto viejo de Supabase.
+          </p>
+        )}
+        {enviado ? (
+          <p className="ld-enviado" role="status">Listo: revisa tu correo ({correo}) y abre el enlace en este mismo navegador.</p>
+        ) : (
+          <>
+            <label className="ld-etiqueta" htmlFor="ld-correo">Correo</label>
+            <input id="ld-correo" className="ld-campo" type="email" autoComplete="username" autoFocus required
+              value={correo} onChange={(e) => setCorreo(e.target.value)} />
+            {!conEnlace && (
+              <>
+                <label className="ld-etiqueta" htmlFor="ld-clave">Contraseña</label>
+                <input id="ld-clave" className="ld-campo" type="password" autoComplete="current-password" required
+                  value={clave} onChange={(e) => setClave(e.target.value)} />
+              </>
+            )}
+            {error && <p className="ld-error" role="alert"><FiAlertTriangle aria-hidden="true" /> {error}</p>}
+            <button className="ld-btn ld-btn--primario" disabled={cargando}>
+              {conEnlace ? <><FiMail aria-hidden="true" /> Enviarme el enlace</> : <><FiLogIn aria-hidden="true" /> Entrar</>}
+            </button>
+          </>
+        )}
+        <button type="button" className="ld-entrar__otro" onClick={cambiarModo}>
+          {conEnlace ? 'Entrar con contraseña' : '¿No recuerdas la contraseña? Entra con un enlace a tu correo'}
+        </button>
       </form>
     </main>
   );
