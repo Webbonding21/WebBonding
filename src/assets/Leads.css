@@ -92,3 +92,17 @@
   .ld-datos { grid-template-columns: 1fr; }
   .ld-tarjeta__contacto .ld-btn { flex: 1; padding-inline: .6em; }
 }
+
+/* acceso del equipo: volver al acceso de clientes (cotizador) */
+.ld-entrar__volver { display: inline-flex; align-items: center; justify-content: center; gap: .4em; margin-top: .4rem; color: var(--ink-60); }
+
+/* cambiar contraseña */
+.ld-modal-fondo { position: fixed; inset: 0; z-index: 10002; display: grid; place-items: center; padding: 16px;
+  background: rgba(14, 14, 17, .55); color-scheme: light; }
+.ld-modal { width: min(400px, 100%); padding: 1.4rem 1.4rem 1.6rem; border-radius: var(--radius-lg); background: #fff; color: var(--ink);
+  font-family: var(--font-body); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .6); }
+.ld-modal__cabecera { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.ld-modal__cabecera h2 { margin: 0; font-family: var(--font-display); font-size: 1.35rem; }
+.ld-modal__cerrar { display: grid; place-items: center; width: 34px; height: 34px; border: 1.5px solid var(--line-light); border-radius: 50%;
+  background: #fff; color: var(--ink); cursor: pointer; }
+.ld-modal__guardar { width: 100%; margin-top: 1.2rem; padding: .85em 1em; }

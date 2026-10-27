@@ -107,10 +107,30 @@ comment on function public.crear_lead(text, text, text, text, text, boolean, boo
 revoke all on function public.crear_lead(text, text, text, text, text, boolean, boolean, text, text, text, text, text, text) from public;
 grant execute on function public.crear_lead(text, text, text, text, text, boolean, boolean, text, text, text, text, text, text) to anon, authenticated;
 
+-- ── Rol «ventas» (el closer) ────────────────────────────────────────────────────────────────────────────────
+-- Ve y marca los leads y lee la guía de ventas del cotizador, pero no edita R4: eso sigue siendo solo de 'admin'
+-- (es_admin() y las políticas de r4-cuentas/supabase/migrations/0003_roles.sql). La guía no vive en este repositorio,
+-- que es público: la sube un script privado como public.ver_guia_ventas(), que también exige es_ventas().
+
+alter table public.perfiles drop constraint if exists perfiles_rol_check;
+alter table public.perfiles add constraint perfiles_rol_check check (rol in ('admin', 'lectura', 'ventas'));
+
+create or replace function public.es_ventas()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (select 1 from public.perfiles p where p.id = (select auth.uid()) and p.rol in ('admin', 'ventas'));
+$$;
+
+revoke all on function public.es_ventas() from public, anon;
+grant execute on function public.es_ventas() to authenticated;
+
 -- ── Panel /leads de la web ──────────────────────────────────────────────────────────────────────────────────
--- Solo para los usuarios con rol 'admin' en public.perfiles (los mismos del panel de R4; es_admin() viene de
--- r4-cuentas/supabase/migrations/0003_roles.sql). Sin sesión no se pueden llamar; con sesión pero sin ser admin,
--- responden «No autorizado».
+-- Para los usuarios con rol 'admin' o 'ventas' en public.perfiles (los mismos del panel de R4). Sin sesión no se
+-- pueden llamar; con sesión pero sin ese rol, responden «No autorizado».
 
 create or replace function public.ver_leads()
 returns setof web_bonding.leads
@@ -120,7 +140,7 @@ security definer
 set search_path = ''
 as $$
 begin
-  if not public.es_admin() then
+  if not public.es_ventas() then
     raise exception 'No autorizado' using errcode = '42501';
   end if;
   return query select * from web_bonding.leads l order by l.created_at desc;
@@ -133,7 +153,7 @@ security definer
 set search_path = ''
 as $$
 begin
-  if not public.es_admin() then
+  if not public.es_ventas() then
     raise exception 'No autorizado' using errcode = '42501';
   end if;
   update web_bonding.leads

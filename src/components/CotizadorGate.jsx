@@ -1,11 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaLock, FaSignOutAlt } from 'react-icons/fa';
+import { supabaseR4 } from './r4/r4Api';
+import { ROLES_VENTAS, rolDe } from '../lib/equipo';
+import AccesoEquipo from './AccesoEquipo';
 import '../assets/CotizadorGate.css';
 
 const PASSWORD = 'w2105';
 const STORAGE_KEY = 'wb_cot_access';
 const TOKEN = 'granted_v1';
+
+/** Cómo entró la persona: 'cliente' (con la clave de invitación) o 'equipo' (con su usuario de ventas o admin). */
+export const ModoCotizador = createContext({ modo: 'cliente' });
 
 /** Verifica si el usuario tiene acceso al cotizador. */
 export function hasAccess() {
@@ -25,19 +31,37 @@ export function logout() {
 }
 
 /**
- * Envuelve el cotizador. Si no hay clave válida, muestra el gate.
- * Si está autenticado, renderiza children + un botón de "Salir" flotante.
+ * Envuelve el cotizador. Los clientes entran con la clave de invitación; el equipo de ventas, con su usuario
+ * (el mismo de /leads) y además ve la guía de ventas. Sin acceso, muestra el gate.
  */
 export default function CotizadorGate({ children }) {
   const [granted, setGranted] = useState(() => hasAccess());
   const [pwd, setPwd] = useState('');
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
+  const [equipo, setEquipo] = useState(null); // { email, rol } si entró alguien de ventas o un admin
+  const [sinRol, setSinRol] = useState(false); // entró con un usuario que no es de ventas (p. ej. el de solo lectura de R4)
+  const [accesoEquipo, setAccesoEquipo] = useState(false);
   const inputRef = useRef(null);
 
+  // La sesión del equipo se revisa aparte, sin frenar la clave de los clientes. Dentro de onAuthStateChange no se
+  // llama a Supabase directamente (puede trancarse): se deja para el siguiente ciclo.
   useEffect(() => {
-    if (!granted) inputRef.current?.focus();
-  }, [granted]);
+    let vivo = true;
+    const revisar = async (sesion) => {
+      const rol = await rolDe(sesion).catch(() => null);
+      if (!vivo) return;
+      setEquipo(sesion && ROLES_VENTAS.includes(rol) ? { email: sesion.user.email, rol } : null);
+      setSinRol(Boolean(sesion) && !ROLES_VENTAS.includes(rol));
+    };
+    supabaseR4.auth.getSession().then(({ data }) => revisar(data.session)).catch(() => {});
+    const { data: sub } = supabaseR4.auth.onAuthStateChange((_e, s) => { setTimeout(() => revisar(s), 0); });
+    return () => { vivo = false; sub.subscription.unsubscribe(); };
+  }, []);
+
+  useEffect(() => {
+    if (!granted && !accesoEquipo) inputRef.current?.focus();
+  }, [granted, accesoEquipo]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -61,6 +85,10 @@ export default function CotizadorGate({ children }) {
     setGranted(false);
   };
 
+  if (equipo) {
+    return <ModoCotizador.Provider value={{ modo: 'equipo', ...equipo }}>{children}</ModoCotizador.Provider>;
+  }
+
   if (granted) {
     return (
       <>
@@ -69,6 +97,17 @@ export default function CotizadorGate({ children }) {
           <FaSignOutAlt /> Salir
         </button>
       </>
+    );
+  }
+
+  if (accesoEquipo) {
+    return (
+      <div className="ld">
+        <AccesoEquipo titulo="Cotizador del equipo"
+          texto="Entra con tu usuario de Web Bonding, el mismo de /leads. Aquí están el cotizador y la guía de ventas."
+          aviso={sinRol ? 'Tu usuario no tiene el rol de ventas. Pídeselo a Williams o entra con otro usuario.' : ''}
+          volver={{ texto: 'Volver al acceso de clientes', onClick: () => setAccesoEquipo(false) }} />
+      </div>
     );
   }
 
@@ -125,6 +164,9 @@ export default function CotizadorGate({ children }) {
           >
             Solicítala por WhatsApp →
           </a>
+        </p>
+        <p className="cot-gate__note cot-gate__equipo">
+          <button type="button" onClick={() => setAccesoEquipo(true)}>¿Eres del equipo de Web Bonding? Entra con tu correo</button>
         </p>
       </div>
     </section>

@@ -1,9 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { SiWhatsapp } from 'react-icons/si';
-import { FaArrowLeft, FaSearch, FaTimes, FaPlus, FaMinus, FaTrash, FaArrowRight } from 'react-icons/fa';
+import { FaArrowLeft, FaSearch, FaTimes, FaPlus, FaMinus, FaTrash, FaArrowRight, FaCopy, FaCheck, FaSignOutAlt } from 'react-icons/fa';
 import Reveal from '../components/Reveal';
+import { ModoCotizador } from '../components/CotizadorGate';
+import GuiaVentas from '../components/GuiaVentas';
+import CambiarClave from '../components/CambiarClave';
+import { supabaseR4 } from '../components/r4/r4Api';
 import {
   PRODUCTS,
   ACTIVE_CATEGORIES,
@@ -12,6 +17,7 @@ import {
   fmtUSD,
 } from '../data/catalog';
 import '../assets/Cotizador.css';
+import '../assets/Leads.css';
 
 const PHONE = '584220579731';
 const STORAGE_KEY = 'wb_cart_v1';
@@ -63,7 +69,52 @@ function buildWhatsAppMessage(cart, customRequest, contact) {
   return lines.join('\n');
 }
 
+// Modo equipo: la cotización lista para pegarle al cliente por WhatsApp. El catálogo no lleva IVA; aquí se suma.
+function textoParaCliente(cart, contact, custom) {
+  const nombre = contact.name.trim().split(/\s+/)[0];
+  const lineas = [`Hola${nombre ? `, ${nombre}` : ''} 👋 Esta es tu cotización estimada de Web Bonding:`, ''];
+  let total = 0;
+  cart.forEach((it) => {
+    const subt = priceOf(it.product, it.qty);
+    total += subt;
+    lineas.push(`• ${it.product.name}${it.qty > 1 ? ` × ${it.qty}` : ''}: ${fmtUSD(subt)}`);
+  });
+  if (custom.what) lineas.push(`• ${custom.what}: se cotiza aparte`);
+  // se redondea antes de sumar, para que lo que ve el cliente cuadre a la vista
+  const base = Math.round(total);
+  const iva = Math.round(base * 0.16);
+  lineas.push('', `Total: ${fmtUSD(base)} + IVA (${fmtUSD(iva)}) = *${fmtUSD(base + iva)}*`, '',
+    'Es un estimado. La propuesta formal te llega en 48 horas, y antes de programar te mostramos el diseño para que lo apruebes.');
+  return lineas.join('\n');
+}
+
+// Barra del modo equipo: el cotizador y la guía de ventas, el panel de leads, la contraseña y salir
+function BarraEquipo({ email, pestana, setPestana }) {
+  return (
+    <div className="cot-equipo">
+      <div className="cot-equipo__tabs" role="tablist" aria-label="Cotizador del equipo">
+        <button type="button" role="tab" aria-selected={pestana === 'cotizar'} onClick={() => setPestana('cotizar')}>Cotizar</button>
+        <button type="button" role="tab" aria-selected={pestana === 'guia'} onClick={() => setPestana('guia')}>Guía de ventas</button>
+      </div>
+      <div className="cot-equipo__acciones">
+        <span className="cot-equipo__quien">{email}</span>
+        <Link to="/leads" className="ld-btn ld-btn--plano">Leads</Link>
+        <CambiarClave />
+        <button type="button" className="ld-btn ld-btn--plano" onClick={() => supabaseR4.auth.signOut()}>
+          <FaSignOutAlt /> Salir
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Cotizador() {
+  // quien entró con su usuario del equipo ve además la guía de ventas y copia la cotización para el cliente
+  const { modo, email } = useContext(ModoCotizador);
+  const equipo = modo === 'equipo';
+  const [pestana, setPestana] = useState('cotizar');
+  const [copiado, setCopiado] = useState(false);
+
   // —— Estado ——
   const [cart, setCart] = useState([]);
   const [query, setQuery] = useState('');
@@ -150,6 +201,35 @@ function Cotizador() {
 
   const isValid = cart.length > 0 || (custom.what && custom.details);
 
+  const copiarParaCliente = async () => {
+    const texto = textoParaCliente(cart, contact, custom);
+    try {
+      await navigator.clipboard.writeText(texto);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2500);
+    } catch {
+      window.prompt('Copia la cotización:', texto);
+    }
+  };
+
+  if (equipo && pestana === 'guia') {
+    return (
+      <>
+        <Helmet>
+          <title>Guía de ventas · Web Bonding</title>
+          <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+        </Helmet>
+        <section className="cot wb-grain">
+          <div className="cot__glow" aria-hidden="true" />
+          <div className="wb-container">
+            <BarraEquipo email={email} pestana={pestana} setPestana={setPestana} />
+            <GuiaVentas />
+          </div>
+        </section>
+      </>
+    );
+  }
+
   return (
     <>
       <Helmet>
@@ -166,6 +246,8 @@ function Cotizador() {
         <div className="cot__glow" aria-hidden="true" />
 
         <div className="wb-container">
+          {equipo && <BarraEquipo email={email} pestana={pestana} setPestana={setPestana} />}
+
           {/* —— Header —— */}
           <Reveal as="div" className="cot__head">
             <Link to="/" className="cot__back">
@@ -437,18 +519,25 @@ function Cotizador() {
                     </div>
                   </div>
 
-                  <button
-                    className="cot__cart-send"
-                    onClick={sendToWhatsApp}
-                    disabled={!isValid}
-                    title={!isValid ? 'Añade un producto o describe tu necesidad para continuar' : ''}
-                  >
-                    <SiWhatsapp /> Enviar cotización por WhatsApp
-                  </button>
+                  {equipo ? (
+                    <button className="cot__cart-send" onClick={copiarParaCliente} disabled={!cart.length}>
+                      {copiado ? <><FaCheck /> Copiada: pégala en el chat</> : <><FaCopy /> Copiar para el cliente</>}
+                    </button>
+                  ) : (
+                    <button
+                      className="cot__cart-send"
+                      onClick={sendToWhatsApp}
+                      disabled={!isValid}
+                      title={!isValid ? 'Añade un producto o describe tu necesidad para continuar' : ''}
+                    >
+                      <SiWhatsapp /> Enviar cotización por WhatsApp
+                    </button>
+                  )}
 
                   <p className="cot__cart-note">
-                    Estimado preliminar. El monto final se ajusta tras un diagnóstico técnico —
-                    sin compromiso.
+                    {equipo
+                      ? 'Los precios del catálogo no llevan IVA: el texto que copias ya lo suma.'
+                      : 'Estimado preliminar. El monto final se ajusta tras un diagnóstico técnico — sin compromiso.'}
                   </p>
                 </footer>
               </div>
@@ -510,13 +599,19 @@ function Cotizador() {
                   </div>
                 </>
               )}
-              <button
-                className="cot__cart-send"
-                onClick={sendToWhatsApp}
-                disabled={!isValid}
-              >
-                <SiWhatsapp /> Enviar por WhatsApp <FaArrowRight />
-              </button>
+              {equipo ? (
+                <button className="cot__cart-send" onClick={copiarParaCliente} disabled={!cart.length}>
+                  {copiado ? <><FaCheck /> Copiada</> : <><FaCopy /> Copiar para el cliente</>}
+                </button>
+              ) : (
+                <button
+                  className="cot__cart-send"
+                  onClick={sendToWhatsApp}
+                  disabled={!isValid}
+                >
+                  <SiWhatsapp /> Enviar por WhatsApp <FaArrowRight />
+                </button>
+              )}
             </div>
           </div>
         )}

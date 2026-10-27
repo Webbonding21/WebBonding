@@ -4,9 +4,11 @@
 // (supabase/leads.sql): sin eso no se ve nada aunque se abra la página. Fuera del sitemap y de los buscadores.
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { FiLogIn, FiLogOut, FiAlertTriangle, FiPhone, FiMail, FiRefreshCw, FiSearch } from 'react-icons/fi';
+import { FiLogOut, FiAlertTriangle, FiPhone, FiMail, FiRefreshCw, FiSearch } from 'react-icons/fi';
 import { SiWhatsapp } from 'react-icons/si';
 import { supabaseR4 } from '../components/r4/r4Api';
+import AccesoEquipo from '../components/AccesoEquipo';
+import CambiarClave from '../components/CambiarClave';
 import '../assets/Leads.css';
 
 const ESTADOS = {
@@ -75,81 +77,12 @@ export default function Leads() {
       </Helmet>
       {sesion === undefined
         ? <p className="ld-cargando">Cargando…</p>
-        : sesion ? <Panel sesion={sesion} /> : <Entrar sinConexion={sinConexion} />}
+        : sesion ? <Panel sesion={sesion} /> : (
+          <AccesoEquipo titulo="Leads"
+            texto="Entra con tu usuario del equipo de Web Bonding. Solo ventas y los administradores ven los datos."
+            aviso={sinConexion ? 'No se pudo conectar con la base de datos de leads. Si sigue así, la web todavía apunta al proyecto viejo de Supabase.' : ''} />
+        )}
     </div>
-  );
-}
-
-// los mensajes de Supabase, en palabras del equipo
-const traducir = (err) => ({
-  'Invalid login credentials': 'Correo o contraseña incorrectos.',
-  'Signups not allowed for otp': 'Ese correo no tiene acceso al panel.',
-  'Email not confirmed': 'Ese correo todavía no está confirmado.',
-}[err.message] ?? (/rate limit/i.test(err.message) ? 'Ya se enviaron varios enlaces. Espera unos minutos y vuelve a intentar.'
-  : /fetch|network/i.test(err.message) ? 'No hay conexión con la base de datos.' : err.message));
-
-function Entrar({ sinConexion }) {
-  const [correo, setCorreo] = useState('');
-  const [clave, setClave] = useState('');
-  const [conEnlace, setConEnlace] = useState(false); // entrar con un enlace al correo, sin contraseña
-  const [enviado, setEnviado] = useState(false);
-  const [error, setError] = useState('');
-  const [cargando, setCargando] = useState(false);
-
-  async function entrar(e) {
-    e.preventDefault();
-    setCargando(true); setError('');
-    if (conEnlace) {
-      // shouldCreateUser: false → solo entran los usuarios que ya existen; no se abren cuentas nuevas desde aquí
-      const { error: err } = await supabaseR4.auth.signInWithOtp({
-        email: correo, options: { emailRedirectTo: `${window.location.origin}/leads`, shouldCreateUser: false },
-      });
-      setCargando(false);
-      if (err) setError(traducir(err)); else setEnviado(true);
-      return;
-    }
-    const { error: err } = await supabaseR4.auth.signInWithPassword({ email: correo, password: clave });
-    if (err) { setError(traducir(err)); setCargando(false); }
-  }
-
-  const cambiarModo = () => { setConEnlace(!conEnlace); setEnviado(false); setError(''); };
-
-  return (
-    <main className="ld-entrar">
-      <form className="ld-entrar__caja" onSubmit={entrar}>
-        <img src="/logoennegro.png" alt="Web Bonding" className="ld-entrar__logo" />
-        <h1>Leads</h1>
-        <p>Entra con tu usuario del panel de R4. Solo los administradores ven los datos.</p>
-        {sinConexion && (
-          <p className="ld-error" role="alert"><FiAlertTriangle aria-hidden="true" />
-            No se pudo conectar con la base de datos de leads. Si sigue así, la web todavía apunta al proyecto viejo de Supabase.
-          </p>
-        )}
-        {enviado ? (
-          <p className="ld-enviado" role="status">Listo: revisa tu correo ({correo}) y abre el enlace en este mismo navegador.</p>
-        ) : (
-          <>
-            <label className="ld-etiqueta" htmlFor="ld-correo">Correo</label>
-            <input id="ld-correo" className="ld-campo" type="email" autoComplete="username" autoFocus required
-              value={correo} onChange={(e) => setCorreo(e.target.value)} />
-            {!conEnlace && (
-              <>
-                <label className="ld-etiqueta" htmlFor="ld-clave">Contraseña</label>
-                <input id="ld-clave" className="ld-campo" type="password" autoComplete="current-password" required
-                  value={clave} onChange={(e) => setClave(e.target.value)} />
-              </>
-            )}
-            {error && <p className="ld-error" role="alert"><FiAlertTriangle aria-hidden="true" /> {error}</p>}
-            <button className="ld-btn ld-btn--primario" disabled={cargando}>
-              {conEnlace ? <><FiMail aria-hidden="true" /> Enviarme el enlace</> : <><FiLogIn aria-hidden="true" /> Entrar</>}
-            </button>
-          </>
-        )}
-        <button type="button" className="ld-entrar__otro" onClick={cambiarModo}>
-          {conEnlace ? 'Entrar con contraseña' : '¿No recuerdas la contraseña? Entra con un enlace a tu correo'}
-        </button>
-      </form>
-    </main>
   );
 }
 
@@ -165,7 +98,7 @@ function Panel({ sesion }) {
     const { data, error: err } = await supabaseR4.rpc('ver_leads');
     if (err) {
       setError(err.message === 'No autorizado'
-        ? 'Tu usuario no es administrador, así que no puede ver los leads. Pídele a un admin que te cambie el rol.'
+        ? 'Tu usuario no tiene permiso para ver los leads: hace falta el rol de ventas o de administrador. Pídeselo a Williams.'
         : `No se pudieron cargar los leads: ${err.message}`);
       setLeads([]);
     } else setLeads(data);
@@ -207,6 +140,7 @@ function Panel({ sesion }) {
           <div className="ld-cabecera__acciones">
             <span className="ld-usuario">{sesion.user?.email}</span>
             <button type="button" className="ld-btn ld-btn--plano" onClick={cargar} aria-label="Actualizar"><FiRefreshCw aria-hidden="true" /></button>
+            {!DEMO && <CambiarClave />}
             <button type="button" className="ld-btn ld-btn--plano" onClick={() => (DEMO ? null : supabaseR4.auth.signOut())}>
               <FiLogOut aria-hidden="true" /> Salir
             </button>

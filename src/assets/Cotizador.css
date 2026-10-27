@@ -334,3 +334,18 @@
   .cot__form-grid { grid-template-columns: 1fr; }
   .cot__grid { grid-template-columns: 1fr; }
 }
+
+/* ===================== MODO EQUIPO (cotizador + guía de ventas) ===================== */
+.cot-equipo { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 28px; padding: 10px 12px; border: 1px solid var(--line-dark); border-radius: 14px; background: rgba(255, 255, 255, .03); }
+.cot-equipo__tabs { display: flex; gap: 6px; }
+.cot-equipo__tabs button { padding: .6em 1.1em; border: 1.5px solid var(--line-dark); border-radius: 100px; background: transparent;
+  color: var(--paper); font-family: var(--font-mono); font-weight: 700; font-size: .76rem; letter-spacing: .03em; text-transform: uppercase; cursor: pointer; }
+.cot-equipo__tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cot-equipo__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.cot-equipo__quien { font-size: .8rem; color: var(--paper-60); }
+@media (max-width: 560px) {
+  .cot-equipo__quien { display: none; }
+  .cot-equipo__tabs, .cot-equipo__acciones { width: 100%; }
+  .cot-equipo__tabs button { flex: 1; }
+}

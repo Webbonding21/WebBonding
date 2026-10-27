@@ -112,3 +112,9 @@
 @media (max-width: 480px) {
   .cot-gate__logout { top: auto; bottom: 88px; right: 14px; }
 }
+
+/* entrada del equipo de ventas (con su usuario, el mismo de /leads) */
+.cot-gate__equipo { margin-top: .6rem; }
+.cot-gate__equipo button { padding: 0; border: 0; background: none; font: inherit; color: var(--paper-60); text-decoration: underline;
+  text-underline-offset: 3px; cursor: pointer; }
+.cot-gate__equipo button:hover { color: var(--paper); }

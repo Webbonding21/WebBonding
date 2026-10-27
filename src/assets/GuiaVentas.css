@@ -1,0 +1,59 @@
+/* Guía de ventas (cotizador del equipo): índice a la izquierda y la sección en una hoja clara para leer */
+.gv { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 22px; align-items: start; scroll-margin-top: 90px; }
+
+.gv-nav { position: sticky; top: 90px; display: grid; gap: 10px; }
+.gv-buscar { display: flex; align-items: center; gap: .55rem; padding: 0 .85rem; border: 1px solid var(--line-dark); border-radius: 12px;
+  background: rgba(255, 255, 255, .04); color: var(--paper-60); }
+.gv-buscar input { flex: 1; min-width: 0; padding: .7em 0; border: 0; background: none; color: var(--paper); font: inherit; font-size: .9rem; }
+.gv-buscar input:focus { outline: none; }
+.gv-secciones { display: grid; gap: 2px; }
+.gv-secciones button { padding: .55em .8em; border: 0; border-left: 3px solid transparent; border-radius: 0 8px 8px 0; background: none;
+  color: var(--paper-60); font: inherit; font-size: .9rem; text-align: left; cursor: pointer; transition: color .2s, background .2s; }
+.gv-secciones button:hover { color: var(--paper); background: rgba(255, 255, 255, .04); }
+.gv-secciones button[aria-current="true"] { border-left-color: var(--accent-2); background: rgba(255, 255, 255, .06); color: var(--paper); font-weight: 600; }
+.gv-nada { margin: .4rem .8rem; color: var(--paper-60); font-size: .88rem; }
+
+.gv-hoja { min-width: 0; padding: clamp(22px, 3.2vw, 44px); border-radius: 18px; background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); color-scheme: light; animation: gv-entra .35s cubic-bezier(.2, .8, .2, 1) both; }
+.gv-hoja h2 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.05; letter-spacing: -.02em; }
+.gv-hoja h3 { margin: 1.8em 0 0; font-family: var(--font-display); font-size: 1.25rem; line-height: 1.2; }
+.gv-hoja p, .gv-hoja li { font-size: 1rem; line-height: 1.62; }
+.gv-hoja p { margin: .8em 0 0; }
+.gv-hoja ul, .gv-hoja ol { margin: .8em 0 0; padding-left: 1.3em; }
+.gv-hoja li + li { margin-top: .35em; }
+.gv-hoja a { color: var(--accent); font-weight: 600; }
+
+.gv-tabla { margin-top: 1em; overflow-x: auto; border: 1px solid var(--line-light); border-radius: 12px; background: #fff; }
+.gv-tabla table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.gv-tabla th, .gv-tabla td { padding: .65em .8em; border-bottom: 1px solid var(--line-light); text-align: left; vertical-align: top; line-height: 1.45; }
+.gv-tabla th { background: var(--paper-2); font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-60); white-space: nowrap; }
+.gv-tabla tr:last-child td { border-bottom: 0; }
+
+/* los mensajes listos para copiar se ven como una burbuja de WhatsApp */
+.gv-mensaje { display: flex; align-items: flex-start; gap: .8rem; margin-top: .9em; padding: .9em 1em; border-radius: 14px 14px 14px 4px;
+  background: #e2f7cb; border: 1px solid #c8e9a8; }
+.gv-mensaje p { flex: 1; margin: 0; white-space: pre-wrap; font-size: .97rem; line-height: 1.55; }
+.gv-mensaje button { flex: none; display: inline-flex; align-items: center; gap: .35em; padding: .45em .8em; border: 1.5px solid rgba(14, 14, 17, .2);
+  border-radius: 100px; background: #fff; color: var(--ink); font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; }
+.gv-mensaje button:hover { border-color: var(--ink); }
+
+.gv-siguiente { display: inline-flex; align-items: center; gap: .5em; margin-top: 2.2rem; padding: .85em 1.3em; border: 0; border-radius: 100px;
+  background: var(--ink); color: var(--paper); font: inherit; font-weight: 600; cursor: pointer; }
+.gv-siguiente:hover { background: var(--accent); }
+
+.gv-error, .gv-cargando { margin: 2rem 0; color: var(--paper-60); }
+.gv-error { display: flex; gap: .5em; color: #ffb4a6; }
+
+@keyframes gv-entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 860px) {
+  .gv { grid-template-columns: 1fr; }
+  .gv-nav { position: static; }
+  /* en el teléfono el índice es una fila que se desliza */
+  .gv-secciones { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .gv-secciones::-webkit-scrollbar { display: none; }
+  .gv-secciones button { flex: none; border: 1px solid var(--line-dark); border-radius: 100px; padding: .45em .9em; white-space: nowrap; }
+  .gv-secciones button[aria-current="true"] { border-color: var(--accent-2); }
+  .gv-mensaje { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { .gv-hoja { animation: none; } }
