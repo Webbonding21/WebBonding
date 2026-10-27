@@ -3,7 +3,7 @@
 // Las capturas salen de marketing/apps-capturas/ con exportar_web.py: si cambia una aquí, cambia también allá.
 // formato de cada captura: 'movil' (teléfono) o 'web' (computadora). chip: nombre corto para el selector.
 // enlaces: solo los públicos y comprobados (tipo 'descarga' para las tiendas, 'web' para un sitio).
-// No van FV Bodegones ni SIGEPP (lo pidió Williams).
+// No van FV Bodegones, SIGEPP, Hot Dog Tony ni Qué Comprar (lo pidió Williams).
 const cap = (slug, archivo, t, formato = 'movil') => ({ src: `/img/apps/${slug}/${archivo}.webp`, t, formato });
 
 const APPS = [
@@ -113,16 +113,17 @@ const APPS = [
     enlaces: [{ texto: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.llegate.app', tipo: 'descarga' }],
   },
   {
-    slug: 'hot-dog-tony',
-    nombre: 'Hot Dog Tony',
-    tipo: 'Web y sistema para restaurante',
-    descripcion: 'Menú, reservas con abono y contacto para los clientes. El personal entra a su sistema de caja, cocina, inventario y nómina.',
+    slug: 'domi',
+    nombre: 'Domi',
+    tipo: 'App de pagos domiciliados',
+    descripcion: 'Las mensualidades y suscripciones se pagan solas desde tu propio banco: afilias tu cuenta una vez, autorizas el cobro y cada pago sale con su recibo. Las pantallas son del diseño final de la app.',
     capturas: [
-      cap('hot-dog-tony', '01-inicio', 'Inicio'),
-      cap('hot-dog-tony', '02-reservar-mesa', 'Reservar mesa'),
-      cap('hot-dog-tony', '03-contacto', 'Contacto'),
-      cap('hot-dog-tony', '04-escritorio-inicio', 'En la computadora', 'web'),
-      cap('hot-dog-tony', '05-escritorio-acceso-del-personal', 'Sistema del personal', 'web'),
+      cap('domi', '01-bienvenida-app-ios', 'Bienvenida'),
+      cap('domi', '02-prototipo-inicio', 'Lo comprometido del mes'),
+      cap('domi', '03-prototipo-calendario', 'Calendario de cobros'),
+      cap('domi', '04-prototipo-anadir-suscripcion', 'Añadir una suscripción'),
+      cap('domi', '05-prototipo-cobro-ejecutado', 'Pago realizado'),
+      cap('domi', '06-prototipo-mis-gastos', 'Mis gastos'),
     ],
   },
   {
@@ -152,28 +153,18 @@ const APPS = [
     enlaces: [{ texto: 'Ver la tienda', url: 'https://brillartecatalogo.onrender.com/', tipo: 'web' }],
   },
   {
-    slug: 'que-comprar',
-    nombre: 'Qué Comprar en Portuguesa',
-    chip: 'Qué Comprar',
-    tipo: 'Directorio y mercado local',
-    descripcion: 'Los vecinos publican lo que necesitan y los comercios de la zona les mandan precio. Los negocios pagan un plan para salir en el mapa.',
-    capturas: [
-      cap('que-comprar', '01-inicio', 'Inicio'),
-      cap('que-comprar', '02-planes-para-comercios', 'Planes para comercios'),
-      cap('que-comprar', '03-login', 'Entrar'),
-    ],
-  },
-  {
     slug: 'sistemas',
     nombre: 'Sistemas administrativos',
     chip: 'Más sistemas',
     tipo: 'Sistemas a la medida',
-    descripcion: 'Inventario y despacho, punto de venta con servicio técnico, consultorio médico e importación. Son privados: aquí se ve la entrada, porque adentro está la información de cada negocio.',
+    descripcion: 'Inventario y despacho, punto de venta con servicio técnico, consultorio médico, importación, cobros en bolívares y apertura de cuentas. Son privados: aquí se ve la entrada, porque adentro está la información de cada negocio.',
     capturas: [
       cap('sistemas', '01-michell-market-login', 'Michell Market: inventario y despacho', 'web'),
       cap('sistemas', '02-innovatech-login', 'InnovaTech: tienda y servicio técnico', 'web'),
       cap('sistemas', '03-wilmercrm-login', 'WilmerCRM: consultorio médico', 'web'),
       cap('sistemas', '04-global-import-login', 'Global Import: importación y ventas', 'web'),
+      cap('sistemas', '05-motor-de-pagos-login', 'Motor de Pagos: cobros en bolívares', 'web'),
+      cap('sistemas', '06-cuentas-r4-login', 'Cuentas R4: apertura de cuentas', 'web'),
     ],
   },
 ];
