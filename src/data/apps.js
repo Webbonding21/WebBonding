@@ -3,7 +3,8 @@
 // Las capturas salen de marketing/apps-capturas/ con exportar_web.py: si cambia una aquí, cambia también allá.
 // formato de cada captura: 'movil' (teléfono) o 'web' (computadora). chip: nombre corto para el selector.
 // enlaces: solo los públicos y comprobados (tipo 'descarga' para las tiendas, 'web' para un sitio).
-// No van FV Bodegones, SIGEPP, Hot Dog Tony ni Qué Comprar (lo pidió Williams).
+// No van FV Bodegones, SIGEPP, Hot Dog Tony ni Qué Comprar (lo pidió Williams), ni Mi Ángel App mientras no esté en
+// producción para los representantes.
 const cap = (slug, archivo, t, formato = 'movil') => ({ src: `/img/apps/${slug}/${archivo}.webp`, t, formato });
 
 const APPS = [
@@ -37,20 +38,6 @@ const APPS = [
       cap('kakareo', '04-sanidad', 'Calendario de vacunas'),
       cap('kakareo', '05-finanzas', 'Finanzas'),
       cap('kakareo', '06-escritorio-inicio', 'En la computadora', 'web'),
-    ],
-  },
-  {
-    slug: 'mi-angel',
-    nombre: 'Mi Ángel App',
-    chip: 'Mi Ángel',
-    tipo: 'App escolar y de cantina',
-    descripcion: 'El representante ve el saldo y las compras de su hijo en la cantina, pone límites, recarga y lleva el carnet en el teléfono. El colegio cobra y cuadra la caja desde su panel.',
-    capturas: [
-      cap('mi-angel', '01-inicio', 'Saldo del hijo'),
-      cap('mi-angel', '02-control-de-consumo', 'Límites de consumo'),
-      cap('mi-angel', '03-carnet', 'Carnet digital'),
-      cap('mi-angel', '04-recargar', 'Recargar saldo'),
-      cap('mi-angel', '05-login', 'Panel del colegio', 'web'),
     ],
   },
   {
