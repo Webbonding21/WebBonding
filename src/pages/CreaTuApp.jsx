@@ -1,7 +1,7 @@
 // src/pages/CreaTuApp.jsx
 // Landing para Google Ads (idea de Roikel): sencilla y al punto, cuatro partes y un CTA distinto en cada una.
-// Todos los botones bajan al formulario; el formulario va paso a paso y manda los datos al WhatsApp de
-// Web Bonding, igual que «Iniciar proyecto» del sitio. La página completa (/) sigue siendo la informativa.
+// Todos los botones bajan al formulario; el formulario va paso a paso, guarda el lead (con la aceptación de la
+// política de privacidad) y manda los datos al WhatsApp de Web Bonding. La página completa (/) sigue siendo la informativa.
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal, flushSync } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
@@ -12,6 +12,7 @@ import { SiWhatsapp, SiInstagram } from 'react-icons/si';
 import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import Reveal from '../components/Reveal';
 import APPS from '../data/apps';
+import { guardarLead } from '../lib/privacidad';
 import '../assets/CreaTuApp.css';
 
 const WA = '584220579731';
@@ -154,10 +155,11 @@ const FALTA = {
   nombre: (d) => (d.nombre.trim().length < 3 ? 'Escribe tu nombre.' : ''),
   telefono: (d) => (d.telefono.replace(/\D/g, '').length < 10 ? 'Escribe el número completo, con el código. Ej: 0412 123 4567' : ''),
   correo: (d) => (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo.trim()) ? '' : 'Escribe un correo válido.'),
-  adicional: () => '',
+  adicional: (d) => (d.acepta ? '' : 'Para enviarlo, acepta la política de privacidad.'),
 };
 
-const VACIO = { tipo: '', nombre: '', telefono: '', correo: '', adicional: '' };
+// acepta: la política de privacidad (obligatoria); novedades: ofertas y novedades (opcional)
+const VACIO = { tipo: '', nombre: '', telefono: '', correo: '', adicional: '', acepta: false, novedades: false };
 
 function Formulario() {
   const [d, setD] = useState(VACIO);
@@ -167,6 +169,7 @@ function Formulario() {
   const [intento, setIntento] = useState(0); // cambia en cada intento fallido para que el aviso vuelva a temblar
   const [enviado, setEnviado] = useState(''); // el enlace de WhatsApp, una vez enviado
   const campo = useRef(null);
+  const casilla = useRef(null);
 
   const k = PASOS[paso];
   const primero = d.nombre.trim().split(/\s+/)[0] || '';
@@ -188,10 +191,18 @@ function Formulario() {
     if (aviso) setAviso('');
   };
 
+  const marca = (e) => {
+    setD({ ...d, [e.target.name]: e.target.checked });
+    if (aviso) setAviso('');
+  };
+
   const enviar = () => {
     const msg = `Hola Web Bonding! 👋 Quiero comenzar mi proyecto.\n\n💡 *Quiero:* ${d.tipo}\n👤 *Nombre:* ${d.nombre.trim()}\n📱 *Teléfono:* ${d.telefono.trim()}\n📧 *Correo:* ${d.correo.trim()}` +
       (d.adicional.trim() ? `\n📝 *Adicional:* ${d.adicional.trim()}` : '');
     const url = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+    // el guardado sale primero y queda en camino aunque WhatsApp tome la pantalla; WhatsApp se abre en el mismo
+    // toque para que el navegador no lo bloquee. Si no se pudo guardar, el mensaje igual llega por WhatsApp.
+    guardarLead(d).catch((err) => console.warn('No se pudo guardar el lead:', err.message));
     window.open(url, '_blank');
     setEnviado(url);
   };
@@ -202,7 +213,7 @@ function Formulario() {
     if (falta) {
       setAviso(falta);
       setIntento((i) => i + 1);
-      campo.current?.focus();
+      (k === 'adicional' ? casilla : campo).current?.focus();
       return;
     }
     if (paso < PASOS.length - 1) ir(paso + 1);
@@ -277,8 +288,20 @@ function Formulario() {
             <label className="lp-paso__t" htmlFor={`lp-${k}`}>{q.t(nombre)}</label>
             <p className="lp-paso__p">{q.p}</p>
             {k === 'adicional' ? (
-              <textarea id="lp-adicional" ref={campo} className="lp-paso__input" rows="4" autoComplete="off"
-                placeholder={q.ej} value={d.adicional} onChange={cambia} />
+              <>
+                <textarea id="lp-adicional" ref={campo} className="lp-paso__input" rows="4" autoComplete="off"
+                  placeholder={q.ej} value={d.adicional} onChange={cambia} />
+                {/* sin marcar de antemano: la aceptación la da la persona; la política abre en otra pestaña para no perder lo escrito */}
+                <label className={`lp-acepto ${aviso ? 'lp-error' : ''}`}>
+                  <input type="checkbox" name="acepta" ref={casilla} checked={d.acepta} onChange={marca}
+                    aria-invalid={aviso ? true : undefined} aria-describedby={aviso ? 'lp-aviso' : undefined} />
+                  <span>Acepto la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a> y que Web Bonding me escriba por WhatsApp o correo sobre mi proyecto.</span>
+                </label>
+                <label className="lp-acepto">
+                  <input type="checkbox" name="novedades" checked={d.novedades} onChange={marca} />
+                  <span>También quiero recibir ofertas y novedades. <em>Opcional.</em></span>
+                </label>
+              </>
             ) : (
               <input id={`lp-${k}`} ref={campo} className={`lp-paso__input ${aviso ? 'lp-error' : ''}`} type={q.type}
                 inputMode={q.type} autoComplete={q.auto} enterKeyHint="next" placeholder={q.ej} value={d[k]} onChange={cambia}
@@ -381,7 +404,7 @@ function CreaTuApp() {
           </div>
         </section>
 
-        <footer className="lp-pie">Web Bonding, C.A. · RIF J-50804362-6</footer>
+        <footer className="lp-pie">Web Bonding, C.A. · RIF J-50804362-6 · <a href="/privacidad">Política de privacidad</a></footer>
       </main>
     </>
   );

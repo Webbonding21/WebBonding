@@ -10,7 +10,7 @@ module.exports = defineConfig(({ command }) => ({
     command === 'build' &&
       vitePrerender({
         staticDir: path.resolve(__dirname, 'dist'),
-        routes: ['/', '/crea-tu-app', '/servicios', '/blog', '/contacto'],
+        routes: ['/', '/crea-tu-app', '/privacidad', '/servicios', '/blog', '/contacto'],
       }),
   ].filter(Boolean),            // elimina "false" cuando estamos en dev
 }));

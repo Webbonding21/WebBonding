@@ -4,11 +4,13 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
+import AvisoCookies from './components/AvisoCookies';
 import Home from './pages/Home';
 import Cotizador from './pages/Cotizador';
 import CotizadorGate from './components/CotizadorGate';
 import R4Apertura from './pages/R4Apertura';
 import CreaTuApp from './pages/CreaTuApp';
+import Privacidad from './pages/Privacidad';
 
 import './App.css';
 
@@ -35,11 +37,13 @@ function Contenido() {
         <Route path="/cotizador" element={<CotizadorGate><Cotizador /></CotizadorGate>} />
         <Route path="/r4apertura" element={<R4Apertura />} />
         <Route path="/crea-tu-app" element={<CreaTuApp />} />
+        <Route path="/privacidad" element={<Privacidad />} />
       </Routes>
       {!herramienta && (
         <>
           {!landing && <Footer />}
           <FloatingWhatsAppButton />
+          <AvisoCookies />
         </>
       )}
     </div>

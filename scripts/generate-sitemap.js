@@ -12,6 +12,7 @@ const today = new Date().toISOString().split('T')[0];
 const routes = [
   { url: '/',          changefreq: 'weekly',  priority: 1.0, lastmod: today },
   { url: '/crea-tu-app', changefreq: 'monthly', priority: 0.9, lastmod: today },
+  { url: '/privacidad', changefreq: 'yearly',  priority: 0.3, lastmod: today },
   { url: '/#about',    changefreq: 'monthly', priority: 0.8, lastmod: today },
   { url: '/#services', changefreq: 'monthly', priority: 0.9, lastmod: today },
   { url: '/#work',     changefreq: 'monthly', priority: 0.9, lastmod: today },

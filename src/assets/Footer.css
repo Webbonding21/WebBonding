@@ -65,6 +65,7 @@
   font-family: var(--font-mono); font-size: .72rem; letter-spacing: .03em; color: var(--paper-60);
 }
 .wb-foot__credit { color: var(--paper); }
+.wb-foot__legal { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 860px) {
   .wb-foot__top { grid-template-columns: 1fr; gap: 40px; }

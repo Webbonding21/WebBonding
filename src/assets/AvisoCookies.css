@@ -1,0 +1,27 @@
+/* Aviso de cookies: tarjeta abajo a la izquierda (en el teléfono, de borde a borde). Va encima del botón de
+   WhatsApp (9999) y debajo del visor de capturas de /crea-tu-app (10001). */
+.wb-cookies {
+  position: fixed; left: 24px; bottom: 24px; z-index: 10000; width: min(460px, calc(100vw - 48px));
+  padding: 1.2rem 1.3rem; border: 1px solid var(--line-dark); border-radius: var(--radius-lg);
+  background: var(--ink-2); color: var(--paper); box-shadow: var(--shadow-lg); font-family: var(--font-body);
+  animation: wb-cookies-sube .45s cubic-bezier(.2, .8, .2, 1) both;
+}
+.wb-cookies__t { margin: 0; font-size: .9rem; line-height: 1.5; color: var(--paper-60); }
+.wb-cookies__t a { color: var(--paper); font-weight: 600; }
+.wb-cookies__botones { display: flex; gap: .6rem; margin-top: 1rem; }
+.wb-cookies__btn {
+  flex: 1; padding: .85em 1em; border: 1.5px solid var(--line-dark); border-radius: 100px; background: transparent;
+  color: var(--paper); font-family: var(--font-mono); font-weight: 700; font-size: .74rem; letter-spacing: .03em;
+  text-transform: uppercase; cursor: pointer; transition: border-color .2s, background .2s;
+}
+.wb-cookies__btn:hover { border-color: var(--paper); }
+.wb-cookies__btn--si { background: var(--accent); border-color: var(--accent); color: #fff; }
+.wb-cookies__btn--si:hover { background: var(--accent-2); border-color: var(--accent-2); }
+.wb-cookies__btn:focus-visible { outline: 3px solid rgba(155, 85, 224, .55); outline-offset: 2px; }
+
+@keyframes wb-cookies-sube { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 520px) {
+  .wb-cookies { left: 12px; right: 12px; bottom: 12px; width: auto; padding: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) { .wb-cookies { animation: none; } }

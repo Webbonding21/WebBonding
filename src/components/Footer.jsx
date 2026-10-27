@@ -72,7 +72,7 @@ const Footer = () => {
 
         {/* Barra inferior */}
         <div className="wb-foot__bottom">
-          <p>© {year} Web Bonding. Todos los derechos reservados.</p>
+          <p>© {year} Web Bonding. Todos los derechos reservados. · <a href="/privacidad" className="wb-foot__legal">Política de privacidad</a></p>
           <p className="wb-foot__credit">Hecho con código y café en Venezuela 🇻🇪</p>
         </div>
       </div>

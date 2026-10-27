@@ -96,7 +96,7 @@
 .lp-shot figcaption { margin-top: .6rem; font-size: .8rem; line-height: 1.35; color: var(--paper-60); }
 
 /* captura ampliada */
-.lp-zoom { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; padding: 64px 76px;
+.lp-zoom { position: fixed; inset: 0; z-index: 10001; display: grid; place-items: center; padding: 64px 76px;
   background: rgba(8, 8, 10, .92); backdrop-filter: blur(6px); animation: lp-funde .22s both; }
 .lp-zoom__fig { display: grid; justify-items: center; gap: .9rem; margin: 0; }
 .lp-zoom__img { display: block; width: auto; height: auto; max-width: min(88vw, 1200px); max-height: calc(100vh - 150px);
@@ -158,6 +158,22 @@ textarea.lp-paso__input { min-height: 7.2em; font-size: 1.05rem; resize: vertica
 .lp-paso__input:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(123, 47, 190, .14); }
 .lp-paso__input.lp-error { border-color: var(--coral); }
 .lp-paso__aviso { display: block; margin-top: .65rem; color: var(--coral); font-weight: 500; animation: lp-tiembla .42s; }
+/* último paso: aceptar la política (obligatoria) y las novedades (opcional) */
+.lp-acepto { display: flex; align-items: flex-start; gap: .7rem; margin-top: 1rem; font-size: .92rem; line-height: 1.45; color: var(--ink); cursor: pointer; }
+.lp-acepto + .lp-acepto { margin-top: .6rem; }
+/* casilla propia: la nativa sale oscura con el esquema de color del sitio y parece ya marcada */
+.lp-acepto input { appearance: none; -webkit-appearance: none; flex: none; display: grid; place-content: center;
+  width: 1.25rem; height: 1.25rem; margin: .1rem 0 0; border: 1.5px solid rgba(14, 14, 17, .42); border-radius: 6px;
+  background: #fff; cursor: pointer; transition: background .15s, border-color .15s; }
+.lp-acepto input::after { content: ""; width: .62rem; height: .32rem; margin-top: -.14rem; border: solid #fff;
+  border-width: 0 0 2.5px 2.5px; transform: rotate(-45deg) scale(0); transition: transform .15s; }
+.lp-acepto input:checked { background: var(--accent); border-color: var(--accent); }
+.lp-acepto input:checked::after { transform: rotate(-45deg) scale(1); }
+.lp-acepto input:focus-visible { outline: 3px solid rgba(123, 47, 190, .35); outline-offset: 2px; }
+.lp-acepto.lp-error input { border-color: var(--coral); }
+.lp-acepto a { color: var(--accent); font-weight: 600; }
+.lp-acepto em { font-style: normal; color: var(--ink-60); }
+.lp-acepto.lp-error span { color: var(--coral); }
 .lp-paso__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.1rem; margin-top: auto; padding-top: 1.5rem; }
 .lp-paso__tecla { font-size: .84rem; color: var(--ink-60); }
 .lp-paso__tecla kbd { padding: .12em .5em; border: 1px solid var(--line-light); border-bottom-width: 2px; border-radius: 6px;
@@ -203,6 +219,7 @@ textarea.lp-paso__input { min-height: 7.2em; font-size: 1.05rem; resize: vertica
 }
 
 .lp-pie { text-align: center; padding: 1.6rem var(--gutter) 5.5rem; font-size: .82rem; color: var(--paper-60); background: var(--ink); }
+.lp-pie a { color: var(--paper); }
 
 @media (max-width: 860px) {
   .lp-hero__in, .lp-contacto__in, .lp-app { grid-template-columns: 1fr; }
