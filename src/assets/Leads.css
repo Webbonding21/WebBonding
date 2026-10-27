@@ -47,7 +47,7 @@
 .ld-usuario { font-size: .82rem; color: var(--paper-60); }
 
 /* filtros y búsqueda */
-.ld-contenido { max-width: 980px; margin: 0 auto; padding: 18px 16px 64px; }
+.ld-contenido { max-width: 1180px; margin: 0 auto; padding: 18px 16px 80px; }
 .ld-filtros { display: flex; gap: .45rem; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
 .ld-filtros::-webkit-scrollbar { display: none; }
 .ld-filtro { flex: none; display: inline-flex; align-items: center; gap: .45em; padding: .5em .9em; border: 1.5px solid var(--line-light);
@@ -55,43 +55,111 @@
 .ld-filtro span { min-width: 1.5em; padding: .05em .4em; border-radius: 100px; background: var(--paper-2); font-size: .78rem; text-align: center; }
 .ld-filtro[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .ld-filtro[aria-pressed="true"] span { background: rgba(243, 239, 230, .18); }
-.ld-buscar { display: flex; align-items: center; gap: .6rem; margin-top: .8rem; padding: 0 .9rem; border: 1.5px solid var(--line-light);
+.ld-barra { display: flex; flex-wrap: wrap; gap: 8px; margin-top: .8rem; }
+.ld-buscar { flex: 1 1 280px; display: flex; align-items: center; gap: .6rem; padding: 0 .9rem; border: 1.5px solid var(--line-light);
   border-radius: 12px; background: #fff; color: var(--ink-60); }
-.ld-buscar input { flex: 1; min-width: 0; padding: .8em 0; border: 0; background: none; color: var(--ink); font: inherit; font-size: .95rem; }
+.ld-buscar input { flex: 1; min-width: 0; padding: .75em 0; border: 0; background: none; color: var(--ink); font: inherit; font-size: .95rem; }
 .ld-buscar input:focus { outline: none; }
 .ld-buscar:focus-within { border-color: var(--accent); }
+.ld-select { padding: .7em .8em; border: 1.5px solid var(--line-light); border-radius: 12px; background: #fff; color: var(--ink);
+  font: inherit; font-size: .88rem; cursor: pointer; }
 .ld-vacio { margin: 2.5rem 0; text-align: center; color: var(--ink-60); }
 
-/* tarjetas */
-.ld-lista { display: grid; gap: 12px; margin-top: 1rem; }
-.ld-tarjeta { padding: 1.1rem 1.15rem; border: 1px solid var(--line-light); border-left: 5px solid var(--electric);
-  border-radius: 14px; background: #fff; }
-.ld-tarjeta--contactado { border-left-color: #f0a500; }
-.ld-tarjeta--propuesta { border-left-color: var(--accent); }
-.ld-tarjeta--cliente { border-left-color: #25D366; }
-.ld-tarjeta--descartado { border-left-color: var(--paper-3); opacity: .75; }
-.ld-tarjeta__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
-.ld-tarjeta__nombre { margin: 0; font-family: var(--font-display); font-size: 1.25rem; line-height: 1.15; }
-.ld-tarjeta__sub { margin: .25rem 0 0; color: var(--ink-60); font-size: .85rem; }
-.ld-estado { flex: none; padding: .45em .7em; border: 1.5px solid var(--line-light); border-radius: 10px; background: var(--paper);
-  color: var(--ink); font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; }
-.ld-tarjeta__contacto { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .95rem; }
-.ld-datos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem 1.2rem; margin: 1rem 0 0; }
+/* avisos de arriba: leads que acaban de llegar y acciones con varios seleccionados */
+.ld-aviso-nuevos { position: sticky; top: 70px; z-index: 6; display: block; margin: 0 auto 12px; padding: .6em 1.2em; border: 0; border-radius: 100px;
+  background: var(--electric); color: #fff; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 12px 30px -14px var(--electric); }
+.ld-masivo { position: sticky; top: 70px; z-index: 6; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px;
+  padding: 10px 14px; border-radius: 12px; background: var(--ink); color: var(--paper); font-size: .9rem; }
+.ld-masivo span { color: var(--paper-60); }
+.ld-masivo__btn { padding: .4em .8em; border: 1px solid var(--line-dark); border-radius: 100px; background: transparent; color: var(--paper);
+  font: inherit; font-size: .84rem; cursor: pointer; }
+.ld-masivo__btn:hover { border-color: var(--paper); }
+.ld-masivo__quitar { margin-left: auto; border: 0; background: none; color: var(--paper-60); font: inherit; font-size: .84rem;
+  text-decoration: underline; cursor: pointer; }
+
+/* la lista: una fila por lead, con el color de su estado a la izquierda */
+.ld-lista { list-style: none; margin: 12px 0 0; padding: 0; border: 1px solid var(--line-light); border-radius: 14px; background: #fff; overflow: hidden; }
+.ld-lista[aria-busy="true"] { opacity: .6; }
+.ld-fila { display: grid; grid-template-columns: 20px minmax(0, 2.6fr) minmax(0, 1.1fr) 96px minmax(0, .9fr) 132px 36px; align-items: center;
+  gap: 12px; padding: 10px 14px 10px 12px; border-bottom: 1px solid var(--line-light); box-shadow: inset 4px 0 0 var(--electric); cursor: pointer; }
+.ld-fila:last-child { border-bottom: 0; }
+.ld-fila:hover { background: #faf8f3; }
+.ld-fila.is-marcada { background: #f1efff; }
+.ld-fila--contactado { box-shadow: inset 4px 0 0 #f0a500; }
+.ld-fila--propuesta { box-shadow: inset 4px 0 0 var(--accent); }
+.ld-fila--cliente { box-shadow: inset 4px 0 0 #25D366; }
+.ld-fila--descartado { box-shadow: inset 4px 0 0 var(--paper-3); color: var(--ink-60); }
+.ld-fila--cabeza { padding-block: 8px; background: var(--paper-2); box-shadow: none; cursor: default; font-size: .7rem; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--ink-60); }
+.ld-fila--cabeza:hover { background: var(--paper-2); }
+.ld-fila input[type="checkbox"] { width: 17px; height: 17px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.ld-fila__quien { min-width: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.ld-fila__quien b { display: block; overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.ld-fila__quien span { display: block; overflow: hidden; margin-top: 1px; font-size: .82rem; color: var(--ink-60); text-overflow: ellipsis; white-space: nowrap; }
+.ld-fila__tel, .ld-fila__origen { overflow: hidden; font-size: .88rem; text-overflow: ellipsis; white-space: nowrap; }
+.ld-fila__origen { color: var(--ink-60); text-transform: capitalize; }
+.ld-fila__cuando { font-size: .85rem; color: var(--ink-60); white-space: nowrap; }
+.ld-fila__cuando.is-tarde { color: #c2410c; font-weight: 700; }
+.ld-fila__cuando.is-tarde::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%;
+  background: var(--coral); vertical-align: 1px; }
+.ld-fila__wa { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #25D366; color: #fff; font-size: 1rem; }
+.ld-fila__wa:hover { background: #1ebe5b; }
+.ld-estado { min-width: 0; padding: .4em .5em; border: 1.5px solid var(--line-light); border-radius: 10px; background: #fff;
+  color: var(--ink); font: inherit; font-size: .84rem; font-weight: 600; cursor: pointer; }
+.ld-estado--nuevo { border-color: var(--electric); color: var(--electric); }
+.ld-estado--contactado { border-color: #f0a500; color: #9a6700; }
+.ld-estado--propuesta { border-color: var(--accent); color: var(--accent); }
+.ld-estado--cliente { border-color: #25D366; color: #15803d; }
+.ld-mas { display: block; margin: 16px auto 0; padding: .8em 1.4em; border: 1.5px solid var(--line-light); border-radius: 100px;
+  background: #fff; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+.ld-mas:hover { border-color: var(--ink); }
+.ld-fin { margin: 16px 0 0; text-align: center; font-size: .85rem; color: var(--ink-60); }
+
+/* la ficha de un lead: se abre al lado (a pantalla completa en el teléfono) */
+.ld-ficha-fondo { position: fixed; inset: 0; z-index: 10001; background: rgba(14, 14, 17, .45); color-scheme: light; }
+.ld-ficha { position: absolute; top: 0; right: 0; bottom: 0; width: min(500px, 100%); overflow-y: auto; padding: 22px 22px 40px;
+  border-left: 5px solid var(--electric); background: #fff; color: var(--ink); font-family: var(--font-body);
+  box-shadow: -24px 0 60px -30px rgba(0, 0, 0, .55); animation: ld-desliza .22s cubic-bezier(.2, .8, .2, 1) both; }
+.ld-ficha--contactado { border-left-color: #f0a500; }
+.ld-ficha--propuesta { border-left-color: var(--accent); }
+.ld-ficha--cliente { border-left-color: #25D366; }
+.ld-ficha--descartado { border-left-color: var(--paper-3); }
+.ld-ficha__cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.ld-ficha__cabecera h2 { margin: 0; font-family: var(--font-display); font-size: 1.45rem; line-height: 1.15; }
+.ld-ficha__cabecera p { margin: .3rem 0 0; color: var(--ink-60); font-size: .86rem; }
+.ld-ficha__estado { display: flex; align-items: center; gap: .7rem; margin-top: 1rem; }
+.ld-ficha__estado span { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-60); }
+.ld-ficha__contacto { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.ld-datos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem 1.2rem; margin: 1.2rem 0 0; }
 .ld-datos dt { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-60); }
 .ld-datos dd { margin: .15rem 0 0; font-size: .92rem; overflow-wrap: anywhere; }
-.ld-adicional { margin: .9rem 0 0; padding: .7em .9em; border-left: 3px solid var(--paper-3); background: var(--paper);
+.ld-adicional { margin: 1rem 0 0; padding: .7em .9em; border-left: 3px solid var(--paper-3); background: var(--paper);
   border-radius: 0 10px 10px 0; font-size: .92rem; line-height: 1.5; }
-.ld-notas { display: block; margin-top: .9rem; }
+.ld-notas { display: block; margin-top: 1rem; }
 .ld-notas span { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-60); }
 .ld-notas textarea { display: block; width: 100%; margin-top: .3rem; padding: .65em .8em; border: 1.5px solid var(--line-light);
   border-radius: 10px; background: #fff; color: var(--ink); font: inherit; font-size: .92rem; line-height: 1.45; resize: vertical; }
 .ld-notas textarea:focus { outline: none; border-color: var(--accent); }
+@keyframes ld-desliza { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
 
-@media (max-width: 560px) {
+/* en el teléfono cada lead ocupa dos líneas: quién y cuándo; teléfono, estado y WhatsApp */
+@media (max-width: 760px) {
   .ld-usuario { display: none; }
+  .ld-fila--cabeza { display: none; }
+  /* el «hace…» va encima de la columna del estado y el WhatsApp, para que su largo no le quite espacio al teléfono */
+  .ld-fila { grid-template-columns: 20px minmax(0, 1fr) auto auto; row-gap: 6px; column-gap: 10px; }
+  .ld-fila > input { grid-row: 1 / 3; grid-column: 1; align-self: start; margin-top: 3px; }
+  .ld-fila__quien { grid-row: 1; grid-column: 2 / 5; padding-right: 92px; }
+  .ld-fila__cuando { grid-row: 1; grid-column: 3 / 5; align-self: start; justify-self: end; }
+  .ld-fila__tel { grid-row: 2; grid-column: 2; font-size: .84rem; }
+  .ld-fila__origen { display: none; }
+  .ld-fila .ld-estado { grid-row: 2; grid-column: 3; max-width: 112px; padding: .35em .3em; font-size: .8rem; }
+  .ld-fila__wa { grid-row: 2; grid-column: 4; }
   .ld-datos { grid-template-columns: 1fr; }
-  .ld-tarjeta__contacto .ld-btn { flex: 1; padding-inline: .6em; }
+  .ld-ficha__contacto .ld-btn { flex: 1; padding-inline: .6em; }
+  .ld-select { flex: 1 1 30%; }
 }
+@media (prefers-reduced-motion: reduce) { .ld-ficha { animation: none; } }
 
 /* acceso del equipo: volver al acceso de clientes (cotizador) */
 .ld-entrar__volver { display: inline-flex; align-items: center; justify-content: center; gap: .4em; margin-top: .4rem; color: var(--ink-60); }
