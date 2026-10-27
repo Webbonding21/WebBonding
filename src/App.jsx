@@ -11,6 +11,7 @@ import CotizadorGate from './components/CotizadorGate';
 import R4Apertura from './pages/R4Apertura';
 import CreaTuApp from './pages/CreaTuApp';
 import Privacidad from './pages/Privacidad';
+import Leads from './pages/Leads';
 
 import './App.css';
 
@@ -24,8 +25,8 @@ function App() {
 
 function Contenido() {
   const { pathname } = useLocation();
-  // /r4apertura es una herramienta interna: se muestra sola, sin las capas del sitio.
-  const herramienta = pathname.startsWith('/r4apertura');
+  // /r4apertura y /leads son herramientas internas: se muestran solas, sin las capas del sitio.
+  const herramienta = pathname.startsWith('/r4apertura') || pathname.startsWith('/leads');
   // /crea-tu-app es la landing de anuncios: sin el menú ni el pie del sitio (lleva su propio encabezado y contacto)
   const landing = pathname.startsWith('/crea-tu-app');
 
@@ -38,6 +39,7 @@ function Contenido() {
         <Route path="/r4apertura" element={<R4Apertura />} />
         <Route path="/crea-tu-app" element={<CreaTuApp />} />
         <Route path="/privacidad" element={<Privacidad />} />
+        <Route path="/leads" element={<Leads />} />
       </Routes>
       {!herramienta && (
         <>

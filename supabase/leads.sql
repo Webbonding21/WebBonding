@@ -106,3 +106,42 @@ comment on function public.crear_lead(text, text, text, text, text, boolean, boo
   is 'Formulario de webbonding.net/crea-tu-app → web_bonding.leads. Ver WebBonding/supabase/leads.sql';
 revoke all on function public.crear_lead(text, text, text, text, text, boolean, boolean, text, text, text, text, text, text) from public;
 grant execute on function public.crear_lead(text, text, text, text, text, boolean, boolean, text, text, text, text, text, text) to anon, authenticated;
+
+-- ── Panel /leads de la web ──────────────────────────────────────────────────────────────────────────────────
+-- Solo para los usuarios con rol 'admin' en public.perfiles (los mismos del panel de R4; es_admin() viene de
+-- r4-cuentas/supabase/migrations/0003_roles.sql). Sin sesión no se pueden llamar; con sesión pero sin ser admin,
+-- responden «No autorizado».
+
+create or replace function public.ver_leads()
+returns setof web_bonding.leads
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  if not public.es_admin() then
+    raise exception 'No autorizado' using errcode = '42501';
+  end if;
+  return query select * from web_bonding.leads l order by l.created_at desc;
+end $$;
+
+create or replace function public.actualizar_lead(p_id uuid, p_estado text, p_notas text default null)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if not public.es_admin() then
+    raise exception 'No autorizado' using errcode = '42501';
+  end if;
+  update web_bonding.leads
+     set estado = p_estado, notas = nullif(left(btrim(coalesce(p_notas, '')), 2000), '')
+   where id = p_id;
+end $$;
+
+revoke all on function public.ver_leads() from public, anon;
+grant execute on function public.ver_leads() to authenticated;
+revoke all on function public.actualizar_lead(uuid, text, text) from public, anon;
+grant execute on function public.actualizar_lead(uuid, text, text) to authenticated;
