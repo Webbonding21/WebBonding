@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars, FaTimes, FaArrowRight } from 'react-icons/fa';
 import '../assets/Navbar.css';
@@ -7,7 +7,7 @@ const NAV = [
   { label: 'Inicio', href: '/#home' },
   { label: 'Estudio', href: '/#about' },
   { label: 'Servicios', href: '/#services' },
-  { label: 'Proyectos', href: '/#work' },
+  { label: 'Portafolio', href: '/portafolio' },
   { label: 'Planes', href: '/#plans' },
   { label: 'Contacto', href: '/#contact' },
 ];

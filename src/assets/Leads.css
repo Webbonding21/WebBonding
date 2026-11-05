@@ -257,6 +257,11 @@
   .ld-masivo { bottom: 10px; padding-left: 12px; }
   .ld-masivo__texto { display: none; }
 }
+@media (max-width: 560px) {
+  /* los botones de la cabecera (aquí, en /admin y en la barra del cotizador) quedan en su ícono para que quepan en una
+     fila; el texto sigue ahí para los lectores de pantalla */
+  .ld-cabecera .ld-btn__txt, .cot-equipo .ld-btn__txt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
 @media (prefers-reduced-motion: reduce) { .ld-ficha, .ld-menu, .ld-toast, .ld-masivo { animation: none; } }
 
 /* acceso del equipo: volver al acceso de clientes (cotizador) */

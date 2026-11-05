@@ -1,0 +1,213 @@
+/* /portafolio: los tres paquetes y lo que trae cada uno. Mismas letras y colores del sitio, más el lima del flyer de los
+   paquetes (01 + 02 = PLUS, con los signos en círculos coral). También usa las clases lp-* de CreaTuApp.css. */
+.pf, .pf-cine { --lima: #C8F23A; }
+.pf-sec { scroll-margin-top: 60px; }
+.pf-eyebrow { color: var(--accent); opacity: 1; }
+
+/* 1 · Portada: la suma */
+.pf-hero { position: relative; padding-block: clamp(52px, 7vw, 96px) clamp(64px, 8vw, 112px); overflow: hidden; }
+.pf-hero__t { max-width: 13ch; margin: .35em 0 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(2.6rem, 6.4vw, 5rem);
+  line-height: 1; letter-spacing: -.03em; color: var(--ink); }
+.pf-hero__t em { font-style: normal; color: var(--accent); }
+.pf-hero__p { max-width: 50ch; margin: 1.1em 0 0; font-size: clamp(1.02rem, 1.5vw, 1.2rem); line-height: 1.55; color: var(--ink-60); }
+
+.pf-suma { display: grid; grid-template-columns: 1fr auto 1fr auto 1.25fr; margin-top: clamp(2.6rem, 5vw, 4rem); }
+/* cada ficha, girada como una pegatina; al pasar el mouse se endereza */
+.pf-paq { position: relative; display: flex; flex-direction: column; min-height: clamp(230px, 23vw, 290px);
+  padding: clamp(1.1rem, 2vw, 1.6rem) clamp(1.15rem, 2.2vw, 1.8rem); border-radius: 22px; text-decoration: none;
+  transform: rotate(var(--giro)); box-shadow: 0 26px 50px -34px rgba(14, 14, 17, .6);
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s; }
+.pf-paq:hover { transform: rotate(0deg) translateY(-6px); box-shadow: 0 36px 60px -32px rgba(14, 14, 17, .6); }
+.pf-paq:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+.pf-paq--01 { --giro: -2.5deg; background: var(--ink); color: var(--paper); }
+.pf-paq--02 { --giro: 2deg; background: var(--lima); color: var(--ink); }
+.pf-paq--plus { --giro: -1.2deg; background: var(--electric); color: #fff; }
+.pf-paq__k { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; opacity: .72; }
+.pf-paq__n { margin-top: .3em; font-family: var(--font-display); font-weight: 800; font-size: clamp(4rem, 8vw, 6.6rem); line-height: .8;
+  letter-spacing: -.055em; }
+.pf-paq__t { margin-top: .75em; font-family: var(--font-display); font-weight: 600; font-size: clamp(1.1rem, 1.7vw, 1.45rem); line-height: 1.15;
+  letter-spacing: -.01em; }
+.pf-paq__ver { display: inline-flex; align-items: center; gap: .45em; margin-top: auto; padding-top: 1.1rem; font-family: var(--font-mono);
+  font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.pf-paq__ver svg { transition: transform .25s; }
+.pf-paq:hover .pf-paq__ver svg { transform: translateY(3px); }
+.pf-pega { position: absolute; top: -15px; right: 18px; padding: .55em 1em .5em; border-radius: 100px; background: var(--lima); color: var(--ink);
+  font-family: var(--font-mono); font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+  transform: rotate(4deg); box-shadow: 0 0 0 5px var(--paper); }
+/* los signos montan sobre el borde de las fichas, con un aro del color del fondo */
+.pf-signo { position: relative; z-index: 2; align-self: center; display: block; width: clamp(54px, 5.6vw, 74px); aspect-ratio: 1;
+  margin-inline: -15px; border-radius: 50%; background: var(--coral); box-shadow: 0 0 0 7px var(--paper); }
+.pf-signo svg { display: block; width: 100%; height: 100%; }
+.pf-signo rect { fill: var(--ink); }
+
+/* 2 · Paquete 02: los videos */
+.pf-videos { padding-block: clamp(64px, 8vw, 110px); color: var(--ink); }
+.pf-p { max-width: 56ch; margin: 1rem 0 0; font-size: 1.05rem; line-height: 1.55; color: var(--ink-60); }
+.pf-trae { display: flex; flex-wrap: wrap; gap: 8px; margin: 1.4rem 0 0; padding: 0; list-style: none; }
+.pf-trae li { padding: .5em 1em; border: 1px solid var(--line-light); border-radius: 100px; background: #fff; font-size: .88rem; font-weight: 500;
+  color: var(--ink); }
+.pf-trae--claro li { border-color: var(--line-dark); background: transparent; color: var(--paper); }
+/* los videos y la casilla lima, cuatro por fila y ninguna de más de 260 px (con pocos videos no se agrandan); los videos
+   se agregan en /admin/portafolio, así que con más de tres la fila sigue abajo */
+.pf-grilla { display: grid; grid-template-columns: repeat(4, minmax(0, 260px)); gap: clamp(14px, 2vw, 24px); align-items: start;
+  margin-top: 2.6rem; }
+.pf-video h3 { margin: .35em 0 .15em; font-family: var(--font-display); font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.15; }
+.pf-video p { margin: 0; font-size: .84rem; line-height: 1.4; color: var(--ink-60); }
+.pf-etq { display: inline-block; margin-top: .9rem; padding: .32em .75em; border-radius: 100px; background: var(--ink); color: var(--lima);
+  font-family: var(--font-mono); font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+/* portada 9:16 que abre el reproductor; el botón va abajo para no tapar el título que trae cada video */
+.pf-portada { position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; padding: 0; overflow: hidden; border: 0; border-radius: 18px;
+  background: var(--ink-2); cursor: pointer; box-shadow: 0 26px 50px -32px rgba(14, 14, 17, .7); }
+.pf-portada img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+.pf-portada:hover img { transform: scale(1.04); }
+.pf-portada:focus-visible { outline: 3px solid var(--electric); outline-offset: 3px; }
+.pf-portada__play { position: absolute; left: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: .45em; padding: .45em .8em .45em .65em;
+  border-radius: 100px; background: rgba(243, 239, 230, .94); color: var(--ink); font-family: var(--font-mono); font-size: .74rem; font-weight: 700;
+  box-shadow: 0 8px 22px -10px rgba(0, 0, 0, .7); transition: background .2s; }
+.pf-portada__play svg { fill: currentColor; }
+.pf-portada:hover .pf-portada__play { background: var(--lima); }
+/* un video sin portada: su título sobre tinta, con el lima de la marca */
+.pf-portada--sin { display: flex; align-items: flex-end; text-align: left;
+  background: radial-gradient(120% 70% at 100% 0%, rgba(46, 55, 255, .6), transparent 62%), var(--ink); }
+.pf-portada__sin { display: flex; flex-direction: column; gap: .8rem; padding: 1.1rem 1.1rem 3.8rem; color: var(--paper);
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+.pf-portada--sin:hover .pf-portada__sin { transform: translateY(-4px); }
+.pf-portada__sin svg { font-size: 1.5rem; color: var(--lima); }
+.pf-portada__sin b { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.25rem, 2vw, 1.7rem); line-height: 1.02;
+  letter-spacing: -.02em; overflow-wrap: anywhere; }
+/* mientras cargan los videos */
+.pf-video--cargando .pf-portada { cursor: default; box-shadow: none;
+  background: linear-gradient(100deg, var(--paper-2) 30%, var(--paper-3) 50%, var(--paper-2) 70%) 0 0 / 300% 100%;
+  animation: pf-brilla 1.4s linear infinite; }
+@keyframes pf-brilla { to { background-position: -150% 0; } }
+/* la casilla para el negocio de quien está viendo */
+.pf-tuyo { display: flex; flex-direction: column; aspect-ratio: 9 / 16; padding: clamp(1rem, 1.8vw, 1.4rem); border-radius: 18px;
+  background: var(--lima); color: var(--ink); text-decoration: none; transition: transform .3s cubic-bezier(.2, .8, .2, 1); }
+.pf-tuyo:hover { transform: translateY(-5px) rotate(-1deg); }
+.pf-tuyo__k { font-family: var(--font-mono); font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .7; }
+.pf-tuyo b { margin-top: auto; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.15rem, 1.7vw, 1.6rem); line-height: 1.05;
+  letter-spacing: -.02em; }
+.pf-tuyo b em { display: block; font-style: normal; color: var(--electric); }
+.pf-tuyo__ir { display: flex; align-items: center; justify-content: center; gap: .5em; margin-top: 1.2rem; padding: .85em 1em; border-radius: 100px;
+  background: var(--ink); color: #fff; font-family: var(--font-mono); font-size: .72rem; font-weight: 700; letter-spacing: .03em;
+  text-transform: uppercase; text-align: center; text-wrap: balance; }
+
+/* 3 · Paquete Plus */
+.pf-plus { position: relative; padding-block: clamp(64px, 8vw, 110px); overflow: hidden; background: var(--electric); color: #fff; }
+.pf-plus__in { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.pf-plus__in--solo { grid-template-columns: 1fr; }
+.pf-plus__eyebrow { color: var(--lima); opacity: 1; }
+.pf-plus__t { color: #fff; }
+.pf-plus__t em { color: var(--lima); }
+.pf-plus__p { max-width: 46ch; margin: 1.2em 0 2em; font-size: clamp(1.02rem, 1.4vw, 1.15rem); line-height: 1.55; color: rgba(255, 255, 255, .86); }
+.pf-btn--lima { border-color: var(--lima); background: var(--lima); color: var(--ink); }
+.pf-btn--lima:hover { box-shadow: 0 16px 34px -14px rgba(14, 14, 17, .6); }
+.pf-plus__ejemplos { display: flex; justify-content: center; align-items: flex-start; gap: clamp(14px, 2vw, 26px); padding-bottom: 28px; }
+.pf-plus__ejemplo { width: clamp(140px, 15vw, 200px); margin: 0; transform: rotate(-3deg); }
+.pf-plus__ejemplo + .pf-plus__ejemplo { transform: rotate(2.5deg) translateY(28px); }
+.pf-plus__ejemplo .pf-portada { box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .75); }
+.pf-plus__ejemplo figcaption { margin-top: .7rem; font-size: .84rem; color: rgba(255, 255, 255, .86); }
+.pf-plus__ejemplo figcaption b { display: block; font-family: var(--font-display); font-size: 1.05rem; color: #fff; }
+
+/* 4 · Contacto: un botón por paquete */
+.pf-contacto { position: relative; padding-block: clamp(64px, 8vw, 110px); background: var(--ink); }
+.pf-elige { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 2.4rem; }
+.pf-elige__op { display: flex; flex-direction: column; height: 100%; min-height: 230px; padding: 1.4rem 1.5rem; border-radius: 20px;
+  text-decoration: none; transition: transform .3s cubic-bezier(.2, .8, .2, 1), box-shadow .3s; }
+.pf-elige__op:hover { transform: translateY(-6px); box-shadow: 0 30px 50px -30px rgba(0, 0, 0, .8); }
+.pf-elige__op--01 { background: var(--paper); color: var(--ink); }
+.pf-elige__op--02 { background: var(--lima); color: var(--ink); }
+.pf-elige__op--plus { background: var(--electric); color: #fff; }
+.pf-elige__n { font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 5vw, 4rem); line-height: .8; letter-spacing: -.05em; }
+.pf-elige__op b { margin-top: 1rem; font-family: var(--font-display); font-size: 1.3rem; line-height: 1.15; }
+.pf-elige__t { margin-top: .2rem; line-height: 1.4; opacity: .8; }
+.pf-elige__ir { display: inline-flex; align-items: center; gap: .5em; margin-top: auto; padding-top: 1.4rem; font-family: var(--font-mono);
+  font-size: .76rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.pf-elige__ir svg:last-child { transition: transform .25s; }
+.pf-elige__op:hover .pf-elige__ir svg:last-child { transform: translateX(4px); }
+.pf-datos { display: flex; flex-wrap: wrap; gap: .8rem 2rem; margin-top: 2.4rem; }
+.pf-datos a { display: inline-flex; align-items: center; gap: .6em; color: var(--paper); font-weight: 500; text-decoration: none; }
+.pf-datos svg { font-size: 1.15rem; color: var(--accent-2); }
+
+/* el reproductor, encima de la página: la tarjeta del reel de Instagram y al lado lo que es. Si no cabe a lo alto, se
+   desplaza (margin: auto la centra sin que se corte arriba) y los botones quedan fijos. */
+.pf-cine { position: fixed; inset: 0; z-index: 10001; display: grid; overflow-y: auto; overscroll-behavior: contain; padding: 56px 88px;
+  background: rgba(8, 8, 10, .95); animation: lp-funde .22s both; }
+.pf-cine__fig { display: grid; grid-template-columns: auto minmax(220px, 300px); gap: 30px; align-items: end; margin: auto; }
+/* la tarjeta de Instagram mide 1,25 × su ancho (el reel) + 208 px (su cabecera y su pie); el aviso de Instagram corrige el
+   alto si eso cambia. El ancho sale del alto de la pantalla, entre el mínimo de Instagram (326) y 460. */
+.pf-cine__ig { --ig: clamp(326px, calc((100vh - 320px) / 1.25), 460px); width: var(--ig); height: calc(var(--ig) * 1.25 + 208px);
+  overflow: hidden; border-radius: 14px; background: #fff; box-shadow: 0 34px 90px -30px #000;
+  animation: lp-amplia .3s cubic-bezier(.2, .8, .2, 1) both; }
+.pf-cine__ig iframe { display: block; width: 100%; height: 100%; border: 0; }
+/* encima de la tarjeta: su animación de entrada la sube de capa y su sombra oscurecería el nombre en el teléfono */
+.pf-cine__info { position: relative; z-index: 1; color: var(--paper); }
+.pf-cine__info .pf-etq { margin: 0; background: var(--lima); color: var(--ink); }
+.pf-cine__info h3 { margin: .5em 0 .25em; font-family: var(--font-display); font-size: 1.7rem; line-height: 1.1; }
+.pf-cine__info small { display: block; font-family: var(--font-mono); font-size: .74rem; line-height: 1.4; color: var(--paper-60); }
+.pf-cine__info p { margin: 1rem 0 0; line-height: 1.5; color: var(--paper-60); }
+.pf-cine__ir { display: inline-flex; align-items: center; gap: .5em; margin-top: 1.1rem; color: var(--paper); font-family: var(--font-mono);
+  font-size: .76rem; font-weight: 700; letter-spacing: .04em; text-decoration: none; }
+.pf-cine__ir:hover { color: var(--lima); }
+.pf-cine__n { display: block; margin-top: 1.3rem; font-family: var(--font-mono); font-size: .78rem; letter-spacing: .06em; color: var(--paper-60); }
+.pf-cine__cerrar, .pf-cine__paso { position: fixed; z-index: 1; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(243, 239, 230, .25); background: #1b1b20; color: var(--paper); font-size: 1.25rem; cursor: pointer; }
+.pf-cine__cerrar:hover, .pf-cine__paso:hover { background: var(--paper); color: var(--ink); }
+.pf-cine__cerrar { top: 16px; right: 16px; }
+.pf-cine__paso { top: 50%; transform: translateY(-50%); }
+.pf-cine__paso--ant { left: 18px; }
+.pf-cine__paso--sig { right: 18px; }
+
+@media (max-width: 860px) {
+  /* en el teléfono: 01 + 02 arriba, y el = con el Plus abajo, a lo ancho */
+  .pf-suma { grid-template-columns: 1fr auto 1fr; grid-template-areas: "a mas b" "igual igual igual" "plus plus plus"; }
+  .pf-paq { min-height: 0; }
+  .pf-paq--01 { grid-area: a; }
+  .pf-paq--02 { grid-area: b; }
+  .pf-paq--plus { grid-area: plus; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr auto; column-gap: 1.2rem; }
+  .pf-paq--plus .pf-paq__k { grid-column: 1; grid-row: 1; }
+  .pf-paq--plus .pf-paq__n { grid-column: 1; grid-row: 2 / 4; align-self: end; }
+  .pf-paq--plus .pf-paq__t { grid-column: 2; grid-row: 2; align-self: end; margin: 0; }
+  .pf-paq--plus .pf-paq__ver { grid-column: 2; grid-row: 3; padding-top: .7rem; }
+  .pf-paq--plus { padding-bottom: 1.9rem; }
+  .pf-paq--plus .pf-pega { top: auto; right: 14px; bottom: -14px; transform: rotate(-3deg); } /* arriba la taparía el = */
+  .pf-signo--mas { grid-area: mas; margin-inline: -13px; }
+  .pf-signo--igual { grid-area: igual; justify-self: center; margin: -20px 0; }
+  .pf-grilla { grid-template-columns: repeat(2, 1fr); }
+  /* la casilla lima, si queda sola, a lo ancho y sin el 9:16 (si no, pasa del alto de la pantalla) */
+  .pf-grilla > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .pf-grilla > :last-child:nth-child(odd) .pf-tuyo { aspect-ratio: auto; min-height: 200px; }
+  .pf-plus__in { grid-template-columns: 1fr; }
+  .pf-elige { grid-template-columns: 1fr; }
+  .pf-elige__op { min-height: 0; }
+}
+
+@media (max-width: 1100px) and (min-width: 861px) {
+  /* tres por fila; la casilla lima completa la última */
+  .pf-grilla { grid-template-columns: repeat(3, 1fr); }
+  .pf-grilla > :last-child:nth-child(3n + 2) { grid-column: span 2; }
+  .pf-grilla > :last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+  /* a lo ancho toma el alto de la fila y deja el 9:16 */
+  .pf-grilla > :last-child:not(:nth-child(3n)) { display: flex; align-self: stretch; }
+  .pf-grilla > :last-child:not(:nth-child(3n)) .pf-tuyo { flex: 1; aspect-ratio: auto; min-height: 220px; }
+}
+
+@media (max-width: 720px) {
+  /* el reproductor en el teléfono: las flechas y la X arriba, la tarjeta a lo ancho y el nombre abajo */
+  .pf-cine { padding: 70px 12px 28px; }
+  .pf-cine__fig { grid-template-columns: 1fr; justify-items: center; gap: 14px; }
+  .pf-cine__ig { --ig: min(calc(100vw - 24px), 420px); }
+  .pf-cine__info { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .3rem .7rem; text-align: center; }
+  .pf-cine__info h3 { margin: 0; font-size: 1.15rem; }
+  .pf-cine__ir { flex-basis: 100%; justify-content: center; margin-top: .4rem; }
+  .pf-cine__info small, .pf-cine__info p, .pf-cine__n { display: none; }
+  .pf-cine__cerrar { top: 12px; right: 12px; }
+  .pf-cine__paso { top: 12px; transform: none; }
+  .pf-cine__paso--ant { left: 12px; }
+  .pf-cine__paso--sig { right: auto; left: 66px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-paq, .pf-portada img, .pf-portada__sin, .pf-tuyo, .pf-elige__op { transition: none; }
+  .pf-cine, .pf-cine__ig, .pf-video--cargando .pf-portada { animation: none; }
+}

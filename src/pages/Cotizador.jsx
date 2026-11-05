@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { SiWhatsapp } from 'react-icons/si';
 import { FaArrowLeft, FaSearch, FaTimes, FaPlus, FaMinus, FaTrash, FaArrowRight, FaCopy, FaCheck, FaSignOutAlt } from 'react-icons/fa';
+import { FiGrid } from 'react-icons/fi';
 import Reveal from '../components/Reveal';
 import { ModoCotizador } from '../components/CotizadorGate';
 import GuiaVentas from '../components/GuiaVentas';
@@ -98,6 +99,7 @@ function BarraEquipo({ email, pestana, setPestana }) {
       </div>
       <div className="cot-equipo__acciones">
         <span className="cot-equipo__quien">{email}</span>
+        <Link to="/admin" className="ld-btn ld-btn--plano"><FiGrid aria-hidden="true" /> <span className="ld-btn__txt">Panel</span></Link>
         <Link to="/leads" className="ld-btn ld-btn--plano">Leads</Link>
         <CambiarClave />
         <button type="button" className="ld-btn ld-btn--plano" onClick={() => supabaseR4.auth.signOut()}>

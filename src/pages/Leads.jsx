@@ -5,9 +5,10 @@
 // Entra el equipo con su usuario (components/AccesoEquipo); los datos y las consultas están en components/leads/datos.js.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import {
   FiLogOut, FiAlertTriangle, FiAlertCircle, FiRefreshCw, FiSearch, FiX, FiChevronDown, FiCheck, FiArrowRight, FiFileText,
-  FiFilter, FiCalendar, FiGlobe, FiBarChart2,
+  FiFilter, FiCalendar, FiGlobe, FiBarChart2, FiGrid,
 } from 'react-icons/fi';
 import { SiWhatsapp } from 'react-icons/si';
 import { supabaseR4 } from '../components/r4/r4Api';
@@ -239,12 +240,13 @@ function Panel({ sesion }) {
           <a href="/" className="ld-marca"><img src="/logoenblanco.png" alt="" /> <span><b>Leads</b> Web Bonding</span></a>
           <div className="ld-cabecera__acciones">
             <span className="ld-usuario">{sesion.user?.email}</span>
+            <Link to="/admin" className="ld-btn ld-btn--plano"><FiGrid aria-hidden="true" /> <span className="ld-btn__txt">Panel</span></Link>
             <button type="button" className="ld-btn ld-btn--plano" onClick={() => cargar(0)} aria-label="Actualizar" disabled={cargando}>
               <FiRefreshCw aria-hidden="true" className={cargando ? 'ld-girando' : ''} />
             </button>
             {!DEMO && <CambiarClave />}
             <button type="button" className="ld-btn ld-btn--plano" onClick={() => (DEMO ? null : supabaseR4.auth.signOut())}>
-              <FiLogOut aria-hidden="true" /> Salir
+              <FiLogOut aria-hidden="true" /> <span className="ld-btn__txt">Salir</span>
             </button>
           </div>
         </div>

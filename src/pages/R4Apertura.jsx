@@ -5,7 +5,8 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
-import { FiLogIn, FiLogOut, FiAlertTriangle, FiEye, FiX } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiLogIn, FiLogOut, FiAlertTriangle, FiEye, FiGrid, FiX } from 'react-icons/fi';
 import { supabaseR4 } from '../components/r4/r4Api';
 import R4Lista from '../components/r4/R4Lista';
 import R4Cliente from '../components/r4/R4Cliente';
@@ -66,9 +67,12 @@ export default function R4Apertura() {
               <span className="r4-chip r4-chip-neutro"><FiEye size={13} /> Solo lectura</span>
             )}
             {sesion ? (
-              <button className="r4-btn r4-btn-plano" onClick={() => supabaseR4.auth.signOut()}>
-                <FiLogOut size={16} /> Salir
-              </button>
+              <>
+                <Link to="/admin" className="r4-btn r4-btn-plano"><FiGrid size={16} /> <span className="r4-btn-texto">Panel</span></Link>
+                <button className="r4-btn r4-btn-plano" onClick={() => supabaseR4.auth.signOut()}>
+                  <FiLogOut size={16} /> <span className="r4-btn-texto">Salir</span>
+                </button>
+              </>
             ) : (
               <button className="r4-btn r4-btn-primario" onClick={() => setAcceso(true)}>
                 <FiLogIn size={16} /> Acceso

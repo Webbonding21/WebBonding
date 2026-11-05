@@ -4,11 +4,12 @@
 
 // Fecha de la política de /privacidad. Si la política cambia, se cambia aquí: cada lead guarda la versión que
 // aceptó y el aviso de cookies vuelve a salir para quien eligió con una versión anterior.
-export const VERSION_POLITICA = '2026-10-26';
+export const VERSION_POLITICA = '2026-11-04';
 
 // ── Cookies ─────────────────────────────────────────────────────────────────────────────────────────────────
 // Hoy el sitio no usa cookies de medición ni de publicidad. Si se agrega el píxel de Meta o Google Analytics,
 // se carga solo cuando cookiesAceptadas() da true (o al llegar el evento 'wb:cookies' con 'aceptadas').
+// Los reels de /portafolio son embebidos de Instagram: se cargan solo al abrir uno, y /privacidad lo cuenta.
 const CLAVE_COOKIES = 'wb_cookies';
 
 // 'aceptadas' | 'rechazadas' | null (todavía no eligió, o eligió con otra versión de la política)

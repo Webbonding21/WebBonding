@@ -39,7 +39,7 @@ export default function CambiarClave({ className = 'ld-btn ld-btn--plano' }) {
   return (
     <>
       <button type="button" className={className} onClick={() => setAbierto(true)}>
-        <FiKey aria-hidden="true" /> Contraseña
+        <FiKey aria-hidden="true" /> <span className="ld-btn__txt">Contraseña</span>
       </button>
       {abierto && createPortal(
         <div className="ld-modal-fondo" onMouseDown={(e) => e.target === e.currentTarget && cerrar()}>

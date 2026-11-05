@@ -1,7 +1,6 @@
 // src/pages/Privacidad.jsx
 // Política de privacidad y cookies. Si cambia algo de fondo, se cambia también VERSION_POLITICA en lib/privacidad.js:
 // así la fecha de aquí, la versión que guarda cada lead y el aviso de cookies van juntos.
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { VERSION_POLITICA, abrirAvisoCookies } from '../lib/privacidad';
 import '../assets/Privacidad.css';
@@ -115,6 +114,10 @@ function Privacidad() {
             <li>
               Las letras del sitio se cargan desde Google Fonts: tu navegador se conecta con los servidores de Google para
               descargarlas, sin cookies.
+            </li>
+            <li>
+              Los videos del portafolio son reels de Instagram. Se cargan desde Instagram solo cuando abres uno, y en ese
+              momento Instagram, que es de Meta, puede guardar sus propias cookies según su política de privacidad.
             </li>
           </ul>
           <button type="button" className="priv__btn" onClick={abrirAvisoCookies}>Cambiar mi elección de cookies</button>
