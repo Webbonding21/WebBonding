@@ -1,27 +1,12 @@
-import React from 'react';
 import Reveal from './Reveal';
 import StepForModal from './StepForModal';
+import { PILARES } from '../data/sitio';
+import { numero, useContenido } from '../lib/contenido';
 import '../assets/About.css';
 
-const PILLARS = [
-  {
-    n: '01',
-    title: 'Enfoque en resultados',
-    desc: 'No entregamos «código»: entregamos orden, tiempo ahorrado y un negocio listo para crecer.',
-  },
-  {
-    n: '02',
-    title: 'Rápido y seguro',
-    desc: 'Apps que cargan rápido y datos protegidos, desde lo que ve tu cliente hasta el servidor donde se guarda todo.',
-  },
-  {
-    n: '03',
-    title: 'Más allá de la pantalla',
-    desc: 'Conectamos tu app con equipos físicos (sensores, máquinas, cámaras) para que los veas y controles desde el teléfono.',
-  },
-];
-
+// los pilares se cambian en /admin (sección «pilares»)
 function About() {
+  const pilares = useContenido('pilares', PILARES);
   return (
     <section id="about" className="about wb-section wb-section--paper">
       <div className="wb-container about__inner">
@@ -41,7 +26,7 @@ function About() {
 
         {/* Contenido */}
         <div className="about__content">
-          <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">// El estudio</Reveal>
+          <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">{'// El estudio'}</Reveal>
           <Reveal as="h2" className="wb-h2 about__title" delay="d1">
             No vendemos código.
             <br />
@@ -53,17 +38,19 @@ function About() {
             negocio lo necesita.
           </Reveal>
 
-          <div className="about__list">
-            {PILLARS.map((p, i) => (
-              <Reveal className="about__item" key={p.n} delay={`d${i + 1}`}>
-                <span className="about__num">{p.n}</span>
-                <div>
-                  <h3>{p.title}</h3>
-                  <p>{p.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          {pilares.length > 0 && (
+            <div className="about__list">
+              {pilares.map((p, i) => (
+                <Reveal className="about__item" key={i} delay={`d${i + 1}`}>
+                  <span className="about__num">{numero(i)}</span>
+                  <div>
+                    <h3>{p.title}</h3>
+                    <p>{p.desc}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          )}
           <Reveal className="wb-comenzar wb-comenzar--izq"><StepForModal label="Comenzar ahora" /></Reveal>
         </div>
       </div>

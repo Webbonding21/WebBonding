@@ -11,19 +11,55 @@ import GuiaVentas from '../components/GuiaVentas';
 import CambiarClave from '../components/CambiarClave';
 import { supabaseR4 } from '../components/r4/r4Api';
 import {
-  PRODUCTS,
-  ACTIVE_CATEGORIES,
+  CATALOGO_BASE,
   HOURLY_RATE_USD,
+  categoriasActivas,
+  normalizarProducto,
   priceOf,
   fmtUSD,
 } from '../data/catalog';
+import { useContenido } from '../lib/contenido';
 import '../assets/Cotizador.css';
 import '../assets/Leads.css';
 
 const PHONE = '584220579731';
 const STORAGE_KEY = 'wb_cart_v1';
+const AJUSTES_BASE = [{ tarifa_hora: HOURLY_RATE_USD }];
 
-function buildWhatsAppMessage(cart, customRequest, contact) {
+// el catálogo y la tarifa por hora se manejan en /admin (secciones «catalogo» y «ajustes»); mientras llegan de la base,
+// o si no responde, son los de src/data/catalog.js
+function useCatalogo() {
+  const crudos = useContenido('catalogo', CATALOGO_BASE);
+  const ajustes = useContenido('ajustes', AJUSTES_BASE);
+  const productos = useMemo(() => {
+    const vistos = new Set();
+    return crudos.map(normalizarProducto).filter((p) => {
+      if (!p.id || !p.name || vistos.has(p.id)) return false;
+      vistos.add(p.id);
+      return true;
+    });
+  }, [crudos]);
+  const categorias = useMemo(() => categoriasActivas(productos), [productos]);
+  const tarifa = Number(ajustes[0]?.tarifa_hora) > 0 ? Number(ajustes[0].tarifa_hora) : HOURLY_RATE_USD;
+  return { productos, categorias, tarifa };
+}
+
+// el carrito guardado en el teléfono: [{ id, qty }]. Los productos y sus precios salen siempre del catálogo cargado.
+function leerCarrito() {
+  try {
+    const filas = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const lineas = [];
+    (Array.isArray(filas) ? filas : []).forEach((f) => {
+      const id = f?.id != null ? String(f.id) : '';
+      if (id && !lineas.some((l) => l.id === id)) lineas.push({ id, qty: Math.max(1, Math.floor(Number(f.qty)) || 1) });
+    });
+    return lineas;
+  } catch {
+    return [];
+  }
+}
+
+function buildWhatsAppMessage(cart, customRequest, contact, tarifa) {
   const lines = [];
   lines.push('🚀 *Nueva cotización — Web Bonding*');
   lines.push('');
@@ -44,7 +80,7 @@ function buildWhatsAppMessage(cart, customRequest, contact) {
     let totalHours = 0;
     let total = 0;
     cart.forEach((it) => {
-      const subt = priceOf(it.product, it.qty);
+      const subt = priceOf(it.product, it.qty, tarifa);
       totalHours += it.product.hours * it.qty;
       total += subt;
       const qtyTxt = it.qty > 1 ? ` × ${it.qty}` : '';
@@ -71,12 +107,12 @@ function buildWhatsAppMessage(cart, customRequest, contact) {
 }
 
 // Modo equipo: la cotización lista para pegarle al cliente por WhatsApp. El catálogo no lleva IVA; aquí se suma.
-function textoParaCliente(cart, contact, custom) {
+function textoParaCliente(cart, contact, custom, tarifa) {
   const nombre = contact.name.trim().split(/\s+/)[0];
   const lineas = [`Hola${nombre ? `, ${nombre}` : ''} 👋 Esta es tu cotización estimada de Web Bonding:`, ''];
   let total = 0;
   cart.forEach((it) => {
-    const subt = priceOf(it.product, it.qty);
+    const subt = priceOf(it.product, it.qty, tarifa);
     total += subt;
     lineas.push(`• ${it.product.name}${it.qty > 1 ? ` × ${it.qty}` : ''}: ${fmtUSD(subt)}`);
   });
@@ -116,95 +152,84 @@ function Cotizador() {
   const equipo = modo === 'equipo';
   const [pestana, setPestana] = useState('cotizar');
   const [copiado, setCopiado] = useState(false);
+  const { productos, categorias, tarifa } = useCatalogo();
 
   // —— Estado ——
-  const [cart, setCart] = useState([]);
+  // el carrito: se guardan los ids y las cantidades; cada línea toma su producto del catálogo cargado
+  const [lineas, setLineas] = useState(leerCarrito);
+  const cart = useMemo(() => lineas
+    .map((l) => ({ product: productos.find((p) => p.id === l.id), qty: l.qty }))
+    .filter((it) => it.product), [lineas, productos]);
   const [query, setQuery] = useState('');
   const [activeCat, setActiveCat] = useState('ALL');
   const [contact, setContact] = useState({ name: '', email: '', country: '', business: '' });
   const [custom, setCustom] = useState({ what: '', details: '', deadline: '', budget: '' });
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Hidratar carrito de localStorage al montar
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const ids = JSON.parse(raw);
-        const items = ids
-          .map((row) => {
-            const p = PRODUCTS.find((p) => p.id === row.id);
-            return p ? { product: p, qty: row.qty || 1 } : null;
-          })
-          .filter(Boolean);
-        setCart(items);
-      }
-    } catch (e) { /* ignore */ }
-  }, []);
-
   // Guardar carrito a localStorage
   useEffect(() => {
-    const slim = cart.map((it) => ({ id: it.product.id, qty: it.qty }));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(slim));
-  }, [cart]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(lineas));
+  }, [lineas]);
 
   // —— Acciones del carrito ——
   const addToCart = (product) => {
-    setCart((prev) => {
-      const idx = prev.findIndex((it) => it.product.id === product.id);
+    setLineas((prev) => {
+      const idx = prev.findIndex((l) => l.id === product.id);
       if (idx >= 0) {
         const copy = [...prev];
         copy[idx] = { ...copy[idx], qty: copy[idx].qty + 1 };
         return copy;
       }
-      return [...prev, { product, qty: 1 }];
+      return [...prev, { id: product.id, qty: 1 }];
     });
     // En móvil, abrir el drawer
     if (window.innerWidth < 960) setDrawerOpen(true);
   };
 
   const setQty = (id, qty) => {
-    setCart((prev) =>
+    setLineas((prev) =>
       prev
-        .map((it) => (it.product.id === id ? { ...it, qty: Math.max(0, qty) } : it))
-        .filter((it) => it.qty > 0)
+        .map((l) => (l.id === id ? { ...l, qty: Math.max(0, qty) } : l))
+        .filter((l) => l.qty > 0)
     );
   };
 
-  const removeItem = (id) => setCart((prev) => prev.filter((it) => it.product.id !== id));
-  const clearCart = () => setCart([]);
+  const removeItem = (id) => setLineas((prev) => prev.filter((l) => l.id !== id));
+  const clearCart = () => setLineas([]);
 
   // —— Derivados ——
+  // si la categoría elegida se quedó sin productos (cambió el catálogo), se ve todo
+  const catActiva = categorias.some((c) => c.key === activeCat) ? activeCat : 'ALL';
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return PRODUCTS.filter((p) => {
-      if (activeCat !== 'ALL' && p.cat !== activeCat) return false;
+    return productos.filter((p) => {
+      if (catActiva !== 'ALL' && p.cat !== catActiva) return false;
       if (!q) return true;
       const hay = `${p.name} ${p.purpose} ${p.stack.join(' ')} ${p.cat}`.toLowerCase();
       return hay.includes(q);
     });
-  }, [query, activeCat]);
+  }, [query, catActiva, productos]);
 
   const totals = useMemo(() => {
     let hours = 0;
     let usd = 0;
     cart.forEach((it) => {
       hours += it.product.hours * it.qty;
-      usd += priceOf(it.product, it.qty);
+      usd += priceOf(it.product, it.qty, tarifa);
     });
     return { hours, usd, count: cart.reduce((a, b) => a + b.qty, 0) };
-  }, [cart]);
+  }, [cart, tarifa]);
 
   // —— Envío a WhatsApp ——
   const sendToWhatsApp = () => {
-    const msg = buildWhatsAppMessage(cart, custom, contact);
+    const msg = buildWhatsAppMessage(cart, custom, contact, tarifa);
     window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   const isValid = cart.length > 0 || (custom.what && custom.details);
 
   const copiarParaCliente = async () => {
-    const texto = textoParaCliente(cart, contact, custom);
+    const texto = textoParaCliente(cart, contact, custom, tarifa);
     try {
       await navigator.clipboard.writeText(texto);
       setCopiado(true);
@@ -268,7 +293,7 @@ function Cotizador() {
             </p>
             <div className="cot__rate">
               <span>Tarifa por hora de desarrollo:</span>
-              <strong>{fmtUSD(HOURLY_RATE_USD)} USD/h</strong>
+              <strong>{fmtUSD(tarifa)} USD/h</strong>
             </div>
           </Reveal>
 
@@ -293,10 +318,10 @@ function Cotizador() {
                   )}
                 </div>
                 <div className="cot__cats">
-                  {ACTIVE_CATEGORIES.map((c) => (
+                  {categorias.map((c) => (
                     <button
                       key={c.key}
-                      className={`cot__cat ${activeCat === c.key ? 'is-active' : ''}`}
+                      className={`cot__cat ${catActiva === c.key ? 'is-active' : ''}`}
                       onClick={() => setActiveCat(c.key)}
                     >
                       {c.label}
@@ -329,8 +354,8 @@ function Cotizador() {
                         </ul>
 
                         <div className="prod-card__stack">
-                          {p.stack.map((s) => (
-                            <span className="prod-card__tag" key={s}>{s}</span>
+                          {p.stack.map((s, j) => (
+                            <span className="prod-card__tag" key={j}>{s}</span>
                           ))}
                         </div>
 
@@ -338,7 +363,7 @@ function Cotizador() {
                           <div className="prod-card__meta">
                             <div className="prod-card__price">
                               <span>desde</span>
-                              <strong>{fmtUSD(priceOf(p))}</strong>
+                              <strong>{fmtUSD(priceOf(p, 1, tarifa))}</strong>
                             </div>
                             <div className="prod-card__hours">{p.hours}h aprox.</div>
                           </div>
@@ -486,7 +511,7 @@ function Cotizador() {
                       <li className="cot__cart-item" key={it.product.id}>
                         <div className="cot__cart-item-info">
                           <strong>{it.product.icon} {it.product.name}</strong>
-                          <span>{fmtUSD(priceOf(it.product, it.qty))}</span>
+                          <span>{fmtUSD(priceOf(it.product, it.qty, tarifa))}</span>
                         </div>
                         <div className="cot__cart-item-qty">
                           <button onClick={() => setQty(it.product.id, it.qty - 1)} aria-label="Restar">
@@ -576,7 +601,7 @@ function Cotizador() {
                       <li className="cot__cart-item" key={it.product.id}>
                         <div className="cot__cart-item-info">
                           <strong>{it.product.icon} {it.product.name}</strong>
-                          <span>{fmtUSD(priceOf(it.product, it.qty))}</span>
+                          <span>{fmtUSD(priceOf(it.product, it.qty, tarifa))}</span>
                         </div>
                         <div className="cot__cart-item-qty">
                           <button onClick={() => setQty(it.product.id, it.qty - 1)}><FaMinus /></button>

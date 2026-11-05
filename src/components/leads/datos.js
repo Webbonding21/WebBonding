@@ -1,5 +1,5 @@
 // src/components/leads/datos.js
-// Lo que comparte el panel de leads (/leads): los estados, los filtros, los mensajes de WhatsApp, las consultas a la
+// Lo que comparte el panel de leads (/admin/leads): los estados, los filtros, los mensajes de WhatsApp, las consultas a la
 // base y los datos inventados de ?demo. Las consultas van contra ver_leads() (supabase/leads.sql), que solo responde a
 // admin y ventas; los filtros, el orden y las páginas los aplica PostgREST sobre ese resultado.
 import { supabaseR4 } from '../r4/r4Api';
@@ -29,11 +29,16 @@ const tipoDe = (valor) => Object.values(TIPOS).find((x) => x.valor === valor);
 export const tipoCorto = (valor) => tipoDe(valor)?.t ?? valor;
 
 export const FECHAS = { todo: 'Cualquier fecha', hoy: 'Hoy', semana: 'Últimos 7 días', mes: 'Últimos 30 días' };
+// de dónde llegó: la campaña del formulario (utm_source) o, en los que se cargan a mano, lo que se eligió
+export const FUENTES = {
+  whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', google: 'Google', referido: 'Referido', otro: 'Otro',
+};
 export const ORIGENES = {
   todos: 'Cualquier origen', directo: 'Directo (sin campaña)', instagram: 'Instagram', facebook: 'Facebook', google: 'Google', tiktok: 'TikTok',
+  whatsapp: 'WhatsApp', referido: 'Referido',
 };
 export const ORDENES = { recientes: 'Más recientes primero', antiguos: 'Más antiguos primero' };
-export const origenDe = (l) => (l.utm_source ? l.utm_source.charAt(0).toUpperCase() + l.utm_source.slice(1) : 'Directo');
+export const origenDe = (l) => (l.utm_source ? FUENTES[l.utm_source.toLowerCase()] ?? l.utm_source.charAt(0).toUpperCase() + l.utm_source.slice(1) : 'Directo');
 
 // estado 'urgentes': los nuevos que llevan más de una hora sin contactar (la guía pide escribirles antes)
 export const INICIALES = { estado: 'todos', tipo: '', fecha: 'todo', origen: 'todos', orden: 'recientes', busca: '' };
@@ -55,7 +60,7 @@ export function filtrosALaUrl(f) {
   const q = new URLSearchParams(window.location.search);
   Object.entries(EN_LA_URL).forEach(([k, p]) => { if (f[k] && f[k] !== INICIALES[k]) q.set(p, f[k]); else q.delete(p); });
   const texto = q.toString();
-  window.history.replaceState(null, '', `${window.location.pathname}${texto ? `?${texto}` : ''}`);
+  window.history.replaceState(window.history.state, '', `${window.location.pathname}${texto ? `?${texto}` : ''}`); // sin borrar lo que guarda el router
 }
 
 // ── WhatsApp ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -113,7 +118,7 @@ function desdeFecha(f) {
 }
 
 // ── Consultas ───────────────────────────────────────────────────────────────────────────────────────────────
-// solo en desarrollo: /leads?demo muestra 137 leads inventados, para revisar el diseño con volumen y sin iniciar sesión
+// solo en desarrollo: /admin/leads?demo muestra 137 leads inventados, para revisar el diseño con volumen y sin iniciar sesión
 export const DEMO = import.meta.env.DEV && new URLSearchParams(window.location.search).has('demo');
 export const EJEMPLOS = DEMO ? Array.from({ length: 137 }, (_, i) => {
   const nombres = ['María Pérez', 'José Rodríguez', 'Ana Gómez', 'Luis Torres', 'Carmen Díaz', 'Pedro Silva', 'Rosa Mendoza', 'Jorge Castillo'];
@@ -191,6 +196,28 @@ export async function contarTodos() {
   const { count, error } = await supabaseR4.rpc('ver_leads', undefined, { count: 'exact', head: true });
   if (error) throw error;
   return count ?? 0;
+}
+
+// crea (sin id) o cambia todos los datos de un lead; los que se crean aquí quedan como cargados a mano. Devuelve el id.
+export async function guardarLead(datos, id = null) {
+  if (DEMO) {
+    if (id) { Object.assign(EJEMPLOS.find((x) => x.id === id), datos, { correo: datos.correo || null }); return id; }
+    const nuevo = { id: `m${Date.now()}`, created_at: new Date().toISOString(), origen: 'manual', acepta_privacidad: false, version_politica: null,
+      pagina: null, utm_medium: null, utm_campaign: null, utm_content: null, estado: 'nuevo', notas: null, adicional: null, acepta_novedades: false,
+      ...datos, correo: datos.correo || null };
+    EJEMPLOS.unshift(nuevo);
+    return nuevo.id;
+  }
+  const { data, error } = await supabaseR4.rpc('guardar_lead', { p_id: id, p_datos: datos });
+  if (error) throw error;
+  return data;
+}
+
+// borra para siempre (solo administrador)
+export async function borrarLeads(ids) {
+  if (DEMO) { ids.forEach((id) => { const k = EJEMPLOS.findIndex((x) => x.id === id); if (k >= 0) EJEMPLOS.splice(k, 1); }); return; }
+  const { error } = await supabaseR4.rpc('borrar_leads', { p_ids: ids });
+  if (error) throw error;
 }
 
 export async function actualizar(lead) {

@@ -1,42 +1,33 @@
 /* eslint-disable react/prop-types */
-// Panel del equipo (/admin): lo interno de Web Bonding en un solo lugar. Se entra con el usuario del equipo (Supabase Auth
-// del proyecto de R4, el mismo de /leads, el cotizador y R4) y cada quien ve las herramientas de su rol en public.perfiles:
-// 'admin' todas, 'ventas' los leads, el cotizador y R4, y 'lectura' solo R4. /admin/portafolio es el gestor de los videos
-// de /portafolio (components/admin/GestorVideos), solo para 'admin'. Quien manda es la base: aquí el rol solo muestra u
-// oculta.
-import { useEffect, useState } from 'react';
+// Panel del equipo (/admin): todo lo de Web Bonding en un solo lugar, con el menú a la izquierda (en el teléfono, detrás
+// del botón de menú). Cada sección de components/admin/secciones.js es una ruta, /admin/<sección>: el resumen, los datos
+// de la web (portafolio, apps, proyectos, planes, servicios, preguntas, cifras, la cinta, por qué nosotros, cómo
+// trabajamos), los leads, el catálogo del cotizador y los usuarios; el cotizador y R4 se abren aparte.
+// Se entra con el usuario del equipo (Supabase Auth del proyecto de R4, el mismo del cotizador y R4) y cada quien ve lo de
+// su rol en public.perfiles: 'admin' todo, 'ventas' los leads, el cotizador y R4, 'lectura' solo R4. Quien manda es la
+// base (supabase/admin.sql): aquí el rol solo muestra u oculta.
+import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
-import {
-  FiAlertTriangle, FiArrowLeft, FiArrowRight, FiArrowUpRight, FiCreditCard, FiFileText, FiFilm, FiInbox, FiLogOut,
-} from 'react-icons/fi';
+import { Link, Navigate, useLocation, useParams } from 'react-router-dom';
+import { FiAlertTriangle, FiArrowLeft, FiArrowUpRight, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import { supabaseR4 } from '../components/r4/r4Api';
 import AccesoEquipo from '../components/AccesoEquipo';
 import CambiarClave from '../components/CambiarClave';
-import GestorVideos from '../components/admin/GestorVideos';
-import { leadsNuevos, listar } from '../components/admin/datos';
-import { DEMO } from '../data/portafolio';
+import Inicio from '../components/admin/Inicio';
+import Coleccion from '../components/admin/Coleccion';
+import Equipo from '../components/admin/Equipo';
+import PanelLeads from '../components/leads/PanelLeads';
+import { GRUPOS, ROLES, SECCIONES, seccionDe } from '../components/admin/secciones';
+import { DEMO, leadsNuevos, resumenContenido } from '../components/admin/datos';
 import { rolDe } from '../lib/equipo';
 import '../assets/Leads.css';
 import '../assets/Admin.css';
 
 // en el modo demo, los enlaces del panel se quedan en el demo
-const aqui = (ruta) => (DEMO && ruta.startsWith('/admin') ? `${ruta}?demo` : ruta);
+const aqui = (ruta) => (DEMO && ruta.startsWith('/admin') ? `${ruta}${ruta.includes('?') ? '&' : '?'}demo` : ruta);
+const rutaDe = (s) => (s.vista === 'enlace' ? s.ruta : s.id === 'inicio' ? '/admin' : `/admin/${s.id}`);
 
-const HERRAMIENTAS = [
-  { ruta: '/leads', icono: FiInbox, nombre: 'Leads', roles: ['admin', 'ventas'],
-    texto: 'Los que llenan el formulario de /crea-tu-app: en qué va cada uno, tus notas y su WhatsApp a un toque.' },
-  { ruta: '/admin/portafolio', icono: FiFilm, nombre: 'Portafolio', roles: ['admin'],
-    texto: 'Los videos de /portafolio: pegas el enlace de Instagram y sale en la página.' },
-  { ruta: '/cotizador', icono: FiFileText, nombre: 'Cotizador', roles: ['admin', 'ventas'],
-    texto: 'El cotizador del equipo, con la guía de ventas para cerrar.' },
-  { ruta: '/r4apertura', icono: FiCreditCard, nombre: 'Cuentas R4', roles: ['admin', 'ventas', 'lectura'],
-    texto: 'La apertura de cuentas R4: los clientes por aperturar y sus recaudos.' },
-];
-const PAGINAS = [['/', 'Inicio'], ['/portafolio', 'Portafolio'], ['/crea-tu-app', 'Crea tu app'], ['/privacidad', 'Privacidad']];
-const NOMBRE_ROL = { admin: 'Administrador', ventas: 'Ventas', lectura: 'Solo lectura' };
-
-export default function Admin({ seccion = null }) {
+export default function Admin() {
   const [sesion, setSesion] = useState(DEMO ? { user: { id: 'demo', email: 'demo@ejemplo.com' } } : undefined); // undefined: aún no se sabe
   const [sinConexion, setSinConexion] = useState(false);
   const [rol, setRol] = useState(DEMO ? 'admin' : null);
@@ -67,103 +58,143 @@ export default function Admin({ seccion = null }) {
   return (
     <div className="ld ad">
       <Helmet>
-        <title>{seccion === 'portafolio' ? 'Portafolio · Panel' : 'Panel'} · Web Bonding</title>
+        <title>Panel · Web Bonding</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       {sesion === undefined || (sesion && !rol) ? <p className="ld-cargando">Cargando…</p>
         : !sesion ? (
           <AccesoEquipo titulo="Panel del equipo"
-            texto="Entra con tu usuario del equipo de Web Bonding, el mismo de /leads, el cotizador y R4."
+            texto="Entra con tu usuario del equipo de Web Bonding, el mismo del cotizador y R4."
             aviso={sinConexion ? 'No se pudo conectar con la base de datos. Revisa la conexión y vuelve a intentar.' : ''} />
-        ) : (
-          <>
-            <Cabecera sesion={sesion} seccion={seccion} />
-            {seccion !== 'portafolio' ? <Inicio rol={rol} />
-              : rol === 'admin' ? <GestorVideos />
-                : (
-                  <main className="ad-contenido">
-                    <p className="ld-error" role="alert">
-                      <FiAlertTriangle aria-hidden="true" /> El portafolio solo lo cambia un administrador. Pídele el rol a Williams.
-                    </p>
-                    <p><Link className="ld-btn" to="/admin"><FiArrowLeft aria-hidden="true" /> Volver al panel</Link></p>
-                  </main>
-                )}
-          </>
-        )}
+        ) : <Panel sesion={sesion} rol={rol} />}
     </div>
   );
 }
 
-function Cabecera({ sesion, seccion }) {
+function Panel({ sesion, rol }) {
+  const { seccion: id = 'inicio' } = useParams();
+  const { pathname } = useLocation();
+  const seccion = seccionDe(id);
+  const venta = rol === 'admin' || rol === 'ventas';
+  const [resumen, setResumen] = useState(null); // { seccion: { total, visibles } }
+  const [nuevos, setNuevos] = useState(null); // leads sin contactar
+  const [menu, setMenu] = useState(false); // el menú en el teléfono
+
+  // los números del menú: se piden al entrar y después de cada cambio
+  const refrescar = useCallback(() => {
+    if (rol === 'admin') resumenContenido().then(setResumen).catch(() => setResumen((r) => r ?? {}));
+    if (venta) leadsNuevos().then(setNuevos).catch(() => {});
+  }, [rol, venta]);
+  useEffect(() => { refrescar(); }, [refrescar]);
+
+  useEffect(() => { setMenu(false); window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => {
+    if (!menu) return undefined;
+    const previo = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const tecla = (e) => { if (e.key === 'Escape') setMenu(false); };
+    document.addEventListener('keydown', tecla);
+    return () => { document.body.style.overflow = previo; document.removeEventListener('keydown', tecla); };
+  }, [menu]);
+
+  if (!seccion) return <Navigate to={aqui('/admin')} replace />;
+  if (seccion.vista === 'enlace') return <Navigate to={seccion.ruta} replace />;
+
+  const mias = SECCIONES.filter((s) => s.roles.includes(rol));
+  const puede = seccion.roles.includes(rol);
+  const salir = () => (DEMO ? null : supabaseR4.auth.signOut());
+
   return (
-    <header className="ld-cabecera">
-      <div className="ld-cabecera__in">
-        {seccion ? (
-          <Link to={aqui('/admin')} className="ld-marca ad-marca">
-            <FiArrowLeft aria-hidden="true" /> <span><b>Portafolio</b> Panel de Web Bonding</span>
-          </Link>
-        ) : (
-          <a href="/" className="ld-marca"><img src="/logoenblanco.png" alt="" /> <span><b>Panel</b> Web Bonding</span></a>
-        )}
-        <div className="ld-cabecera__acciones">
-          <span className="ld-usuario">{sesion.user?.email}</span>
-          {!DEMO && <CambiarClave />}
-          <button type="button" className="ld-btn ld-btn--plano" onClick={() => (DEMO ? null : supabaseR4.auth.signOut())}>
-            <FiLogOut aria-hidden="true" /> <span className="ld-btn__txt">Salir</span>
-          </button>
+    <div className={`ad-shell${menu ? ' is-menu' : ''}`}>
+      <Helmet><title>{seccion.id === 'inicio' ? 'Panel · Web Bonding' : `${seccion.nombre} · Panel · Web Bonding`}</title></Helmet>
+
+      <aside className="ad-lado" aria-label="Menú del panel">
+        <div className="ad-lado__cab">
+          <Link to={aqui('/admin')} className="ad-lado__marca"><img src="/logoenblanco.png" alt="" /> <span><b>Panel</b> Web Bonding</span></Link>
+          <button type="button" className="ad-lado__cerrar" onClick={() => setMenu(false)} aria-label="Cerrar el menú"><FiX aria-hidden="true" /></button>
         </div>
+
+        <nav className="ad-nav">
+          {mias.filter((s) => !s.grupo).map((s) => <ItemMenu key={s.id} s={s} activo={s.id === seccion.id} />)}
+          {GRUPOS.map((g) => {
+            const items = mias.filter((s) => s.grupo === g.id);
+            if (!items.length) return null;
+            return (
+              <div key={g.id} className="ad-nav__grupo">
+                <p className="ad-nav__titulo">{g.nombre}</p>
+                {items.map((s) => (
+                  <ItemMenu key={s.id} s={s} activo={s.id === seccion.id}
+                    numero={s.id === 'leads' ? nuevos : s.vista === 'coleccion' ? resumen?.[s.id]?.total : null}
+                    urgente={s.id === 'leads' && nuevos > 0} />
+                ))}
+              </div>
+            );
+          })}
+        </nav>
+
+        <div className="ad-lado__pie">
+          <a className="ad-nav__item ad-nav__web" href="/" target="_blank" rel="noopener noreferrer">
+            <span>Abrir webbonding.net</span> <FiArrowUpRight aria-hidden="true" className="ad-nav__ext" />
+          </a>
+          <div className="ad-yo">
+            <span className="ad-yo__ini" aria-hidden="true">{(sesion.user?.email ?? '?').charAt(0).toUpperCase()}</span>
+            <span className="ad-yo__txt"><b>{sesion.user?.email}</b><i>{ROLES[rol]?.t ?? rol}</i></span>
+          </div>
+          <div className="ad-yo__acc">
+            {!DEMO && <CambiarClave />}
+            <button type="button" className="ld-btn ld-btn--plano" onClick={salir}>
+              <FiLogOut aria-hidden="true" /> <span className="ld-btn__txt">Salir</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+      <div className="ad-velo" onClick={() => setMenu(false)} aria-hidden="true" />
+
+      <div className="ad-cuerpo">
+        <header className="ad-tope">
+          <button type="button" className="ad-tope__menu" onClick={() => setMenu(true)} aria-label="Abrir el menú" aria-expanded={menu}>
+            <FiMenu aria-hidden="true" />
+          </button>
+          <span className="ad-tope__titulo">{seccion.id === 'inicio' ? 'Panel' : seccion.nombre}</span>
+          {nuevos > 0 && seccion.id !== 'leads' && (
+            <Link to={aqui('/admin/leads?estado=nuevo')} className="ad-tope__nuevos">{nuevos} {nuevos === 1 ? 'lead nuevo' : 'leads nuevos'}</Link>
+          )}
+        </header>
+
+        <main className="ad-main" key={seccion.id}>
+          {!puede ? (
+            <div className="ad-sinpermiso">
+              <p className="ld-error" role="alert">
+                <FiAlertTriangle aria-hidden="true" /> {seccion.nombre} solo lo maneja un administrador. Pídele el rol a Williams.
+              </p>
+              <p><Link className="ld-btn" to={aqui('/admin')}><FiArrowLeft aria-hidden="true" /> Volver al resumen</Link></p>
+            </div>
+          ) : seccion.vista === 'inicio' ? <Inicio rol={rol} resumen={resumen} aqui={aqui} />
+            : seccion.vista === 'leads' ? <PanelLeads rol={rol} alCambiar={refrescar} />
+              : seccion.vista === 'equipo' ? <Equipo yo={sesion.user?.id} />
+                : <Coleccion seccion={seccion} alCambiar={refrescar} />}
+        </main>
       </div>
-    </header>
+    </div>
   );
 }
 
-// las herramientas del rol, con lo que espera en cada una
-function Inicio({ rol }) {
-  const mias = HERRAMIENTAS.filter((h) => h.roles.includes(rol));
-  const [cuentas, setCuentas] = useState({});
-
-  useEffect(() => {
-    let vivo = true;
-    const poner = (ruta, valor) => vivo && setCuentas((c) => ({ ...c, [ruta]: valor }));
-    if (rol === 'admin' || rol === 'ventas') {
-      leadsNuevos().then((n) => n > 0 && poner('/leads', { texto: n === 1 ? '1 nuevo' : `${n} nuevos`, tono: 'coral' })).catch(() => {});
-    }
-    if (rol === 'admin') {
-      listar().then((l) => poner('/admin/portafolio', { texto: l.length === 1 ? '1 video' : `${l.length} videos`, tono: 'tinta' })).catch(() => {});
-    }
-    return () => { vivo = false; };
-  }, [rol]);
-
+// una línea del menú: las herramientas aparte (cotizador, R4) se abren en otra pestaña
+function ItemMenu({ s, activo, numero = null, urgente = false }) {
+  const Icono = s.icono;
+  if (s.vista === 'enlace') {
+    return (
+      <a className="ad-nav__item" href={s.ruta} target="_blank" rel="noopener noreferrer">
+        <Icono aria-hidden="true" /> <span>{s.nombre}</span> <FiArrowUpRight aria-hidden="true" className="ad-nav__ext" />
+      </a>
+    );
+  }
   return (
-    <main className="ad-contenido">
-      <section className="ad-hola">
-        <span className="ad-rol">{NOMBRE_ROL[rol] ?? rol}</span>
-        <h1>Panel del equipo</h1>
-        <p>Lo interno de Web Bonding en un solo lugar: entras una vez y abres cualquiera.</p>
-      </section>
-
-      <nav className="ad-grid" aria-label="Herramientas del equipo">
-        {mias.map(({ ruta, icono: Icono, nombre, texto }) => (
-          <Link key={ruta} to={aqui(ruta)} className="ad-carta">
-            <span className="ad-carta__ico"><Icono aria-hidden="true" /></span>
-            {cuentas[ruta] && <span className={`ad-carta__num ad-carta__num--${cuentas[ruta].tono}`}>{cuentas[ruta].texto}</span>}
-            <b>{nombre}</b>
-            <p>{texto}</p>
-            <span className="ad-carta__ruta">{ruta} <FiArrowRight aria-hidden="true" /></span>
-          </Link>
-        ))}
-      </nav>
-
-      <section className="ad-web">
-        <h2>En la web</h2>
-        <ul>
-          {PAGINAS.map(([ruta, nombre]) => (
-            <li key={ruta}>
-              <a href={ruta} target="_blank" rel="noopener noreferrer">{nombre} <FiArrowUpRight aria-hidden="true" /></a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </main>
+    <Link to={aqui(rutaDe(s))} className={`ad-nav__item${activo ? ' is-activo' : ''}`} aria-current={activo ? 'page' : undefined}>
+      <Icono aria-hidden="true" /> <span>{s.nombre}</span>
+      {numero !== null && numero !== undefined && (urgente || numero > 0) && (
+        <b className={`ad-nav__num${urgente ? ' is-urgente' : ''}`} title={urgente ? 'Sin contactar' : undefined}>{numero.toLocaleString('es-VE')}</b>
+      )}
+    </Link>
   );
 }

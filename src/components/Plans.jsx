@@ -1,29 +1,8 @@
-import React from 'react';
 import Reveal from './Reveal';
 import StepForModal from './StepForModal';
+import { PLANES } from '../data/sitio';
+import { useContenido } from '../lib/contenido';
 import '../assets/Plans.css';
-
-const PLANS = [
-  {
-    name: 'Presencia en línea',
-    tagline: 'Para validar y tener presencia',
-    price: 'Consultar',
-    features: ['Página de presentación moderna', 'Se ve bien en teléfono y computadora', 'Botón directo a WhatsApp', 'Hosting incluido (1 año)', 'Lista para aparecer en Google'],
-  },
-  {
-    name: 'Negocio en línea',
-    tagline: 'Para negocios en expansión',
-    price: 'Consultar',
-    featured: true,
-    features: ['Sitio corporativo (hasta 10 páginas)', 'Catálogo o tienda en línea', 'Panel administrativo', 'Blog / Noticias', 'Cobros en línea'],
-  },
-  {
-    name: 'Software a la medida',
-    tagline: 'Automatización y software a medida',
-    price: 'A medida',
-    features: ['App o sistema completo a la medida', 'Conexión con equipos y sensores (IoT)', 'Apps para iPhone y Android', 'Sistema administrativo (ERP / CRM)', 'Soporte prioritario 24/7'],
-  },
-];
 
 const sendWhatsAppMessage = (planName) => {
   const phone = '584220579731';
@@ -31,13 +10,16 @@ const sendWhatsAppMessage = (planName) => {
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 };
 
+// los planes se cambian en /admin (sección «planes»); sin ninguno visible, la sección no sale
 function Plans() {
+  const planes = useContenido('planes', PLANES);
+  if (!planes.length) return null;
   return (
     <section id="plans" className="plans wb-section wb-section--paper">
       <div className="wb-container">
         <div className="plans__header">
           <div>
-            <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">// Planes</Reveal>
+            <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">{'// Planes'}</Reveal>
             <Reveal as="h2" className="wb-h2 plans__title" delay="d1">
               Inversión <em>inteligente</em>.
             </Reveal>
@@ -49,10 +31,10 @@ function Plans() {
         </div>
 
         <div className="plans__grid">
-          {PLANS.map((plan, i) => (
+          {planes.map((plan, i) => (
             <Reveal
               className={`plan-card ${plan.featured ? 'plan-card--featured' : ''}`}
-              key={plan.name}
+              key={i}
               delay={`d${i + 1}`}
             >
               {plan.featured && <span className="plan-card__badge">Más popular</span>}
@@ -60,13 +42,15 @@ function Plans() {
                 <h3>{plan.name}</h3>
                 <p className="plan-card__tagline">{plan.tagline}</p>
               </div>
-              <div className="plan-card__price">
-                <span className="plan-card__from">desde</span>
-                <strong>{plan.price}</strong>
-              </div>
+              {plan.price && (
+                <div className="plan-card__price">
+                  <span className="plan-card__from">desde</span>
+                  <strong>{plan.price}</strong>
+                </div>
+              )}
               <ul className="plan-card__features">
-                {plan.features.map((f) => (
-                  <li key={f}>{f}</li>
+                {(plan.features ?? []).map((f, j) => (
+                  <li key={j}>{f}</li>
                 ))}
               </ul>
               <button className="plan-card__btn" onClick={() => sendWhatsAppMessage(plan.name)}>

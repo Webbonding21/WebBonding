@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 // Cambiar la contraseña del usuario del equipo. Sirve sobre todo después de entrar con el enlace al correo: la nueva
-// contraseña vale en /r4apertura, /leads y el cotizador del equipo, porque es la misma cuenta.
+// contraseña vale en el panel (/admin), /r4apertura y el cotizador del equipo, porque es la misma cuenta.
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FiKey, FiX, FiAlertTriangle } from 'react-icons/fi';
@@ -49,7 +49,7 @@ export default function CambiarClave({ className = 'ld-btn ld-btn--plano' }) {
               <button type="button" className="ld-modal__cerrar" onClick={cerrar} aria-label="Cerrar"><FiX /></button>
             </div>
             {listo ? (
-              <p className="ld-enviado" role="status">Listo: desde ahora entras con la nueva contraseña en /leads, /r4apertura y el cotizador.</p>
+              <p className="ld-enviado" role="status">Listo: desde ahora entras con la nueva contraseña en el panel (/admin), el cotizador y R4.</p>
             ) : (
               <>
                 <label className="ld-etiqueta" htmlFor="ld-nueva">Nueva contraseña</label>

@@ -1,47 +1,24 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import Reveal from './Reveal';
 import StepForModal from './StepForModal';
+import { PREGUNTAS } from '../data/sitio';
+import { useContenido } from '../lib/contenido';
 import '../assets/FAQ.css';
 
-/** Las mismas preguntas que están en el JSON-LD FAQPage del index.html.
- *  Mantenlas sincronizadas para que el contenido visible coincida con el schema. */
-const FAQS = [
-  {
-    q: '¿Dónde está ubicada Web Bonding?',
-    a: 'Web Bonding tiene sede en Acarigua–Araure, estado Portuguesa, Venezuela. Atendemos clientes presenciales en la región y trabajamos de forma remota con empresas de toda Venezuela y Latinoamérica.',
-  },
-  {
-    q: '¿Qué tipo de proyectos desarrollan?',
-    a: 'Construimos páginas web, e-commerce, aplicaciones móviles iOS y Android, sistemas ERP/CRM, agentes de Inteligencia Artificial, chatbots WhatsApp, soluciones IoT, automatización industrial y software a medida para cualquier industria.',
-  },
-  {
-    q: '¿Cuánto cuesta hacer una página web o una app en Venezuela?',
-    a: 'Una landing page profesional inicia desde aproximadamente 300 USD; un e-commerce desde 1.200 USD; y una aplicación móvil multiplataforma desde 2.700 USD. Todos los proyectos se cotizan a medida según funcionalidades. Solicita una cotización por WhatsApp al +58 422 057 9731.',
-  },
-  {
-    q: '¿Trabajan con empresas fuera de Acarigua y Araure?',
-    a: 'Sí. Aunque nuestra sede está en Acarigua–Araure, Portuguesa, atendemos remotamente a clientes de Barquisimeto, Caracas, Valencia, Maracay, Maracaibo y toda Latinoamérica (Colombia, México, Argentina, entre otros).',
-  },
-  {
-    q: '¿Qué tecnologías usan?',
-    a: 'Desarrollamos con React, Next.js, TypeScript, Node.js, Python, Flutter, Capacitor, Supabase, MongoDB, PostgreSQL y plataformas en la nube como AWS, Render y Vercel. Para IoT usamos Arduino, ESP32, Raspberry Pi y MQTT.',
-  },
-  {
-    q: '¿En cuánto tiempo entregan un proyecto?',
-    a: 'Una landing page se entrega en 1 a 2 semanas, un e-commerce en 4 a 6 semanas y una app móvil completa entre 8 y 12 semanas. Trabajamos por etapas y cada semana ves el avance.',
-  },
-];
-
-function FAQ() {
+// las preguntas se cambian en /admin (sección «preguntas»); el JSON-LD FAQPage del index.html trae las de siempre.
+// Sin ninguna visible, la sección no sale.
+function PreguntasFrecuentes() {
+  const preguntas = useContenido('preguntas', PREGUNTAS);
   const [open, setOpen] = useState(0);
+  if (!preguntas.length) return null;
 
   return (
     <section id="faq" className="faq wb-section wb-section--paper" aria-labelledby="faq-title">
       <div className="wb-container">
         <div className="faq__header">
           <div>
-            <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">// Preguntas frecuentes</Reveal>
+            <Reveal as="span" className="wb-eyebrow wb-eyebrow--accent">{'// Preguntas frecuentes'}</Reveal>
             <Reveal as="h2" id="faq-title" className="wb-h2 faq__title" delay="d1">
               Todo lo que quieres saber<br />sobre <em>Web Bonding</em>.
             </Reveal>
@@ -56,13 +33,13 @@ function FAQ() {
         </div>
 
         <ul className="faq__list" itemScope itemType="https://schema.org/FAQPage">
-          {FAQS.map((f, i) => {
+          {preguntas.map((f, i) => {
             const isOpen = open === i;
             return (
               <Reveal
                 as="li"
                 className={`faq__item ${isOpen ? 'is-open' : ''}`}
-                key={f.q}
+                key={i}
                 delay={`d${(i % 4) + 1}`}
                 itemScope
                 itemProp="mainEntity"
@@ -97,4 +74,4 @@ function FAQ() {
   );
 }
 
-export default FAQ;
+export default PreguntasFrecuentes;

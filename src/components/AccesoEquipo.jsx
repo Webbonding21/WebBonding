@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 // Acceso del equipo (Supabase Auth del proyecto r4-cuentas): con contraseña o con un enlace al correo, para quien no
-// la recuerda. Lo usan /leads y el cotizador del equipo; el enlace vuelve a la misma página.
+// la recuerda. Lo usan el panel /admin y el cotizador del equipo; el enlace vuelve a la misma página.
 import { useState } from 'react';
 import { FiLogIn, FiAlertTriangle, FiMail, FiArrowLeft } from 'react-icons/fi';
 import { supabaseR4 } from './r4/r4Api';

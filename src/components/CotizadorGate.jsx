@@ -32,7 +32,7 @@ export function logout() {
 
 /**
  * Envuelve el cotizador. Los clientes entran con la clave de invitación; el equipo de ventas, con su usuario
- * (el mismo de /leads) y además ve la guía de ventas. Sin acceso, muestra el gate.
+ * (el mismo del panel /admin) y además ve la guía de ventas. Sin acceso, muestra el gate.
  */
 export default function CotizadorGate({ children }) {
   const [granted, setGranted] = useState(() => hasAccess());
@@ -104,7 +104,7 @@ export default function CotizadorGate({ children }) {
     return (
       <div className="ld">
         <AccesoEquipo titulo="Cotizador del equipo"
-          texto="Entra con tu usuario de Web Bonding, el mismo de /leads. Aquí están el cotizador y la guía de ventas."
+          texto="Entra con tu usuario de Web Bonding, el mismo del panel /admin. Aquí están el cotizador y la guía de ventas."
           aviso={sinRol ? 'Tu usuario no tiene el rol de ventas. Pídeselo a Williams o entra con otro usuario.' : ''}
           volver={{ texto: 'Volver al acceso de clientes', onClick: () => setAccesoEquipo(false) }} />
       </div>

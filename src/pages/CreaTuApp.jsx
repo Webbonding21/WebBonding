@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // src/pages/CreaTuApp.jsx
 // Landing para Google Ads (idea de Roikel): sencilla y al punto, cuatro partes y un CTA distinto en cada una.
 // Todos los botones bajan al formulario; el formulario va paso a paso, guarda el lead (con la aceptación de la
@@ -11,6 +12,7 @@ import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import Reveal from '../components/Reveal';
 import Vitrina from '../components/Vitrina';
 import APPS from '../data/apps';
+import { useContenido } from '../lib/contenido';
 import { guardarLead } from '../lib/privacidad';
 import '../assets/CreaTuApp.css';
 
@@ -43,7 +45,7 @@ const PASOS = ['tipo', 'nombre', 'telefono', 'correo', 'adicional'];
 
 const PREGUNTAS = {
   nombre: { t: () => '¿Cómo te llamas?', p: 'Así sabemos con quién hablamos.', type: 'text', auto: 'name', ej: 'Ej: María González' },
-  telefono: { t: (n) => `Mucho gusto, ${n}. ¿A qué número te escribimos?`, p: 'Te escribimos por WhatsApp en menos de 24 horas.', type: 'tel', auto: 'tel', ej: 'Ej: 0412 123 4567' },
+  telefono: { t: (n) => `Mucho gusto, ${n}. ¿A\u00a0qué número te escribimos?`, p: 'Te escribimos por WhatsApp en menos de 24 horas.', type: 'tel', auto: 'tel', ej: 'Ej: 0412 123 4567' },
   correo: { t: () => '¿Y tu correo?', p: 'Ahí te mandamos la propuesta.', type: 'email', auto: 'email', ej: 'Ej: maria@gmail.com' },
   adicional: { t: () => '¿Algo más que debamos saber?', p: 'Cuéntanos de tu negocio o de tu idea. Es opcional.', ej: 'Ej: Quiero una app para que mis clientes pidan y paguen desde el teléfono' },
 };
@@ -220,8 +222,10 @@ function Formulario() {
 }
 
 function CreaTuApp() {
-  // portada: la primera pantalla de teléfono de las tres primeras apps del catálogo
-  const portada = APPS.slice(0, 3).map((a) => ({ a, c: a.capturas.find((x) => x.formato === 'movil') || a.capturas[0] }));
+  // portada: la primera pantalla de teléfono de las tres primeras apps de la vitrina (las de /admin, sección «apps»)
+  const apps = useContenido('apps', APPS);
+  const portada = apps.filter((a) => a.capturas?.length).slice(0, 3)
+    .map((a) => ({ a, c: a.capturas.find((x) => x.formato === 'movil') || a.capturas[0] }));
   return (
     <>
       <Helmet>
@@ -252,7 +256,7 @@ function CreaTuApp() {
             </div>
             <Reveal className="lp-hero__vitrina" variant="zoom" delay="d2">
               {portada.map(({ a, c }, i) => (
-                <img key={a.slug} className={`lp-cap lp-cap--${c.formato} lp-hero__cap${i}`} src={c.src} alt={`${a.nombre}: ${c.t}`} />
+                <img key={i} className={`lp-cap lp-cap--${c.formato || 'movil'} lp-hero__cap${i}`} src={c.src} alt={`${a.nombre}: ${c.t}`} />
               ))}
             </Reveal>
           </div>

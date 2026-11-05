@@ -1,22 +1,14 @@
-import React from 'react';
 import StepForModal from './StepForModal';
 import Reveal from './Reveal';
 import CountUp from './CountUp';
+import { CIFRAS, PALABRAS } from '../data/sitio';
+import { useContenido } from '../lib/contenido';
 import '../assets/Hero.css';
 
-const STATS = [
-  { n: 30, suffix: '+', label: 'proyectos\nentregados' },
-  { n: 8,  suffix: '',  label: 'industrias\natendidas' },
-  { n: 2,  suffix: '',  label: 'países\n(VE · Latam)' },
-  { n: 100,suffix: '%', label: 'código\na medida' },
-];
-
-const KEYWORDS = [
-  'Apps móviles', 'Tiendas en línea', 'Sistemas administrativos', 'Equipos conectados',
-  'Delivery', 'Pagos en línea', 'Paneles de control', 'Automatización', 'Apps web', 'Chatbots de WhatsApp',
-];
-
+// las cifras y la cinta de palabras se cambian en /admin (secciones «cifras» y «palabras»)
 function Hero() {
+  const cifras = useContenido('cifras', CIFRAS);
+  const palabras = useContenido('palabras', PALABRAS).filter((p) => p.texto);
   return (
     <section id="home" className="hero wb-grain">
       <div className="hero__glow" aria-hidden="true" />
@@ -72,33 +64,37 @@ function Hero() {
       </div>
 
       {/* Stats */}
-      <div className="wb-container">
-        <Reveal className="hero__stats" delay="d2">
-          {STATS.map((s, i) => (
-            <div className="hero__stat" key={i}>
-              <span className="hero__stat-n">
-                <CountUp to={s.n} suffix={s.suffix} />
-              </span>
-              <span className="hero__stat-l">
-                {s.label.split('\n').map((t, j) => (
-                  <span key={j}>{t}<br /></span>
-                ))}
-              </span>
-            </div>
-          ))}
-        </Reveal>
-      </div>
+      {cifras.length > 0 && (
+        <div className="wb-container">
+          <Reveal className="hero__stats" delay="d2">
+            {cifras.map((s, i) => (
+              <div className="hero__stat" key={i}>
+                <span className="hero__stat-n">
+                  <CountUp to={Number(s.n) || 0} suffix={s.suffix ?? ''} />
+                </span>
+                <span className="hero__stat-l">
+                  {String(s.label ?? '').split('\n').map((t, j) => (
+                    <span key={j}>{t}<br /></span>
+                  ))}
+                </span>
+              </div>
+            ))}
+          </Reveal>
+        </div>
+      )}
 
       {/* Marquee */}
-      <div className="hero__marquee wb-marquee" aria-hidden="true">
-        <div className="wb-marquee__track">
-          {[...KEYWORDS, ...KEYWORDS].map((k, i) => (
-            <span className="hero__kw" key={i}>
-              {k} <b>✦</b>
-            </span>
-          ))}
+      {palabras.length > 0 && (
+        <div className="hero__marquee wb-marquee" aria-hidden="true">
+          <div className="wb-marquee__track">
+            {[...palabras, ...palabras].map((p, i) => (
+              <span className="hero__kw" key={i}>
+                {p.texto} <b>✦</b>
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

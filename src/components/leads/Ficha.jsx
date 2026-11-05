@@ -1,16 +1,16 @@
-/* eslint-disable react/prop-types */
 // La ficha de un lead, al lado de la lista (a pantalla completa en el teléfono). El estado se cambia con un toque o con
 // las teclas 1 a 5; ↑ ↓ pasan al lead anterior o siguiente sin cerrar; las notas se guardan solas al dejar de escribir,
-// y también al cambiar de lead o cerrar.
+// y también al cambiar de lead o cerrar. «Editar» abre sus datos (nombre, teléfono…) y «Borrar» solo lo ve un
+// administrador.
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { FiX, FiPhone, FiMail, FiCopy, FiChevronUp, FiChevronDown, FiMessageCircle } from 'react-icons/fi';
+import { FiX, FiPhone, FiMail, FiCopy, FiChevronUp, FiChevronDown, FiMessageCircle, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import { SiWhatsapp } from 'react-icons/si';
 import Menu from './Menu';
 import { Embudo } from './Estado';
 import { CLAVES, PLANTILLAS, enlaceWhatsApp, fecha, hace, internacional, origenDe, tipoCorto } from './datos';
 
-export default function Ficha({ lead, ahora, posicion, total, onAnterior, onSiguiente, onCerrar, onGuardar, onAvisar }) {
+export default function Ficha({ lead, ahora, posicion, total, onAnterior, onSiguiente, onCerrar, onGuardar, onAvisar, onEditar, onBorrar = null }) {
   const [notas, setNotas] = useState(lead.notas ?? '');
   const [guardado, setGuardado] = useState(''); // '' · 'guardando' · 'guardado'
   const pendiente = useRef(null); // notas escritas que todavía no se guardan
@@ -58,6 +58,9 @@ export default function Ficha({ lead, ahora, posicion, total, onAnterior, onSigu
       else if (/^[1-5]$/.test(e.key)) {
         const estado = CLAVES[Number(e.key) - 1];
         if (estado !== lead.estado) onGuardar(lead.id, { estado });
+      } else if (e.key === 'e') {
+        e.preventDefault();
+        onEditar(lead);
       } else if (e.key === 'w') {
         window.open(enlaceWhatsApp(lead), '_blank', 'noopener');
         if (lead.estado === 'nuevo') onGuardar(lead.id, { estado: 'contactado' });
@@ -65,7 +68,7 @@ export default function Ficha({ lead, ahora, posicion, total, onAnterior, onSigu
     };
     document.addEventListener('keydown', alTeclear);
     return () => document.removeEventListener('keydown', alTeclear);
-  }, [lead, onCerrar, onAnterior, onSiguiente, onGuardar]);
+  }, [lead, onCerrar, onAnterior, onSiguiente, onGuardar, onEditar]);
 
   const campana = [lead.utm_medium, lead.utm_campaign, lead.utm_content].filter(Boolean).join(' · ');
 
@@ -78,7 +81,17 @@ export default function Ficha({ lead, ahora, posicion, total, onAnterior, onSigu
             <button type="button" onClick={onSiguiente} disabled={!onSiguiente} aria-label="Lead siguiente"><FiChevronDown aria-hidden="true" /></button>
             <span>{posicion} de {total}</span>
           </div>
-          <button type="button" className="ld-ficha__cerrar" onClick={onCerrar} aria-label="Cerrar"><FiX aria-hidden="true" /></button>
+          <div className="ld-ficha__acc">
+            <button type="button" className="ld-ficha__editar" onClick={() => onEditar(lead)} title="Editar los datos · tecla E">
+              <FiEdit2 aria-hidden="true" /> Editar
+            </button>
+            {onBorrar && (
+              <button type="button" className="ld-ficha__cerrar ld-ficha__borrar" onClick={() => onBorrar(lead)} aria-label={`Borrar a ${lead.nombre}`} title="Borrar">
+                <FiTrash2 aria-hidden="true" />
+              </button>
+            )}
+            <button type="button" className="ld-ficha__cerrar" onClick={onCerrar} aria-label="Cerrar"><FiX aria-hidden="true" /></button>
+          </div>
         </div>
 
         <h2 className="ld-ficha__nombre">{lead.nombre}</h2>
@@ -110,7 +123,7 @@ export default function Ficha({ lead, ahora, posicion, total, onAnterior, onSigu
             </Menu>
           </div>
           <a className="ld-btn" href={`tel:+${internacional(lead.telefono)}`} onClick={contactar}><FiPhone aria-hidden="true" /> Llamar</a>
-          <a className="ld-btn" href={`mailto:${lead.correo}`}><FiMail aria-hidden="true" /> Correo</a>
+          {lead.correo && <a className="ld-btn" href={`mailto:${lead.correo}`}><FiMail aria-hidden="true" /> Correo</a>}
         </div>
 
         <dl className="ld-datos">
@@ -120,10 +133,12 @@ export default function Ficha({ lead, ahora, posicion, total, onAnterior, onSigu
           </div>
           <div>
             <dt>Correo</dt>
-            <dd>{lead.correo}<button type="button" className="ld-copiar" onClick={() => copiar(lead.correo, 'Correo')} aria-label="Copiar el correo"><FiCopy aria-hidden="true" /></button></dd>
+            {lead.correo
+              ? <dd>{lead.correo}<button type="button" className="ld-copiar" onClick={() => copiar(lead.correo, 'Correo')} aria-label="Copiar el correo"><FiCopy aria-hidden="true" /></button></dd>
+              : <dd className="ld-datos__sin">Sin correo</dd>}
           </div>
           <div><dt>Novedades</dt><dd>{lead.acepta_novedades ? 'Sí quiere recibir ofertas' : 'No'}</dd></div>
-          <div><dt>Campaña</dt><dd>{campana || 'Sin campaña'}</dd></div>
+          <div><dt>Campaña</dt><dd>{lead.origen === 'manual' ? 'Lo cargó el equipo' : campana || 'Sin campaña'}</dd></div>
         </dl>
 
         {lead.adicional && (
@@ -141,7 +156,7 @@ export default function Ficha({ lead, ahora, posicion, total, onAnterior, onSigu
         </label>
 
         <p className="ld-ficha__atajos">
-          <kbd>↑</kbd> <kbd>↓</kbd> otro lead · <kbd>1</kbd>–<kbd>5</kbd> estado · <kbd>W</kbd> WhatsApp · <kbd>Esc</kbd> cerrar
+          <kbd>↑</kbd> <kbd>↓</kbd> otro lead · <kbd>1</kbd>–<kbd>5</kbd> estado · <kbd>W</kbd> WhatsApp · <kbd>E</kbd> editar · <kbd>Esc</kbd> cerrar
         </p>
       </aside>
     </div>,

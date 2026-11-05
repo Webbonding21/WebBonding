@@ -27,7 +27,8 @@ function App() {
 
 function Contenido() {
   const { pathname } = useLocation();
-  // /admin (el panel del equipo), /r4apertura y /leads son herramientas internas: se muestran solas, sin las capas del sitio.
+  // /admin (el panel del equipo, con los leads en /admin/leads), /r4apertura y /leads (lleva al panel) son herramientas internas:
+  // se muestran solas, sin las capas del sitio.
   const herramienta = ['/admin', '/r4apertura', '/leads'].some((r) => pathname.startsWith(r));
   // /crea-tu-app (la landing de anuncios) y /portafolio van sin el menú ni el pie del sitio: llevan su propio encabezado y contacto
   const landing = pathname.startsWith('/crea-tu-app') || pathname.startsWith('/portafolio');
@@ -43,8 +44,8 @@ function Contenido() {
         <Route path="/portafolio" element={<Portafolio />} />
         <Route path="/privacidad" element={<Privacidad />} />
         <Route path="/leads" element={<Leads />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/portafolio" element={<Admin seccion="portafolio" />} />
+        {/* una sola ruta para todo el panel: al cambiar de sección no se vuelve a pedir la sesión */}
+        <Route path="/admin/:seccion?" element={<Admin />} />
       </Routes>
       {!herramienta && (
         <>
