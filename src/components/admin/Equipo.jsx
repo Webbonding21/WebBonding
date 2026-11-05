@@ -32,25 +32,25 @@ export default function Equipo({ yo }) {
   };
 
   return (
-    <div className="ad-equipo">
-      <div className="ad-cab">
+    <div className="pn-equipo">
+      <div className="pn-cab">
         <div>
           <h1>Usuarios</h1>
           <p>Quién entra al panel y qué puede hacer. Es el mismo usuario para el panel, el cotizador y R4.</p>
         </div>
-        <button type="button" className="ad-ico" onClick={cargar} aria-label="Actualizar" title="Actualizar" disabled={cargando}>
+        <button type="button" className="pn-ico" onClick={cargar} aria-label="Actualizar" title="Actualizar" disabled={cargando}>
           <FiRefreshCw aria-hidden="true" className={cargando ? 'ld-girando' : ''} />
         </button>
       </div>
 
       {error && <p className="ld-error" role="alert"><FiAlertTriangle aria-hidden="true" /> {error}</p>}
-      {aviso && <p className="ad-aviso" role="status"><FiCheck aria-hidden="true" /> {aviso}</p>}
+      {aviso && <p className="pn-aviso" role="status"><FiCheck aria-hidden="true" /> {aviso}</p>}
 
-      {usuarios === null ? <p className="ad-nota">Cargando…</p> : (
-        <ul className="ad-usuarios">
+      {usuarios === null ? <p className="pn-nota">Cargando…</p> : (
+        <ul className="pn-usuarios">
           {usuarios.map((u) => (
             <li key={u.id}>
-              <span className="ad-usuarios__quien">
+              <span className="pn-usuarios__quien">
                 <b>{u.correo}{u.id === yo && <i>Tú</i>}</b>
                 <span>Desde el {fecha(u.creado)} · último acceso: {fecha(u.ultimo_acceso)}</span>
               </span>
@@ -63,10 +63,10 @@ export default function Equipo({ yo }) {
         </ul>
       )}
 
-      <dl className="ad-roles">
+      <dl className="pn-roles">
         {Object.entries(ROLES).map(([k, r]) => <div key={k}><dt>{r.t}</dt><dd>{r.d}</dd></div>)}
       </dl>
-      <p className="ad-nota">
+      <p className="pn-nota">
         Para darle acceso a alguien nuevo, créale el usuario en Supabase (Authentication → Users → Add user). Entra como
         «Solo lectura» y aquí le das el rol.
       </p>

@@ -28,8 +28,8 @@ export default function Inicio({ rol, resumen, aqui }) {
   const hoy = new Date().toLocaleDateString('es-VE', { weekday: 'long', day: 'numeric', month: 'long' });
 
   return (
-    <div className="ad-inicio">
-      <div className="ad-cab">
+    <div className="pn-inicio">
+      <div className="pn-cab">
         <div>
           <h1>Resumen</h1>
           <p>{hoy.charAt(0).toUpperCase() + hoy.slice(1)}. Lo que hay hoy en Web Bonding, y cada cosa lleva a donde se cambia.</p>
@@ -37,28 +37,28 @@ export default function Inicio({ rol, resumen, aqui }) {
       </div>
 
       {!venta && (
-        <p className="ad-nota">Tu usuario es de solo lectura: tienes las <a href="/r4apertura">Cuentas R4</a>. Para más, pídele el rol a Williams.</p>
+        <p className="pn-nota">Tu usuario es de solo lectura: tienes las <a href="/r4apertura">Cuentas R4</a>. Para más, pídele el rol a Williams.</p>
       )}
 
       {venta && (
-        <div className="ad-kpis">
-          <Link to={aqui('/admin/leads?estado=nuevo')} className={`ad-kpi${cuenta?.nuevo ? ' ad-kpi--coral' : ''}`}>
+        <div className="pn-kpis">
+          <Link to={aqui('/admin/leads?estado=nuevo')} className={`pn-kpi${cuenta?.nuevo ? ' pn-kpi--coral' : ''}`}>
             <span>Leads nuevos</span>
             <b>{cuenta ? numero(cuenta.nuevo) : '…'}</b>
             <small>{cuenta?.urgentes ? <><FiAlertCircle aria-hidden="true" /> {numero(cuenta.urgentes)} sin contactar hace más de 1 h</> : 'Ninguno va tarde'}</small>
           </Link>
-          <Link to={aqui('/admin/leads?estado=propuesta')} className="ad-kpi">
+          <Link to={aqui('/admin/leads?estado=propuesta')} className="pn-kpi">
             <span>Con propuesta</span>
             <b>{cuenta ? numero(cuenta.propuesta) : '…'}</b>
             <small>{cuenta ? `${numero(cuenta.contactado)} contactados` : ''}</small>
           </Link>
-          <Link to={aqui('/admin/leads?estado=cliente')} className="ad-kpi">
+          <Link to={aqui('/admin/leads?estado=cliente')} className="pn-kpi">
             <span>Clientes</span>
             <b>{cuenta ? numero(cuenta.cliente) : '…'}</b>
             <small>{cuenta ? `de ${numero(cuenta.todos)} leads` : ''}</small>
           </Link>
           {rol === 'admin' && (
-            <Link to={aqui('/admin/portafolio')} className="ad-kpi">
+            <Link to={aqui('/admin/portafolio')} className="pn-kpi">
               <span>Videos en el portafolio</span>
               <b>{resumen?.portafolio ? numero(resumen.portafolio.visibles) : '…'}</b>
               <small>{resumen?.portafolio ? ocultos(resumen.portafolio.total - resumen.portafolio.visibles) || 'Ninguno oculto' : ''}</small>
@@ -68,7 +68,7 @@ export default function Inicio({ rol, resumen, aqui }) {
       )}
 
       {venta && cuenta && (
-        <div className="ad-embudo" aria-label="Leads por estado">
+        <div className="pn-embudo" aria-label="Leads por estado">
           {CLAVES.map((e) => (
             <Link key={e} to={aqui(`/admin/leads?estado=${e}`)} className={`ld-c--${e}`} style={{ flexGrow: Math.max(1, cuenta[e] ?? 0) }}
               title={`${ESTADOS[e]}: ${numero(cuenta[e])}`}>
@@ -78,15 +78,15 @@ export default function Inicio({ rol, resumen, aqui }) {
         </div>
       )}
 
-      <div className="ad-inicio__grid">
+      <div className="pn-inicio__grid">
         {venta && (
-          <section className="ad-bloque">
-            <div className="ad-bloque__cab">
+          <section className="pn-bloque">
+            <div className="pn-bloque__cab">
               <h2>Últimos leads</h2>
               <Link to={aqui('/admin/leads')}>Ver todos <FiArrowRight aria-hidden="true" /></Link>
             </div>
-            {ultimos === null ? <p className="ad-nota">Cargando…</p> : !ultimos.length ? <p className="ad-nota">Todavía no ha llegado ningún lead.</p> : (
-              <ul className="ad-ultimos">
+            {ultimos === null ? <p className="pn-nota">Cargando…</p> : !ultimos.length ? <p className="pn-nota">Todavía no ha llegado ningún lead.</p> : (
+              <ul className="pn-ultimos">
                 {ultimos.map((l) => (
                   <li key={l.id}>
                     <Link to={aqui(`/admin/leads?q=${encodeURIComponent(l.telefono)}`)}>
@@ -101,12 +101,12 @@ export default function Inicio({ rol, resumen, aqui }) {
         )}
 
         {rol === 'admin' && (
-          <section className="ad-bloque">
-            <div className="ad-bloque__cab">
+          <section className="pn-bloque">
+            <div className="pn-bloque__cab">
               <h2>La web</h2>
               <a href="/" target="_blank" rel="noopener noreferrer">Abrir webbonding.net <FiArrowUpRight aria-hidden="true" /></a>
             </div>
-            <ul className="ad-secciones">
+            <ul className="pn-secciones">
               {web.map(({ id, nombre, icono: Icono, donde }) => {
                 const r = resumen?.[id];
                 return (

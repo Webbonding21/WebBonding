@@ -180,8 +180,8 @@ export default function Coleccion({ seccion, alCambiar }) {
   const conExtra = vistas.some((f) => Boolean(seccion.fila(f.datos, contexto).extra));
 
   return (
-    <div className="ad-coleccion">
-      <div className="ad-cab">
+    <div className="pn-coleccion">
+      <div className="pn-cab">
         <div>
           <h1>{seccion.nombre}</h1>
           <p>
@@ -189,14 +189,14 @@ export default function Coleccion({ seccion, alCambiar }) {
             {seccion.donde && <a href={seccion.donde} target="_blank" rel="noopener noreferrer">Ver en la web <FiExternalLink aria-hidden="true" /></a>}
           </p>
         </div>
-        <button type="button" className="ld-btn ld-btn--primario ad-nuevo" onClick={() => setEditando({ nuevo: true, datos: iniciales })}>
+        <button type="button" className="ld-btn ld-btn--primario pn-nuevo" onClick={() => setEditando({ nuevo: true, datos: iniciales })}>
           <FiPlus aria-hidden="true" /> {nuevoNombre(seccion)}
         </button>
       </div>
 
       {seccion.arriba === 'tarifa' && <Tarifa tarifa={tarifa} setTarifa={setTarifa} avisar={avisar} alCambiar={alCambiar} />}
 
-      <div className="ad-barra">
+      <div className="pn-barra">
         <label className="ld-buscar">
           <FiSearch aria-hidden="true" />
           <input ref={buscador} type="search" placeholder={`Buscar en ${seccion.nombre.toLowerCase()}`} value={busca} onChange={(e) => setBusca(e.target.value)} />
@@ -204,28 +204,28 @@ export default function Coleccion({ seccion, alCambiar }) {
             ? <button type="button" className="ld-buscar__borrar" onClick={() => setBusca('')} aria-label="Borrar la búsqueda"><FiX aria-hidden="true" /></button>
             : <kbd className="ld-buscar__tecla" aria-hidden="true">/</kbd>}
         </label>
-        <div className="ad-vistas" role="tablist" aria-label="Qué mostrar">
+        <div className="pn-vistas" role="tablist" aria-label="Qué mostrar">
           {Object.entries(VISTAS).map(([k, t]) => (
             <button key={k} type="button" role="tab" aria-selected={vista === k} onClick={() => setVista(k)}>{t} <b>{numero(cuantos[k])}</b></button>
           ))}
         </div>
         {seccion.filtro && (
-          <select className="ld-campo ad-filtro" value={filtro} onChange={(e) => setFiltro(e.target.value)} aria-label={seccion.filtro.t}>
+          <select className="ld-campo pn-filtro" value={filtro} onChange={(e) => setFiltro(e.target.value)} aria-label={seccion.filtro.t}>
             <option value="">{`Toda ${seccion.filtro.t.toLowerCase()}`}</option>
             {seccion.filtro.opciones.map(([v, t]) => (
               <option key={v} value={v}>{t} ({lista.filter((f) => f.datos[seccion.filtro.k] === v).length})</option>
             ))}
           </select>
         )}
-        <button type="button" className="ad-ico" onClick={cargar} aria-label="Actualizar" title="Actualizar" disabled={cargando}>
+        <button type="button" className="pn-ico" onClick={cargar} aria-label="Actualizar" title="Actualizar" disabled={cargando}>
           <FiRefreshCw aria-hidden="true" className={cargando ? 'ld-girando' : ''} />
         </button>
       </div>
 
       {error && <p className="ld-error" role="alert"><FiAlertTriangle aria-hidden="true" /> {error}</p>}
 
-      {filas === null ? <p className="ad-nota">Cargando…</p> : !lista.length ? (
-        <div className="ad-vacio">
+      {filas === null ? <p className="pn-nota">Cargando…</p> : !lista.length ? (
+        <div className="pn-vacio">
           <b>Todavía no hay nada aquí.</b>
           <p>Lo que agregues sale en la web apenas lo guardes.</p>
           <button type="button" className="ld-btn ld-btn--primario" onClick={() => setEditando({ nuevo: true, datos: iniciales })}>
@@ -233,59 +233,59 @@ export default function Coleccion({ seccion, alCambiar }) {
           </button>
         </div>
       ) : !vistas.length ? (
-        <div className="ad-vacio">
+        <div className="pn-vacio">
           <b>Nada coincide.</b>
           <button type="button" className="ld-btn" onClick={() => { setBusca(''); setVista('todos'); setFiltro(''); }}>Ver todo</button>
         </div>
       ) : (
         <>
-          {filtrando && <p className="ad-nota">Viendo {numero(vistas.length)} de {numero(lista.length)}. Para ordenar, quita la búsqueda y los filtros.</p>}
-          <ul className={`ad-tabla${conMini ? '' : ' ad-tabla--sin-mini'}${conExtra ? ' ad-tabla--con-extra' : ''}`} aria-busy={cargando}>
-            <li className="ad-tabla__cab" aria-hidden="true">
+          {filtrando && <p className="pn-nota">Viendo {numero(vistas.length)} de {numero(lista.length)}. Para ordenar, quita la búsqueda y los filtros.</p>}
+          <ul className={`pn-tabla${conMini ? '' : ' pn-tabla--sin-mini'}${conExtra ? ' pn-tabla--con-extra' : ''}`} aria-busy={cargando}>
+            <li className="pn-tabla__cab" aria-hidden="true">
               <input type="checkbox" checked={todos} tabIndex={-1}
                 onChange={() => setMarcados(todos ? new Set() : new Set(vistas.map((f) => f.id)))} />
-              <span className="ad-tabla__n">#</span><span /><span>{seccion.uno.charAt(0).toUpperCase() + seccion.uno.slice(1)}</span><span />
-              <span className="ad-tabla__vis">En la web</span><span>Orden</span><span />
+              <span className="pn-tabla__n">#</span><span /><span>{seccion.uno.charAt(0).toUpperCase() + seccion.uno.slice(1)}</span><span />
+              <span className="pn-tabla__vis">En la web</span><span>Orden</span><span />
             </li>
             {vistas.map((f) => {
               const v = seccion.fila(f.datos, contexto);
               const k = lista.indexOf(f);
               return (
-                <li key={f.id} className={`ad-tabla__fila${f.visible ? '' : ' is-oculto'}${marcados.has(f.id) ? ' is-marcada' : ''}`}
+                <li key={f.id} className={`pn-tabla__fila${f.visible ? '' : ' is-oculto'}${marcados.has(f.id) ? ' is-marcada' : ''}`}
                   onClick={() => setEditando(f)}>
                   <input type="checkbox" checked={marcados.has(f.id)} onClick={(e) => e.stopPropagation()} onChange={() => marcar(f.id)}
                     aria-label={`Seleccionar ${v.titulo}`} />
-                  <span className="ad-tabla__n">{String(k + 1).padStart(2, '0')}</span>
+                  <span className="pn-tabla__n">{String(k + 1).padStart(2, '0')}</span>
                   <Mini mini={v.mini} />
-                  <button type="button" className="ad-tabla__txt" onClick={(e) => { e.stopPropagation(); setEditando(f); }}>
+                  <button type="button" className="pn-tabla__txt" onClick={(e) => { e.stopPropagation(); setEditando(f); }}>
                     <b>{v.titulo || <em>Sin título</em>}</b>
                     {v.sub && <span>{v.sub}</span>}
                     {(v.chips?.length > 0 || v.enlace) && (
-                      <span className="ad-chips-fila">
-                        {v.enlace && <i className="ad-chip-ig"><SiInstagram aria-hidden="true" /> {v.enlace.texto}</i>}
+                      <span className="pn-chips-fila">
+                        {v.enlace && <i className="pn-chip-ig"><SiInstagram aria-hidden="true" /> {v.enlace.texto}</i>}
                         {v.chips?.map((c) => <i key={c}>{c}</i>)}
                       </span>
                     )}
                   </button>
-                  <span className="ad-tabla__extra">{v.extra}</span>
-                  <span className="ad-tabla__vis" onClick={(e) => e.stopPropagation()}>
-                    <button type="button" className={`ad-vis${f.visible ? ' is-on' : ''}`} aria-pressed={f.visible} onClick={() => mostrar([f], !f.visible)}
+                  <span className="pn-tabla__extra">{v.extra}</span>
+                  <span className="pn-tabla__vis" onClick={(e) => e.stopPropagation()}>
+                    <button type="button" className={`pn-vis${f.visible ? ' is-on' : ''}`} aria-pressed={f.visible} onClick={() => mostrar([f], !f.visible)}
                       title={f.visible ? 'Ocultarlo de la web' : 'Mostrarlo en la web'}>
-                      {f.visible ? <><FiEye aria-hidden="true" /> <span className="ad-vis__txt">Visible</span></> : <><FiEyeOff aria-hidden="true" /> <span className="ad-vis__txt">Oculto</span></>}
+                      {f.visible ? <><FiEye aria-hidden="true" /> <span className="pn-vis__txt">Visible</span></> : <><FiEyeOff aria-hidden="true" /> <span className="pn-vis__txt">Oculto</span></>}
                     </button>
                   </span>
-                  <span className="ad-tabla__orden" onClick={(e) => e.stopPropagation()}>
-                    <button type="button" className="ad-ico ad-ico--chico" aria-label={`Subir ${v.titulo}`} disabled={filtrando || k === 0} onClick={() => mover(f, -1)}>
+                  <span className="pn-tabla__orden" onClick={(e) => e.stopPropagation()}>
+                    <button type="button" className="pn-ico pn-ico--chico" aria-label={`Subir ${v.titulo}`} disabled={filtrando || k === 0} onClick={() => mover(f, -1)}>
                       <FiArrowUp aria-hidden="true" />
                     </button>
-                    <button type="button" className="ad-ico ad-ico--chico" aria-label={`Bajar ${v.titulo}`} disabled={filtrando || k === lista.length - 1} onClick={() => mover(f, 1)}>
+                    <button type="button" className="pn-ico pn-ico--chico" aria-label={`Bajar ${v.titulo}`} disabled={filtrando || k === lista.length - 1} onClick={() => mover(f, 1)}>
                       <FiArrowDown aria-hidden="true" />
                     </button>
                   </span>
-                  <span className="ad-tabla__acc" onClick={(e) => e.stopPropagation()}>
-                    <button type="button" className="ad-ico ad-ico--chico" aria-label={`Editar ${v.titulo}`} title="Editar" onClick={() => setEditando(f)}><FiEdit2 aria-hidden="true" /></button>
-                    <button type="button" className="ad-ico ad-ico--chico" aria-label={`Duplicar ${v.titulo}`} title="Duplicar" onClick={() => duplicar(f)}><FiCopy aria-hidden="true" /></button>
-                    <button type="button" className="ad-ico ad-ico--chico ad-ico--quitar" aria-label={`Borrar ${v.titulo}`} title="Borrar" onClick={() => borrar([f])}><FiTrash2 aria-hidden="true" /></button>
+                  <span className="pn-tabla__acc" onClick={(e) => e.stopPropagation()}>
+                    <button type="button" className="pn-ico pn-ico--chico" aria-label={`Editar ${v.titulo}`} title="Editar" onClick={() => setEditando(f)}><FiEdit2 aria-hidden="true" /></button>
+                    <button type="button" className="pn-ico pn-ico--chico" aria-label={`Duplicar ${v.titulo}`} title="Duplicar" onClick={() => duplicar(f)}><FiCopy aria-hidden="true" /></button>
+                    <button type="button" className="pn-ico pn-ico--chico pn-ico--quitar" aria-label={`Borrar ${v.titulo}`} title="Borrar" onClick={() => borrar([f])}><FiTrash2 aria-hidden="true" /></button>
                   </span>
                 </li>
               );
@@ -295,11 +295,11 @@ export default function Coleccion({ seccion, alCambiar }) {
       )}
 
       {elegidas.length > 0 && (
-        <div className="ld-masivo ad-masivo" role="region" aria-label="Acciones con los seleccionados">
+        <div className="ld-masivo pn-masivo" role="region" aria-label="Acciones con los seleccionados">
           <b>{elegidas.length} {elegidas.length === 1 ? 'seleccionado' : 'seleccionados'}</b>
           <button type="button" className="ld-masivo__btn" onClick={() => { mostrar(elegidas, true); setMarcados(new Set()); }}><FiEye aria-hidden="true" /> Mostrar</button>
           <button type="button" className="ld-masivo__btn" onClick={() => { mostrar(elegidas, false); setMarcados(new Set()); }}><FiEyeOff aria-hidden="true" /> Ocultar</button>
-          <button type="button" className="ld-masivo__btn ad-masivo__borrar" onClick={() => borrar(elegidas)}><FiTrash2 aria-hidden="true" /> Borrar</button>
+          <button type="button" className="ld-masivo__btn pn-masivo__borrar" onClick={() => borrar(elegidas)}><FiTrash2 aria-hidden="true" /> Borrar</button>
           <button type="button" className="ld-masivo__quitar" onClick={() => setMarcados(new Set())} aria-label="Quitar la selección"><FiX aria-hidden="true" /></button>
         </div>
       )}
@@ -323,12 +323,12 @@ export default function Coleccion({ seccion, alCambiar }) {
 
 // la miniatura de cada fila: portada 9:16, captura de teléfono, foto, color o un texto corto
 function Mini({ mini = {} }) {
-  if ('vertical' in mini) return <span className="ad-mini ad-mini--vertical">{mini.vertical ? <img src={mini.vertical} alt="" loading="lazy" /> : <SiInstagram aria-hidden="true" />}</span>;
-  if ('telefono' in mini) return <span className="ad-mini ad-mini--vertical">{mini.telefono ? <img src={mini.telefono} alt="" loading="lazy" /> : <FiImage aria-hidden="true" />}</span>;
-  if ('imagen' in mini) return <span className="ad-mini">{mini.imagen ? <img src={mini.imagen} alt="" loading="lazy" /> : <FiImage aria-hidden="true" />}</span>;
-  if ('color' in mini) return <span className="ad-mini" style={{ background: mini.color }} />;
-  if ('texto' in mini) return <span className="ad-mini ad-mini--texto">{mini.texto}</span>;
-  return <span className="ad-mini ad-mini--nada" />;
+  if ('vertical' in mini) return <span className="pn-mini pn-mini--vertical">{mini.vertical ? <img src={mini.vertical} alt="" loading="lazy" /> : <SiInstagram aria-hidden="true" />}</span>;
+  if ('telefono' in mini) return <span className="pn-mini pn-mini--vertical">{mini.telefono ? <img src={mini.telefono} alt="" loading="lazy" /> : <FiImage aria-hidden="true" />}</span>;
+  if ('imagen' in mini) return <span className="pn-mini">{mini.imagen ? <img src={mini.imagen} alt="" loading="lazy" /> : <FiImage aria-hidden="true" />}</span>;
+  if ('color' in mini) return <span className="pn-mini" style={{ background: mini.color }} />;
+  if ('texto' in mini) return <span className="pn-mini pn-mini--texto">{mini.texto}</span>;
+  return <span className="pn-mini pn-mini--nada" />;
 }
 
 // la tarifa por hora del cotizador (la fila de «ajustes»): el precio de cada producto sale de aquí
@@ -369,12 +369,12 @@ function Tarifa({ tarifa, setTarifa, avisar, alCambiar }) {
   };
 
   return (
-    <form className="ad-tarifa" onSubmit={guardar}>
+    <form className="pn-tarifa" onSubmit={guardar}>
       <div>
         <b>Tarifa por hora</b>
         <span>El precio de cada producto es horas × tarifa + extras.</span>
       </div>
-      <label className="ad-tarifa__campo">
+      <label className="pn-tarifa__campo">
         <input className="ld-campo" inputMode="decimal" value={valor} onChange={(e) => setValor(e.target.value)} aria-label="Tarifa por hora en USD" />
         <span>USD / h</span>
       </label>

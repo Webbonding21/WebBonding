@@ -143,7 +143,7 @@ export default function Editor({ seccion, fila, otros, contexto, onGuardar, onDu
       setErrores(errs);
       setError('Revisa lo que está en rojo.');
       const primero = seccion.campos.find((c) => errs[c.k]);
-      caja.current?.querySelector(`#ad-campo-${primero.k}`)?.focus();
+      caja.current?.querySelector(`#pn-campo-${primero.k}`)?.focus();
       return;
     }
     setGuardando(true);
@@ -182,67 +182,67 @@ export default function Editor({ seccion, fila, otros, contexto, onGuardar, onDu
   const titulo = nuevo ? nuevoNombre(seccion) : (seccion.fila(fila.datos, contexto).titulo || seccion.uno);
 
   return createPortal(
-    <div className="ad-panel-fondo" onMouseDown={(e) => e.target === e.currentTarget && salir()}>
-      <form ref={caja} className="ad-panel" role="dialog" aria-modal="true" aria-label={titulo} onSubmit={guardar} noValidate>
-        <header className="ad-panel__cab">
+    <div className="pn-panel-fondo" onMouseDown={(e) => e.target === e.currentTarget && salir()}>
+      <form ref={caja} className="pn-panel" role="dialog" aria-modal="true" aria-label={titulo} onSubmit={guardar} noValidate>
+        <header className="pn-panel__cab">
           <div>
             <span>{nuevo ? seccion.nombre : `Editar ${seccion.uno}`}</span>
             <h2>{titulo}</h2>
           </div>
-          <button type="button" className="ad-ico" aria-label="Cerrar" onClick={salir}><FiX aria-hidden="true" /></button>
+          <button type="button" className="pn-ico" aria-label="Cerrar" onClick={salir}><FiX aria-hidden="true" /></button>
         </header>
 
-        <div className="ad-panel__cuerpo">
-          <button type="button" role="switch" aria-checked={visible} className={`ad-visible${visible ? ' is-on' : ''}`}
+        <div className="pn-panel__cuerpo">
+          <button type="button" role="switch" aria-checked={visible} className={`pn-visible${visible ? ' is-on' : ''}`}
             onClick={() => { setVisible(!visible); setTocado(true); }}>
             {visible ? <FiEye aria-hidden="true" /> : <FiEyeOff aria-hidden="true" />}
             <span><b>{visible ? 'Se ve en la web' : 'Oculto'}</b>{visible ? 'Sale en la página apenas guardes.' : 'Queda guardado, pero no sale en la página.'}</span>
             <i aria-hidden="true" />
           </button>
 
-          <div className="ad-campos">
+          <div className="pn-campos">
             {seccion.campos.map((c) => {
-              const id = `ad-campo-${c.k}`;
+              const id = `pn-campo-${c.k}`;
               const sinEtiqueta = c.tipo === 'si_no';
               return (
-                <div key={c.k} className={`ad-campo${c.ancho === 'medio' ? ' ad-campo--medio' : ''}${errores[c.k] ? ' is-error' : ''}`}>
+                <div key={c.k} className={`pn-campo${c.ancho === 'medio' ? ' pn-campo--medio' : ''}${errores[c.k] ? ' is-error' : ''}`}>
                   {!sinEtiqueta && (
-                    <label className="ad-campo__nombre" htmlFor={id}>
-                      {c.t}{!c.req && <span className="ad-opcional"> (opcional)</span>}
+                    <label className="pn-campo__nombre" htmlFor={id}>
+                      {c.t}{!c.req && <span className="pn-opcional"> (opcional)</span>}
                     </label>
                   )}
-                  {sinEtiqueta && <span className="ad-campo__nombre">{c.t}</span>}
-                  {c.ayuda && !sinEtiqueta && <p className="ad-campo__ayuda">{c.ayuda}</p>}
+                  {sinEtiqueta && <span className="pn-campo__nombre">{c.t}</span>}
+                  {c.ayuda && !sinEtiqueta && <p className="pn-campo__ayuda">{c.ayuda}</p>}
                   <Control campo={c} id={id} valor={d[c.k]} d={d} poner={(v) => ponerCampo(c.k, v)} ponerCampo={ponerCampo}
                     setError={setError} otros={otros} />
-                  {errores[c.k] && <p className="ad-campo__error" role="alert">{errores[c.k]}</p>}
+                  {errores[c.k] && <p className="pn-campo__error" role="alert">{errores[c.k]}</p>}
                 </div>
               );
             })}
           </div>
         </div>
 
-        <footer className="ad-panel__pie">
+        <footer className="pn-panel__pie">
           {error && <p className="ld-error" role="alert"><FiAlertTriangle aria-hidden="true" /> {error}</p>}
-          <div className="ad-panel__botones">
+          <div className="pn-panel__botones">
             {!nuevo && (
               <>
-                <button type="button" className="ad-ico ad-ico--quitar" title="Borrar" aria-label={`Borrar ${titulo}`} onClick={() => onBorrar(fila)}>
+                <button type="button" className="pn-ico pn-ico--quitar" title="Borrar" aria-label={`Borrar ${titulo}`} onClick={() => onBorrar(fila)}>
                   <FiTrash2 aria-hidden="true" />
                 </button>
-                <button type="button" className="ad-ico" title="Duplicar" aria-label={`Duplicar ${titulo}`}
+                <button type="button" className="pn-ico" title="Duplicar" aria-label={`Duplicar ${titulo}`}
                   onClick={() => { if (!tocado || window.confirm('Se duplica lo que está guardado, sin tus cambios. ¿Seguir?')) onDuplicar(fila); }}>
                   <FiCopy aria-hidden="true" />
                 </button>
               </>
             )}
             {seccion.donde && (
-              <a className="ad-ico" href={seccion.donde} target="_blank" rel="noopener noreferrer" title="Ver en la web" aria-label="Ver en la web">
+              <a className="pn-ico" href={seccion.donde} target="_blank" rel="noopener noreferrer" title="Ver en la web" aria-label="Ver en la web">
                 <FiExternalLink aria-hidden="true" />
               </a>
             )}
-            <span className="ad-panel__espacio" />
-            <button type="button" className="ld-btn ad-panel__cancelar" onClick={salir}>Cancelar</button>
+            <span className="pn-panel__espacio" />
+            <button type="button" className="ld-btn pn-panel__cancelar" onClick={salir}>Cancelar</button>
             <button type="submit" className="ld-btn ld-btn--primario" disabled={guardando}>
               <FiCheck aria-hidden="true" /> {guardando ? 'Guardando…' : nuevo ? 'Crear' : 'Guardar'}
             </button>

@@ -105,23 +105,23 @@ function Panel({ sesion, rol }) {
   const salir = () => (DEMO ? null : supabaseR4.auth.signOut());
 
   return (
-    <div className={`ad-shell${menu ? ' is-menu' : ''}`}>
+    <div className={`pn-shell${menu ? ' is-menu' : ''}`}>
       <Helmet><title>{seccion.id === 'inicio' ? 'Panel · Web Bonding' : `${seccion.nombre} · Panel · Web Bonding`}</title></Helmet>
 
-      <aside className="ad-lado" aria-label="Menú del panel">
-        <div className="ad-lado__cab">
-          <Link to={aqui('/admin')} className="ad-lado__marca"><img src="/logoenblanco.png" alt="" /> <span><b>Panel</b> Web Bonding</span></Link>
-          <button type="button" className="ad-lado__cerrar" onClick={() => setMenu(false)} aria-label="Cerrar el menú"><FiX aria-hidden="true" /></button>
+      <aside className="pn-lado" aria-label="Menú del panel">
+        <div className="pn-lado__cab">
+          <Link to={aqui('/admin')} className="pn-lado__marca"><img src="/logoenblanco.png" alt="" /> <span><b>Panel</b> Web Bonding</span></Link>
+          <button type="button" className="pn-lado__cerrar" onClick={() => setMenu(false)} aria-label="Cerrar el menú"><FiX aria-hidden="true" /></button>
         </div>
 
-        <nav className="ad-nav">
+        <nav className="pn-nav">
           {mias.filter((s) => !s.grupo).map((s) => <ItemMenu key={s.id} s={s} activo={s.id === seccion.id} />)}
           {GRUPOS.map((g) => {
             const items = mias.filter((s) => s.grupo === g.id);
             if (!items.length) return null;
             return (
-              <div key={g.id} className="ad-nav__grupo">
-                <p className="ad-nav__titulo">{g.nombre}</p>
+              <div key={g.id} className="pn-nav__grupo">
+                <p className="pn-nav__titulo">{g.nombre}</p>
                 {items.map((s) => (
                   <ItemMenu key={s.id} s={s} activo={s.id === seccion.id}
                     numero={s.id === 'leads' ? nuevos : s.vista === 'coleccion' ? resumen?.[s.id]?.total : null}
@@ -132,15 +132,15 @@ function Panel({ sesion, rol }) {
           })}
         </nav>
 
-        <div className="ad-lado__pie">
-          <a className="ad-nav__item ad-nav__web" href="/" target="_blank" rel="noopener noreferrer">
-            <span>Abrir webbonding.net</span> <FiArrowUpRight aria-hidden="true" className="ad-nav__ext" />
+        <div className="pn-lado__pie">
+          <a className="pn-nav__item pn-nav__web" href="/" target="_blank" rel="noopener noreferrer">
+            <span>Abrir webbonding.net</span> <FiArrowUpRight aria-hidden="true" className="pn-nav__ext" />
           </a>
-          <div className="ad-yo">
-            <span className="ad-yo__ini" aria-hidden="true">{(sesion.user?.email ?? '?').charAt(0).toUpperCase()}</span>
-            <span className="ad-yo__txt"><b>{sesion.user?.email}</b><i>{ROLES[rol]?.t ?? rol}</i></span>
+          <div className="pn-yo">
+            <span className="pn-yo__ini" aria-hidden="true">{(sesion.user?.email ?? '?').charAt(0).toUpperCase()}</span>
+            <span className="pn-yo__txt"><b>{sesion.user?.email}</b><i>{ROLES[rol]?.t ?? rol}</i></span>
           </div>
-          <div className="ad-yo__acc">
+          <div className="pn-yo__acc">
             {!DEMO && <CambiarClave />}
             <button type="button" className="ld-btn ld-btn--plano" onClick={salir}>
               <FiLogOut aria-hidden="true" /> <span className="ld-btn__txt">Salir</span>
@@ -148,22 +148,22 @@ function Panel({ sesion, rol }) {
           </div>
         </div>
       </aside>
-      <div className="ad-velo" onClick={() => setMenu(false)} aria-hidden="true" />
+      <div className="pn-velo" onClick={() => setMenu(false)} aria-hidden="true" />
 
-      <div className="ad-cuerpo">
-        <header className="ad-tope">
-          <button type="button" className="ad-tope__menu" onClick={() => setMenu(true)} aria-label="Abrir el menú" aria-expanded={menu}>
+      <div className="pn-cuerpo">
+        <header className="pn-tope">
+          <button type="button" className="pn-tope__menu" onClick={() => setMenu(true)} aria-label="Abrir el menú" aria-expanded={menu}>
             <FiMenu aria-hidden="true" />
           </button>
-          <span className="ad-tope__titulo">{seccion.id === 'inicio' ? 'Panel' : seccion.nombre}</span>
+          <span className="pn-tope__titulo">{seccion.id === 'inicio' ? 'Panel' : seccion.nombre}</span>
           {nuevos > 0 && seccion.id !== 'leads' && (
-            <Link to={aqui('/admin/leads?estado=nuevo')} className="ad-tope__nuevos">{nuevos} {nuevos === 1 ? 'lead nuevo' : 'leads nuevos'}</Link>
+            <Link to={aqui('/admin/leads?estado=nuevo')} className="pn-tope__nuevos">{nuevos} {nuevos === 1 ? 'lead nuevo' : 'leads nuevos'}</Link>
           )}
         </header>
 
-        <main className="ad-main" key={seccion.id}>
+        <main className="pn-main" key={seccion.id}>
           {!puede ? (
-            <div className="ad-sinpermiso">
+            <div className="pn-sinpermiso">
               <p className="ld-error" role="alert">
                 <FiAlertTriangle aria-hidden="true" /> {seccion.nombre} solo lo maneja un administrador. Pídele el rol a Williams.
               </p>
@@ -184,16 +184,16 @@ function ItemMenu({ s, activo, numero = null, urgente = false }) {
   const Icono = s.icono;
   if (s.vista === 'enlace') {
     return (
-      <a className="ad-nav__item" href={s.ruta} target="_blank" rel="noopener noreferrer">
-        <Icono aria-hidden="true" /> <span>{s.nombre}</span> <FiArrowUpRight aria-hidden="true" className="ad-nav__ext" />
+      <a className="pn-nav__item" href={s.ruta} target="_blank" rel="noopener noreferrer">
+        <Icono aria-hidden="true" /> <span>{s.nombre}</span> <FiArrowUpRight aria-hidden="true" className="pn-nav__ext" />
       </a>
     );
   }
   return (
-    <Link to={aqui(rutaDe(s))} className={`ad-nav__item${activo ? ' is-activo' : ''}`} aria-current={activo ? 'page' : undefined}>
+    <Link to={aqui(rutaDe(s))} className={`pn-nav__item${activo ? ' is-activo' : ''}`} aria-current={activo ? 'page' : undefined}>
       <Icono aria-hidden="true" /> <span>{s.nombre}</span>
       {numero !== null && numero !== undefined && (urgente || numero > 0) && (
-        <b className={`ad-nav__num${urgente ? ' is-urgente' : ''}`} title={urgente ? 'Sin contactar' : undefined}>{numero.toLocaleString('es-VE')}</b>
+        <b className={`pn-nav__num${urgente ? ' is-urgente' : ''}`} title={urgente ? 'Sin contactar' : undefined}>{numero.toLocaleString('es-VE')}</b>
       )}
     </Link>
   );

@@ -251,17 +251,17 @@ export default function PanelLeads({ rol, alCambiar }) {
   const leadAbierto = indice >= 0 ? filas[indice] : null;
 
   return (
-    <div className="ad-leads">
-      <div className="ad-cab">
+    <div className="pn-leads">
+      <div className="pn-cab">
         <div>
           <h1>Leads</h1>
           <p>Los que llenan el formulario de /crea-tu-app y los que cargas tú: en qué va cada uno, tus notas y su WhatsApp a un toque.</p>
         </div>
-        <div className="ad-cab__acc">
-          <button type="button" className="ad-ico" onClick={() => cargar(0)} aria-label="Actualizar" title="Actualizar" disabled={cargando}>
+        <div className="pn-cab__acc">
+          <button type="button" className="pn-ico" onClick={() => cargar(0)} aria-label="Actualizar" title="Actualizar" disabled={cargando}>
             <FiRefreshCw aria-hidden="true" className={cargando ? 'ld-girando' : ''} />
           </button>
-          <button type="button" className="ld-btn ld-btn--primario ad-nuevo" onClick={() => setEditando({ nuevo: true })} title="Nuevo lead · tecla N">
+          <button type="button" className="ld-btn ld-btn--primario pn-nuevo" onClick={() => setEditando({ nuevo: true })} title="Nuevo lead · tecla N">
             <FiPlus aria-hidden="true" /> Nuevo lead
           </button>
         </div>
@@ -352,7 +352,7 @@ export default function PanelLeads({ rol, alCambiar }) {
             <button type="button" key={e} className={`ld-masivo__btn ld-c--${e}`} onClick={() => marcarComo(e)}><i aria-hidden="true" /> {ESTADOS[e]}</button>
           ))}
           {admin && (
-            <button type="button" className="ld-masivo__btn ad-masivo__borrar" onClick={() => borrar(filas.filter((l) => marcados.has(l.id)))}>
+            <button type="button" className="ld-masivo__btn pn-masivo__borrar" onClick={() => borrar(filas.filter((l) => marcados.has(l.id)))}>
               <FiTrash2 aria-hidden="true" /> Borrar
             </button>
           )}
