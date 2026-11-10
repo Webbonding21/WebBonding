@@ -11,6 +11,7 @@ import CotizadorGate from './components/CotizadorGate';
 import R4Apertura from './pages/R4Apertura';
 import CreaTuApp from './pages/CreaTuApp';
 import Portafolio from './pages/Portafolio';
+import Apps from './pages/Apps';
 import Privacidad from './pages/Privacidad';
 import Leads from './pages/Leads';
 import Admin from './pages/Admin';
@@ -30,8 +31,9 @@ function Contenido() {
   // /admin (el panel del equipo, con los leads en /admin/leads), /r4apertura y /leads (lleva al panel) son herramientas internas:
   // se muestran solas, sin las capas del sitio.
   const herramienta = ['/admin', '/r4apertura', '/leads'].some((r) => pathname.startsWith(r));
-  // /crea-tu-app (la landing de anuncios) y /portafolio van sin el menú ni el pie del sitio: llevan su propio encabezado y contacto
-  const landing = pathname.startsWith('/crea-tu-app') || pathname.startsWith('/portafolio');
+  // /crea-tu-app (la landing de anuncios), /portafolio y /apps (el enlace de la bio) van sin el menú ni el pie del sitio:
+  // llevan su propio encabezado y contacto
+  const landing = ['/crea-tu-app', '/portafolio', '/apps'].some((r) => pathname.startsWith(r));
 
   return (
     <div className="App">
@@ -42,6 +44,7 @@ function Contenido() {
         <Route path="/r4apertura" element={<R4Apertura />} />
         <Route path="/crea-tu-app" element={<CreaTuApp />} />
         <Route path="/portafolio" element={<Portafolio />} />
+        <Route path="/apps" element={<Apps />} />
         <Route path="/privacidad" element={<Privacidad />} />
         <Route path="/leads" element={<Leads />} />
         {/* una sola ruta para todo el panel: al cambiar de sección no se vuelve a pedir la sesión */}
