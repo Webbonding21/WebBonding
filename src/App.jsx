@@ -15,6 +15,7 @@ import Apps from './pages/Apps';
 import Privacidad from './pages/Privacidad';
 import Leads from './pages/Leads';
 import Admin from './pages/Admin';
+import Firmar from './pages/Firmar';
 
 import './App.css';
 
@@ -28,9 +29,10 @@ function App() {
 
 function Contenido() {
   const { pathname } = useLocation();
-  // /admin (el panel del equipo, con los leads en /admin/leads), /r4apertura y /leads (lleva al panel) son herramientas internas:
+  // /admin (el panel del equipo, con los leads en /admin/leads), /r4apertura, /leads (lleva al panel) y /firmar (la firma
+  // electrónica de contratos) son herramientas:
   // se muestran solas, sin las capas del sitio.
-  const herramienta = ['/admin', '/r4apertura', '/leads'].some((r) => pathname.startsWith(r));
+  const herramienta = ['/admin', '/r4apertura', '/leads', '/firmar'].some((r) => pathname.startsWith(r));
   // /crea-tu-app (la landing de anuncios), /portafolio y /apps (el enlace de la bio) van sin el menú ni el pie del sitio:
   // llevan su propio encabezado y contacto
   const landing = ['/crea-tu-app', '/portafolio', '/apps'].some((r) => pathname.startsWith(r));
@@ -49,6 +51,7 @@ function Contenido() {
         <Route path="/leads" element={<Leads />} />
         {/* una sola ruta para todo el panel: al cambiar de sección no se vuelve a pedir la sesión */}
         <Route path="/admin/:seccion?" element={<Admin />} />
+        <Route path="/firmar/:token?" element={<Firmar />} />
       </Routes>
       {!herramienta && (
         <>

@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# lo que deja la CLI de Supabase al publicar funciones
+supabase/.temp/

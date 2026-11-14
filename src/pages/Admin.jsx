@@ -2,7 +2,8 @@
 // Panel del equipo (/admin): todo lo de Web Bonding en un solo lugar, con el menú a la izquierda (en el teléfono, detrás
 // del botón de menú). Cada sección de components/admin/secciones.js es una ruta, /admin/<sección>: el resumen, los datos
 // de la web (portafolio, apps, proyectos, planes, servicios, preguntas, cifras, la cinta, por qué nosotros, cómo
-// trabajamos), los leads, el catálogo del cotizador y los usuarios; el cotizador y R4 se abren aparte.
+// trabajamos), los leads, el catálogo del cotizador, los contratos para firma electrónica y los usuarios; el cotizador y R4
+// se abren aparte.
 // Se entra con el usuario del equipo (Supabase Auth del proyecto de R4, el mismo del cotizador y R4) y cada quien ve lo de
 // su rol en public.perfiles: 'admin' todo, 'ventas' los leads, el cotizador y R4, 'lectura' solo R4. Quien manda es la
 // base (supabase/admin.sql): aquí el rol solo muestra u oculta.
@@ -16,6 +17,7 @@ import CambiarClave from '../components/CambiarClave';
 import Inicio from '../components/admin/Inicio';
 import Coleccion from '../components/admin/Coleccion';
 import Equipo from '../components/admin/Equipo';
+import Contratos from '../components/admin/Contratos';
 import PanelLeads from '../components/leads/PanelLeads';
 import { GRUPOS, ROLES, SECCIONES, seccionDe } from '../components/admin/secciones';
 import { DEMO, leadsNuevos, resumenContenido } from '../components/admin/datos';
@@ -172,6 +174,7 @@ function Panel({ sesion, rol }) {
           ) : seccion.vista === 'inicio' ? <Inicio rol={rol} resumen={resumen} aqui={aqui} />
             : seccion.vista === 'leads' ? <PanelLeads rol={rol} alCambiar={refrescar} />
               : seccion.vista === 'equipo' ? <Equipo yo={sesion.user?.id} />
+                : seccion.vista === 'contratos' ? <Contratos />
                 : <Coleccion seccion={seccion} alCambiar={refrescar} />}
         </main>
       </div>

@@ -1,6 +1,6 @@
 // Las secciones del panel /admin: qué datos maneja cada una, con qué campos se editan y cómo se ve cada fila en la lista.
 // Las de fuente 'contenido' se guardan en web_bonding.contenido (supabase/admin.sql) y la web las lee con useContenido
-// (src/lib/contenido.js); 'portafolio' tiene su tabla. Inicio, leads y equipo tienen su propia vista; cotizador y R4 son
+// (src/lib/contenido.js); 'portafolio' tiene su tabla. Inicio, leads, contratos (firma electrónica) y equipo tienen su propia vista; cotizador y R4 son
 // herramientas aparte que se abren desde el menú.
 //
 // Cada campo: k (la clave en los datos), t (la etiqueta), tipo, y según el tipo: req, max, min, paso, ayuda, ejemplo,
@@ -9,7 +9,7 @@
 // Tipos: texto · largo · numero · opciones · si_no · lista · color · imagen · capturas · enlaces · instagram · etiqueta ·
 // portada · codigo.
 import {
-  FiAward, FiBarChart2, FiBriefcase, FiCreditCard, FiFileText, FiFilm, FiHelpCircle, FiHome, FiInbox, FiLayers, FiPackage,
+  FiAward, FiBarChart2, FiBriefcase, FiCreditCard, FiFileText, FiFilm, FiHelpCircle, FiHome, FiInbox, FiLayers, FiPackage, FiPenTool,
   FiSmartphone, FiTag, FiTrendingUp, FiType, FiUsers,
 } from 'react-icons/fi';
 import { CATEGORIES, TIERS } from '../../data/catalog';
@@ -197,6 +197,7 @@ export const SECCIONES = [
       mini: { texto: d.icon || '' }, extra: tarifa ? usd((Number(d.hours) || 0) * tarifa + (Number(d.extras) || 0)) : '',
     }),
   },
+  { id: 'contratos', grupo: 'ventas', nombre: 'Contratos', icono: FiPenTool, vista: 'contratos', roles: ['admin'] },
   { id: 'cotizador', grupo: 'ventas', nombre: 'Cotizador', icono: FiFileText, vista: 'enlace', ruta: '/cotizador', roles: ['admin', 'ventas'] },
 
   // ── Equipo ──
@@ -208,7 +209,7 @@ export const seccionDe = (id) => SECCIONES.find((s) => s.id === id);
 
 // los roles de public.perfiles, con lo que ve cada uno
 export const ROLES = {
-  admin: { t: 'Administrador', d: 'Todo: la web, el portafolio, los leads, el catálogo, el cotizador, R4 y los usuarios.' },
+  admin: { t: 'Administrador', d: 'Todo: la web, el portafolio, los leads, el catálogo, los contratos, el cotizador, R4 y los usuarios.' },
   ventas: { t: 'Ventas', d: 'Los leads, el cotizador con la guía de ventas y R4 para mirar.' },
   lectura: { t: 'Solo lectura', d: 'Mira las cuentas R4. Nada más.' },
 };

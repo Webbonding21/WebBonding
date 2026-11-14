@@ -1,0 +1,108 @@
+/* /admin/contratos: los sobres de firma electrónica (components/admin/Contratos.jsx). Clases ct-: nunca ad- (el
+   bloqueador de anuncios las oculta). */
+.ct { display: flex; flex-direction: column; gap: 18px; }
+.ct .pn-bloque { display: flex; flex-direction: column; gap: 12px; padding-bottom: 16px; }
+.ct-volver { align-self: flex-start; }
+.ct-cod { display: flex; align-items: center; gap: .6rem; margin: 0 0 .4rem !important; font-family: var(--font-mono); font-size: .78rem !important;
+  font-weight: 700; letter-spacing: .06em; color: var(--electric) !important; }
+.ct-acc { flex-wrap: wrap; justify-content: flex-end; }
+.ct-mensaje { margin: 0; padding: 12px 14px; border-radius: 12px; background: var(--paper); white-space: pre-line; font-size: .93rem; line-height: 1.5; }
+
+.ct-chip { display: inline-flex; align-items: center; padding: .2em .65em; border-radius: 100px; font-family: var(--font-body); font-size: .74rem;
+  font-weight: 700; letter-spacing: 0; white-space: nowrap; }
+.ct-chip.is-gris { background: rgba(14, 14, 17, .07); color: #4a4a52; }
+.ct-chip.is-ambar { background: #fff3d6; color: #8a5a00; }
+.ct-chip.is-verde { background: #e2f5e8; color: #15803D; }
+.ct-chip.is-rojo { background: #fdecea; color: #b42318; }
+
+.ct-filtros { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 10px; }
+.ct-filtros .ld-campo { margin: 0; }
+
+.ct-vacio { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 48px 16px; border: 1.5px dashed var(--line-light);
+  border-radius: 16px; text-align: center; color: var(--ink-60); }
+.ct-vacio svg { font-size: 2rem; color: var(--electric); }
+.ct-vacio p { max-width: 44ch; margin: 0; }
+
+.ct-lista { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line-light); border-radius: 16px; background: #fff; overflow: hidden; }
+.ct-lista li + li { border-top: 1px solid var(--line-light); }
+.ct-lista button { display: grid; grid-template-columns: 150px minmax(0, 1fr) 110px 170px 130px; align-items: center; gap: 14px; width: 100%;
+  padding: 14px 18px; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.ct-lista button:hover { background: #faf8f3; }
+.ct-lista__cod { font-family: var(--font-mono); font-size: .78rem; font-weight: 700; color: var(--electric); overflow-wrap: anywhere; }
+.ct-lista__tit { display: flex; flex-direction: column; min-width: 0; }
+.ct-lista__tit b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ct-lista__tit i { font-style: normal; font-size: .82rem; color: var(--ink-60); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ct-lista__prog { display: flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 700; }
+.ct-barra { flex: 1; height: 6px; border-radius: 6px; background: rgba(14, 14, 17, .08); overflow: hidden; }
+.ct-barra span { display: block; height: 100%; background: #15803D; }
+.ct-lista__est { display: flex; flex-wrap: wrap; gap: 4px; }
+.ct-lista__fecha { font-size: .8rem; color: var(--ink-60); text-align: right; }
+
+.ct-dl { margin: 0; display: grid; gap: 8px; }
+.ct-dl > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; }
+.ct-dl dt { font-size: .82rem; font-weight: 700; color: var(--ink-60); }
+.ct-dl dd { margin: 0; font-size: .92rem; }
+.ct-hash { display: block; font-family: var(--font-mono); font-size: .72rem; color: var(--ink-60); overflow-wrap: anywhere; }
+.ct-final { border-color: #b7e2c3 !important; background: #f6fcf7 !important; }
+
+.ct-firmantes { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: f; }
+.ct-firmantes li { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 12px 14px; border: 1px solid var(--line-light); border-radius: 12px; }
+.ct-firmantes__quien { display: flex; flex-direction: column; gap: 2px; flex: 1 1 280px; min-width: 0; }
+.ct-firmantes__quien b { font-weight: 600; }
+.ct-firmantes__quien > span { font-size: .84rem; color: var(--ink-60); overflow-wrap: anywhere; }
+.ct-firmantes__estado { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 4px; }
+.ct-firmantes__trazo { width: 140px; height: 56px; object-fit: contain; border-radius: 8px; background: var(--paper); }
+.ct-firmantes__acc { display: flex; flex-wrap: wrap; gap: 8px; }
+.ct-firmantes__acc .ld-btn { padding: .55em .85em; font-size: .85rem; }
+
+.ct-docs { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ct-docs li { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--line-light); border-radius: 12px; }
+.ct-docs li > svg { flex: none; font-size: 1.15rem; color: var(--electric); }
+.ct-docs li > span { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.ct-docs li > span > b { font-weight: 600; font-size: .93rem; }
+.ct-docs li > span > i { font-style: normal; font-size: .8rem; color: var(--ink-60); }
+.ct-docs .ld-campo { margin: 0; padding: .5em .7em; }
+
+.ct-bitacora { display: flex; flex-direction: column; max-height: 420px; overflow-y: auto; border: 1px solid var(--line-light); border-radius: 12px; }
+.ct-ev { display: grid; grid-template-columns: 150px minmax(0, 1fr) 110px; gap: 12px; padding: 8px 12px; font-size: .84rem; }
+.ct-ev + .ct-ev { border-top: 1px solid var(--line-light); }
+.ct-ev__hora, .ct-ev__ip { color: var(--ink-60); font-size: .78rem; }
+.ct-ev__ip { font-family: var(--font-mono); text-align: right; overflow-wrap: anywhere; }
+.ct-ev.is-firmado, .ct-ev.is-completado { background: #f6fcf7; }
+.ct-ev.is-rechazado, .ct-ev.is-anulado, .ct-ev.is-cierre_fallido, .ct-ev.is-codigo_fallido, .ct-ev.is-cedula_incorrecta { background: #fff7f6; }
+
+/* editor */
+.ct-editor { display: flex; flex-direction: column; gap: 18px; }
+.ct-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; flex: 1; min-width: 0; }
+.ct-campo { display: flex; flex-direction: column; font-size: .84rem; font-weight: 600; }
+.ct-campo em { font-style: normal; font-weight: 400; color: var(--ink-60); }
+.ct-campo > i { margin-top: .3rem; font-style: normal; font-weight: 400; font-size: .78rem; color: var(--ink-60); }
+.ct-campo--ancho { grid-column: 1 / -1; }
+.ct-switch { display: flex; gap: .7rem; align-items: flex-start; padding: 12px; border-radius: 12px; background: var(--paper); cursor: pointer; }
+.ct-switch input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--electric); }
+.ct-switch span { display: flex; flex-direction: column; }
+.ct-switch i { font-style: normal; font-size: .84rem; color: var(--ink-60); }
+.ct-subir { position: relative; display: inline-flex; align-self: flex-start; align-items: center; gap: .5rem; padding: .7em 1.1em;
+  border: 1.5px dashed var(--electric); border-radius: 10px; color: var(--electric); font-weight: 600; cursor: pointer; }
+.ct-subir input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.ct-ed-firmantes { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.ct-ed-firmantes li { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border: 1px solid var(--line-light); border-radius: 12px; }
+.ct-ed-firmantes__n { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.ct-ed-firmantes__n b { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--paper); font-size: .85rem; }
+.ct-ed-mas { display: flex; flex-wrap: wrap; gap: 8px; }
+.ct-ed-pie { display: flex; justify-content: flex-end; gap: 10px; position: sticky; bottom: 0; padding: 12px 0; background: linear-gradient(transparent, var(--paper) 30%); }
+
+@media (max-width: 900px) {
+  .ct-lista button { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; }
+  .ct-lista__cod { grid-column: 1 / -1; }
+  .ct-lista__prog { grid-column: 1; }
+  .ct-lista__fecha { display: none; }
+}
+@media (max-width: 600px) {
+  .ct-grid, .ct-filtros { grid-template-columns: 1fr; }
+  .ct-ev { grid-template-columns: 1fr; gap: 2px; }
+  .ct-ev__ip { text-align: left; }
+  .ct-dl > div { grid-template-columns: 1fr; gap: 2px; }
+  .ct-ed-firmantes li { flex-wrap: wrap; }
+  .ct-ed-firmantes__n { flex-direction: row; }
+}
